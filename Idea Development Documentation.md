@@ -260,7 +260,7 @@ Responsible for server-side logic, database management, and backend reliability.
 ### Mohammed Abdulrahman Basuliman — Frontend Developer
 Responsible for designing and implementing the user interface and improving user experience.
 
-### Hussam Munif Almutairi — DevOps Engineer
+### Hussam Munif Almutairi — Backend Developer
 Responsible for deployment processes, development environments, system integration, and platform scalability.
 
 ---
