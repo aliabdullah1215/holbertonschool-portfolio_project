@@ -3,131 +3,226 @@
 # Project Charter
 
 ## Project Name:
+
 **Data Diet**
 
 ---
 
-## What is the Project?
-Our project is a platform that functions as an **AI-powered digital nutritionist**, where users can generate customized diet plans based on their personal data.
+## What is the project?
 
-The diet is tailored according to the user's goals and other physiological factors. Users can interact with the AI to discuss, modify, or add to their nutritional plans.
+Our project is a website that functions as a digital nutrition specialist powered by artificial intelligence. Users can generate an AI-based dietary plan tailored to their personal data.
 
-Additionally, the platform allows users to calculate various nutritional indicators. It also provides medical support by connecting users with professional nutritionists for medical consultations.
+The diet is customized according to the user’s goal and other factors. Users can also discuss their diet plan with the AI to modify or enhance it.
+
+Additionally, users can calculate various nutritional indicators through the platform.
+Medical support is also available through certified nutrition specialists whom users can contact for consultations.
 
 ---
 
-## Project Objectives
-This platform serves as an urgent digital response to global malnutrition crises and the shortage of medical care. It harnesses AI to bridge the health gap and provide personalized nutritional solutions, supporting families in remote areas and transforming technology into a means of survival and prosperity.
+## Defining Project Objectives
+
+This platform serves as an urgent digital response to global malnutrition crises and the lack of healthcare access. It leverages artificial intelligence to bridge health gaps and provide personalized nutritional solutions, supporting families in remote areas and transforming technology into a means of survival and growth.
 
 ### 1. Combating Global Malnutrition (Prevention & Treatment)
-**Goal:** Reduce rates of stunting and wasting in children and address clinical obesity by providing precise, customized nutritional plans for each health condition, in alignment with World Health Organization (WHO) standards.
+
+**Objective:** Reduce rates of stunting and wasting among children, and address obesity by providing precise, personalized diet plans aligned with World Health Organization standards.
 
 ### 2. Democratizing Access to Healthcare (Breaking Barriers)
-**Goal:** Enable families in remote or medically underserved areas to gain immediate access to certified specialist consultations and AI tools without the need for travel or high costs.
+
+**Objective:** Enable families in remote areas or those lacking medical professionals to instantly access certified specialists and AI tools without the need for travel or high costs.
 
 ### 3. Knowledge Empowerment and Digital Nutritional Awareness
-**Goal:** Bridge the "hidden hunger" gap through intelligent discussion tools that educate users on how to build balanced meals using locally available resources.
 
-### 4. Reducing Mortality and Nutrition-Related Economic Burdens
-**Goal:** Lower child mortality rates resulting from malnutrition through early intervention and continuous monitoring, thereby reducing the financial and medical pressure on families and communities.
+**Objective:** Bridge the “hidden hunger” gap through intelligent discussion tools that educate users on how to build balanced meals using locally available resources.
+
+### 4. Reducing Mortality and Economic Burden Related to Nutrition
+
+**Objective:** Decrease child mortality caused by malnutrition through early intervention and continuous monitoring, thereby reducing financial and medical strain on families and communities.
 
 ---
 
 ## Stakeholders
 
 ### Internal:
+
 * Project Team
 * Holberton Supervisors
 
 ### External:
-* Doctors / Nutritionists
-* End Users
+
+* Customers
+* Doctors
 
 ---
 
 ## Project Team Roles
-1. **Ali Samman** – Project Manager
-2. **Omar Al-Anazi** – Frontend Developer
-3. **Mohammed Basulaiman** – Full-Stack Developer
-4. **Hussam Al-Mutairi** – Backend Developer
+
+1. Ali Summan – Project Manager
+2. Omar Al-Anzi – Frontend Developer
+3. Mohammed Basleiman – Full Stack Developer
+4. Hussam Al-Mutairi – Backend Developer
 
 ---
 
-## Project Scope
+## Defining Project Scope
 
 ### In-Scope
-* User registration and login system.
-* User data input (Age, weight, health goal, daily activity).
-* Generation of customized diet plans using AI.
-* Ability to modify the plan via interactive AI Chat.
-* Calculation of nutritional indicators (e.g., Calories, BMI).
-* Displaying the diet plan in an organized, easy-to-read format.
-* Simple and user-friendly interface (UI/UX).
-* A dedicated dashboard and login system for doctors.
-* Ability to apply as a nutritionist through the platform.
-* Administrative review and acceptance of doctor applications.
-* Displaying contact information for doctors in the "Medical Support" section.
+
+* User registration and login
+* Input of user data (age, weight, health goal, daily activity)
+* AI-generated personalized diet plans
+* Ability to modify the plan via interactive AI chat
+* Calculation of nutritional indicators such as calories and BMI
+* Organized and easy-to-read diet plan display
+* Simple and user-friendly interface (UI/UX)
+* Dedicated system for doctors with a separate interface and login
+* Ability to apply as a nutrition specialist via the platform
+* Admin review and approval of doctor applications
+* Display of doctors’ contact information in the Medical Support section
+
+---
 
 ### Out-of-Scope
-* Developing proprietary AI models from scratch.
-* Integration with wearable smart devices (e.g., smartwatches, activity trackers).
-* Direct communication with doctors via video calls or in-platform live chat.
-* Adding and communicating with fitness trainers.
-* Partnerships with external third-party apps (e.g., Calo).
-* Developing a native mobile application (Android / iOS).
+
+* Developing proprietary AI models for the platform
+* Integration with smart devices (e.g., watches, activity trackers)
+* Direct communication with doctors via video calls or in-platform chat
+* Adding fitness trainers and enabling communication with them
+* Partnerships with external applications (e.g., Calo app)
+* Mobile app development (Android / iOS)
 
 ---
 
 ## Risks and Mitigation Plans
 
-### 1. Inaccurate AI Outputs
-* **Impact:** Inappropriate nutritional recommendations.
-* **Mitigation:** Continuous testing and incremental model refinement.
+### 1. Inaccuracy of AI Outputs
 
-### 2. Project Time Constraints
-* **Impact:** Failure to complete all features.
-* **Mitigation:** Prioritizing the MVP (Minimum Viable Product) and reducing non-essential features.
-
-### 3. System Integration Issues
-* **Impact:** System errors or crashes.
-* **Mitigation:** Modularizing tasks and testing each component before integration.
-
-### 4. Inaccurate Medical or Nutritional Recommendations
-* **Impact:** Potential health risks and loss of credibility.
-* **Mitigation:**
-    * Ensuring the system is "Guidance Only."
-    * Adding clear disclaimers that the AI is not a medical replacement.
-    * Using reliable sources to improve accuracy.
-
-### 5. Poor User Experience (UX)
-* **Impact:** Low user satisfaction.
-* **Mitigation:** UI/UX optimization and continuous user testing.
+**Impact:** Inappropriate dietary recommendations
+**Mitigation:** Continuous testing and gradual model improvement
 
 ---
 
-# High-Level Plan
+### 2. Limited Project Timeline
+
+**Impact:** Incomplete features
+**Mitigation:** Focus on MVP and reduce non-essential features
+
+---
+
+### 3. Integration Issues Between System Components
+
+**Impact:** Errors or system failures
+**Mitigation:** Divide tasks and test each component before integration
+
+---
+
+### 4. Inaccurate Medical or Nutritional Recommendations
+
+**Impact:** Health risks and reduced credibility
+**Mitigation:**
+
+* Make the system advisory only
+* Add a disclaimer that it is not a medical substitute
+* Use reliable sources and improve accuracy
+
+---
+
+### 5. Poor User Experience
+
+**Impact:** Reduced user satisfaction
+**Mitigation:** Improve UI and conduct continuous testing
+
+---
+
+## High-Level Plan
+
+---
 
 ## Stage 1: Team Formation and Idea Development
+
 📅 **Mar 01 → Mar 14**
-* **Key Activities:** Team formation, role definition, scope discussion, problem/solution definition, and establishing the general vision.
-* **Deliverables:** Clear project concept and defined team roles.
+
+**Key Activities:**
+
+* Form the team and assign roles
+* Discuss the project idea and define its scope
+* Identify the problem and proposed solutions
+* Establish the overall project vision
+
+**Deliverables:**
+
+* Clear project idea
+* Defined team roles
+
+---
 
 ## Stage 2: Project Charter Development
+
 📅 **Mar 29 → Apr 11**
-* **Key Activities:** Drafting the Project Charter, defining goals and requirements, identifying stakeholders, and initial risk analysis.
-* **Deliverables:** Completed Project Charter document.
+
+**Key Activities:**
+
+* Prepare the Project Charter
+* Define objectives and requirements
+* Identify stakeholders
+* Conduct initial risk analysis
+
+**Deliverables:**
+
+* Completed Project Charter document
+
+---
 
 ## Stage 3: Technical Documentation
+
 📅 **Apr 12 → Apr 25**
-* **Key Activities:** System Architecture design, creating diagrams, technology stack selection, and API/Database documentation.
-* **Deliverables:** Technical Documentation document.
+
+**Key Activities:**
+
+* System architecture design
+* Prepare diagrams
+* Define technologies used
+* Document API and database
+
+**Deliverables:**
+
+* Technical Documentation document
+
+---
 
 ## Stage 4: MVP Development and Execution
+
 📅 **Apr 26 → May 23**
-* **Key Activities:** Frontend and Backend development, AI integration, system testing, and UX enhancement.
-* **Deliverables:** Functional MVP (Minimum Viable Product).
+
+**Key Activities:**
+
+* Frontend development
+* Backend development
+* AI integration
+* System testing
+* UX improvements
+
+**Deliverables:**
+
+* MVP version ready for use
+
+---
 
 ## Stage 5: Project Closure
+
 📅 **May 24 → Jun 04**
-* **Key Activities:** Final system testing, bug fixing, preparation of the final presentation, and project hand-over.
-* **Deliverables:** Completed project, final presentation, and submission of all required files.
+
+**Key Activities:**
+
+* Final system testing
+* Bug fixing
+* Prepare final presentation
+* Document and deliver the project
+
+**Deliverables:**
+
+* Completed project
+* Final presentation ready
+* Submission of all required files
+
+---
