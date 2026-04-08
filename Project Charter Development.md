@@ -134,6 +134,7 @@ This platform serves as an urgent digital response to global malnutrition crises
 
 ## High-Level Plan
 
+---
 
 ## Stage 1: Team Formation and Idea Development
 
