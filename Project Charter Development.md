@@ -39,7 +39,7 @@ This platform serves as an urgent digital response to global malnutrition crises
 
 ### External:
 * Doctors / Nutritionists
-* End Users
+* Customers
 
 ---
 
