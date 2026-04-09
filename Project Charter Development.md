@@ -57,7 +57,6 @@ This platform serves as an urgent digital response to global malnutrition crises
 * User registration and login system.
 * User data input (Age, weight, health goal, daily activity).
 * Generation of customized diet plans using AI.
-* Ability to modify the plan via interactive AI Chat.
 * Calculation of nutritional indicators (e.g., Calories, BMI).
 * Displaying the diet plan in an organized, easy-to-read format.
 * Simple and user-friendly interface (UI/UX).
