@@ -948,153 +948,184 @@ sequenceDiagram
   "fallback_message": ""
 }
 ```
-# 5. Plan SCM and QA Strategies
+---
+
+### 5. Plan SCM and QA Strategies
+
+This section defines how source code will be managed throughout development and how software quality will be maintained before release. The project will use GitHub for source code management, with a structured branching model to organize feature development, integration, testing, and production release. Quality assurance will be supported through a combination of backend testing, frontend testing, API validation, and manual verification of key user flows.
 
 #### SCM Strategy
 
-The project should use **Git** as the source control management tool, with a simple branch structure that supports ongoing MVP development and safe integration.
+The project will use **Git** and **GitHub** as the main Source Code Management (SCM) tools. A clear branching strategy will be followed so that development remains organized and stable. The `main` branch will contain only production-ready code, while the `dev` branch will be used as the main integration branch for completed features before they are prepared for production. Each major feature or module will be developed in its own branch and merged into `dev` only after review and testing.
 
-**Branching Strategy**
+All team members are expected to make regular commits with clear commit messages that describe the purpose of the change. Before merging any feature branch, a **pull request** should be opened so the code can be reviewed by another team member. This helps detect issues early, improves consistency, and ensures that only reviewed code enters the shared branches.
 
-* `main`: production-ready code only
-* `Dev`: integration branch for completed features before production release
-* `Husaam-dev`, `Omar-dev`, `Mohammed-dev`, `Ali-dev`: developer branches used for implementing features, fixing bugs, and handling urgent production issues
+| Part of Project | Suggested Branch Name | Purpose |
+|---|---|---|
+| Production branch | `main` | Production-ready code only |
+| Development integration branch | `dev` | Integration branch for completed features before production release |
+| Authentication and user registration/login | `feature/auth-system` | Develop user registration, login, JWT authentication, and current user retrieval |
+| User roles and route protection | `feature/role-based-access` | Implement `client` and `doctor` role separation and protected routes |
+| Doctor application workflow | `feature/doctor-application` | Develop doctor application submission, certificate upload, and application status tracking |
+| Doctor approval and admin management | `feature/doctor-approval-admin` | Implement doctor approval and rejection logic and connect it to admin management |
+| Approved doctors listing for clients | `feature/approved-doctors-list` | Develop the approved doctors display in the client interface |
+| Doctor profile management | `feature/doctor-profile` | Develop the doctor profile model and profile-related data handling |
+| AI nutrition plan generation | `feature/ai-nutrition-plans` | Implement Groq integration and AI-based nutrition plan generation |
+| AI validation and prompt handling | `feature/ai-plan-validation` | Develop client data validation and prompt-building logic |
+| Client dashboard pages | `feature/client-dashboard` | Develop client pages such as Home, About, and Medical Support |
+| Doctor dashboard pages | `feature/doctor-dashboard` | Develop doctor pages and doctor workspace flows |
+| Shared frontend UI/components | `feature/frontend-shared-components` | Develop shared UI components and common styling |
+| API integration in frontend | `feature/frontend-api-integration` | Implement `axios`, token handling, and request integration in the frontend |
+| Database and models | `feature/database-models` | Develop database schema, relationships, and migrations |
+| Documentation | `docs/technical-documentation` | Write ERD, sequence diagrams, API documentation, and technical documentation |
+| Testing | `feature/testing` | Add backend and frontend testing |
+| Deployment and environment setup | `chore/deployment-setup` | Prepare environment configuration and deployment setup |
 
-**SCM Process**
+#### SCM Process
 
-* Each new feature or bug fix should be developed in its own branch.
-* Developers should make small, regular commits with clear messages.
-* All completed work should be submitted through a **Pull Request** into `Dev`.
-* Pull Requests should be reviewed before merging.
-* After validation in `Dev`, stable increments should be merged into `main`.
+The SCM process for this project will follow these steps:
 
-**Code Review Rules**
+1. Developers create a separate feature branch for each task or module.
+2. Changes are committed regularly with meaningful commit messages.
+3. When a feature is completed, a pull request is submitted to merge it into the `dev` branch.
+4. The code is reviewed by another team member before approval.
+5. After integration testing is completed successfully in `dev`, stable code is merged into `main`.
 
-* Reviewers should verify:
-
-  * correctness of business logic
-  * API contract consistency between React and Django
-  * role-based access control for `client` and `doctor`
-  * input validation and error handling
-  * no sensitive configuration values are hardcoded in production code
-  * Pull Requests should not be merged without at least one review.
-
----
+This workflow supports collaborative development, reduces merge conflicts, and protects the production branch from unstable changes.
 
 #### QA Strategy
 
-The QA approach for this MVP should combine **manual testing**, **API testing**, **unit testing**, and **basic build validation**.
+The QA strategy will combine **automated testing** and **manual testing** to ensure the application works correctly across both backend and frontend components.
 
-**1. Front-End QA**
+For the backend, testing should focus on critical API endpoints such as registration, login, doctor application submission, approved doctor retrieval, and AI nutrition plan generation. These tests help verify that business logic, validation, and authentication work as expected.
 
-* **Linting Tool:** ESLint
-* **Current validation available:** `npm run lint`
-* **Recommended tests:**
+For the frontend, manual and component-level testing should be applied to verify important user flows such as:
+- Client registration and login
+- Doctor registration and application submission
+- Admin approval workflow
+- Display of approved doctors in the client medical support page
+- AI nutrition plan generation
 
-  * component tests for authentication screens
-  * component tests for AI questionnaire flow
-  * component tests for nutrition plan rendering and local edit actions
-* **Recommended tools:**
+#### QA Testing Types
 
-  * React Testing Library
-  * Vitest or Jest
+The following testing types should be included:
 
-**2. Back-End QA**
+- **Unit Testing:** To test individual functions, serializers, validators, and frontend components.
+- **Integration Testing:** To test communication between frontend and backend and verify API workflows.
+- **Manual Testing:** To validate key user journeys and confirm that the UI behaves correctly.
+- **End-to-End Testing:** For complete real-life flows such as registering, applying as a doctor, approving the application, and showing the approved doctor in the client interface.
 
-* **Current framework:** Django test framework is available, but automated tests are still minimal
-* **Recommended tests:**
+#### QA Tools
 
-  * unit tests for serializers and permission classes
-  * unit tests for AI profile validation and generated plan validation
-  * integration tests for:
+The following tools are suitable for the project:
 
-    * registration
-    * login
-    * current user endpoint
-    * doctor application submission
-    * approved doctors retrieval
-    * AI plan generation endpoint
-* **Recommended tools:**
+- **Postman:** For testing and verifying backend API endpoints manually
+- **Jest:** For frontend unit and component testing
+- **Django Test Framework / Python test tools:** For backend unit and integration testing
+- **Browser-based manual testing:** For checking navigation, forms, dashboard flows, and UI behavior
 
-  * Django `TestCase`
-  * Django REST Framework API test tools
-  * Postman for manual API verification
+#### Deployment Pipeline
 
-**3. Manual Testing for Critical User Flows**
-The following flows should be tested manually in every major release:
+The deployment process should include at least two environments:
 
-* client registration and login
-* doctor registration and login
-* doctor application submission with file upload
-* client AI questionnaire completion
-* AI nutrition plan generation
-* local meal/ingredient replacement actions
-* approved doctor listing in Medical Support
-* token expiry and refresh behavior
+- **Staging Environment:** Used for testing integrated features before release
+- **Production Environment:** Used for the final stable version of the system
 
-**4. API Testing**
+The expected pipeline is:
 
-* Use **Postman** to validate request/response behavior for all backend endpoints.
-* Maintain a Postman collection for:
+1. Developers complete features in their own branches.
+2. Reviewed features are merged into `dev`.
+3. The `dev` branch is deployed to a staging environment for testing.
+4. After successful QA checks, the stable version is merged into `main`.
+5. The `main` branch is deployed to production.
 
-  * authentication endpoints
-  * doctor application endpoints
-  * AI plan generation endpoint
-
-**5. Build and Deployment Validation**
-
-* Frontend:
-
-  * run `npm run lint`
-  * run `npm run build`
-* Backend:
-
-  * run Django tests
-  * verify migrations
-  * verify environment variables such as database configuration and `GROQ_API_KEY`
-
----
-
-#### Deployment Pipeline Plan
-
-The project should use two environments:
-
-**Staging**
-
-* Used for integration testing before production
-* Deployed from `Dev`
-* Validates end-to-end flows with real backend/frontend integration
-
-**Production**
-
-* Used for final release
-* Deployed only from `main`
-* Requires successful review and staging validation before release
-
-**Recommended Pipeline Stages**
-
-1. Pull latest branch
-2. Install dependencies
-3. Run frontend linting
-4. Run frontend build
-5. Run backend tests
-6. Apply database migrations
-7. Deploy to staging or production based on branch
-
----
+This deployment flow reduces risk and ensures that production releases are tested before going live.
 
 #### Summary
 
-**SCM**
+In summary, the project will use a structured Git branching model with `main`, `dev`, and feature branches to manage development safely and efficiently. Code reviews and pull requests will be used before merging. Quality assurance will rely on unit testing, integration testing, end-to-end testing, and manual testing using tools such as Postman, Jest, and Django testing utilities. A staging-to-production deployment pipeline will be followed to maintain software stability and release confidence.
 
-* Git-based workflow
-* `main`, `Dev`, developer branches
-* Pull requests and code review required before merge
 
-**QA**
 
-* ESLint for frontend quality checks
-* Django test framework for backend validation
-* Postman for API verification
-* Manual testing for critical MVP user journeys
-* Staging before production deployment
+---
+
+
+
+### Technical Justifications
+
+This section explains the rationale behind the main technical choices made in the Data Diet project, including the selected technologies, architecture, and implementation approach.
+
+#### 1. Frontend: React + Vite
+React was chosen for the frontend because it supports building reusable UI components and organizing the interface into clear role-based pages for clients and doctors. This fits the project well since the platform contains multiple dashboards, protected routes, and separate user journeys.
+
+Vite was selected as the frontend build tool because it provides a fast development experience, quick startup time, and simple configuration. This helped the team move faster during MVP development and reduced setup complexity compared with heavier frontend tooling.
+
+#### 2. Backend: Django + Django REST Framework
+Django was chosen because it offers a strong and structured backend foundation with built-in authentication, admin tools, ORM support, and secure development patterns. For this project, Django reduced the amount of boilerplate needed for user management and model-based development.
+
+Django REST Framework was used because the system is designed as an API-driven application, where the frontend and backend are separated. DRF made it easier to build JSON endpoints, handle validation through serializers, apply permissions, and keep the API structure maintainable.
+
+#### 3. Database Design: Relational Model
+A relational database approach was chosen because the project data has clear entity relationships, such as users, doctor applications, and doctor profiles. These relationships are structured and predictable, making a relational model more suitable than a schema-less alternative.
+
+This design also supports data integrity through one-to-one relationships and controlled status values such as `pending`, `approved`, and `rejected`, which are important for the doctor approval workflow.
+
+#### 4. PostgreSQL
+PostgreSQL was selected as the main database because it is reliable, production-ready, and well-supported by Django. It is a strong choice for structured application data and supports future scaling better than lightweight local databases.
+
+Although an SQLite file exists in the repository for development history or local testing, the active project configuration uses PostgreSQL because it is more appropriate for real application deployment and multi-user environments.
+
+#### 5. Custom User Model
+A custom `User` model was used instead of Django’s default user model so that role management could be built directly into the authentication system. Since the platform distinguishes between `client` and `doctor`, adding a `role` field at the model level simplified authorization, routing, and dashboard separation.
+
+This decision also makes the system easier to extend later if more user roles or profile variations are introduced.
+
+#### 6. JWT Authentication
+JWT authentication was selected because the frontend is a separate single-page application that communicates with the backend through APIs. Token-based authentication is more suitable than session-based authentication in this architecture because it works cleanly with SPA clients and protected API requests.
+
+Using SimpleJWT also reduced implementation effort by providing a standard and secure mechanism for issuing access and refresh tokens.
+
+#### 7. Role-Based Access Control
+Role-based access control was implemented because not all users are allowed to access the same features. Clients can generate nutrition plans and browse approved doctors, while doctors can submit applications and access doctor-specific pages.
+
+This design improves security, prevents misuse of endpoints, and keeps the user experience focused on the correct workflow for each account type.
+
+#### 8. Doctor Application Workflow
+The doctor approval process was designed as a separate application workflow rather than allowing all doctor-role users to appear immediately in the client interface. This decision was made to preserve trust and quality control in the platform.
+
+By requiring doctors to submit professional details and a certificate file, the system ensures that only reviewed and approved doctors are listed in the medical support section. This is especially important in a health-related system where credibility matters.
+
+#### 9. Django Admin for Approval Management
+Django Admin was used for managing doctor approvals because it provides a fast and practical administrative interface without requiring the team to build a custom admin dashboard during the MVP stage.
+
+This was a justified design choice for the current project scope because it allowed the team to focus development effort on core client and doctor features while still maintaining manual review capability.
+
+#### 10. AI Integration Through Groq API
+The Groq API was chosen for AI nutrition-plan generation because the project needed an external large language model service capable of processing user profile data and returning structured output quickly.
+
+This was preferable to training or hosting a custom AI model because it significantly reduced development complexity, infrastructure cost, and implementation time. It also allowed the project to focus on application logic and validation rather than model operations.
+
+#### 11. Validation Before AI Requests
+The backend validates the normalized client profile before sending it to the AI service. This design was chosen to improve reliability and reduce invalid requests sent to the external API.
+
+It also helps ensure that the generated nutrition plan is based on complete and well-formed data, which improves output quality and protects the system from malformed client input.
+
+#### 12. Separation Between AI Logic and Core User Management
+The project separates user management features into the `users` app and AI-related plan generation into the `ai_plans` app. This modular structure was chosen to improve maintainability and keep responsibilities clear.
+
+This makes the codebase easier to understand, test, and extend. For example, authentication changes can be handled in one module, while AI prompt building and plan validation remain isolated in another.
+
+#### 13. File Upload Support for Certificates
+`multipart/form-data` was used for doctor application submission because the workflow requires uploading a certificate file. This format is the correct and practical choice when sending both form fields and files in a single request.
+
+This design supports the administrative verification process and aligns with the system’s trust and approval requirements.
+
+#### 14. API-First Architecture
+The system was designed around internal REST APIs because the frontend and backend are separated. This architecture improves flexibility, supports clean integration between components, and makes future expansion easier, such as adding a mobile app or another client interface.
+
+It also improves maintainability by keeping frontend presentation logic independent from backend business logic and database access.
+
+#### 15. MVP-Oriented Design Decisions
+Several technical choices were made with MVP delivery in mind. Examples include using Django Admin instead of a custom internal approval dashboard, integrating an external AI API instead of building a proprietary model pipeline, and keeping the domain model intentionally small.
+
+These decisions were justified because they allowed the team to deliver the essential product features quickly while keeping the codebase structured enough for future enhancement.
