@@ -1,4 +1,5 @@
 import { Link, NavLink, Outlet } from 'react-router-dom';
+import LogoMark from '../branding/LogoMark';
 import useAuth from '../../context/useAuth';
 
 function DashboardShell({ title, description, sections, homePath }) {
@@ -7,8 +8,8 @@ function DashboardShell({ title, description, sections, homePath }) {
   return (
     <div className="dashboard-layout">
       <header className="dashboard-layout__header">
-        <div>
-          <span className="eyebrow">Data Diet</span>
+        <div className="dashboard-layout__brand-block">
+          <LogoMark />
           <h1>{title}</h1>
           <p>{description}</p>
           {user ? (
@@ -35,7 +36,7 @@ function DashboardShell({ title, description, sections, homePath }) {
         <aside className="dashboard-sidebar" aria-label="Dashboard sections">
           <div className="dashboard-sidebar__header">
             <h2>Sections</h2>
-            <p>Each section now lives on its own page so we can expand it cleanly later.</p>
+            <p>Move through the workspace without clutter.</p>
           </div>
 
           <nav className="dashboard-sidebar__nav">

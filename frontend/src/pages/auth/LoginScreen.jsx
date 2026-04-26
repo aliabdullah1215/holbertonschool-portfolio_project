@@ -37,7 +37,7 @@ function LoginScreen() {
     <section className="auth-card">
       <span className="eyebrow">Sign In</span>
       <h2>Access your account</h2>
-      <p>Sign in now and we will route you directly to the correct dashboard for your role.</p>
+      <p>Continue to your personal workspace.</p>
 
       <form className="auth-form" onSubmit={handleSubmit}>
         <label>

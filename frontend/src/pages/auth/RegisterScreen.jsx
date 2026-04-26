@@ -47,8 +47,8 @@ function RegisterScreen() {
   return (
     <section className="auth-card">
       <span className="eyebrow">Create Account</span>
-      <h2>Start as a client or doctor</h2>
-      <p>Create your account now, then sign in and we will route you to the correct workspace.</p>
+      <h2>Start your account</h2>
+      <p>Create your profile and continue inside Data Diet.</p>
 
       <form className="auth-form" onSubmit={handleSubmit}>
         <label>

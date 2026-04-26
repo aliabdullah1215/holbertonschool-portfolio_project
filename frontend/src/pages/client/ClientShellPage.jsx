@@ -30,7 +30,7 @@ function ClientShellPage() {
   return (
     <DashboardShell
       title="Client Dashboard"
-      description="The client journey is now split into dedicated sections, and each page is ready for isolated feature work."
+      description="Your nutrition workspace in a clean and focused layout."
       sections={clientSections}
       homePath="/client/home"
     />

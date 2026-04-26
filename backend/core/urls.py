@@ -27,6 +27,7 @@ from rest_framework_simplejwt.views import (
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/users/', include('users.urls')),
+    path('api/ai-plans/', include('ai_plans.urls')),
     
     # Token authentication endpoints
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),

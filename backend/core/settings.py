@@ -1,8 +1,32 @@
+import os
 from pathlib import Path
 from datetime import timedelta
 
 # Base project directory
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+
+def load_env_file():
+    env_path = BASE_DIR / ".env"
+
+    if not env_path.exists():
+        return
+
+    for raw_line in env_path.read_text(encoding="utf-8").splitlines():
+        line = raw_line.strip()
+
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+
+        key, value = line.split("=", 1)
+        key = key.strip()
+        value = value.strip().strip('"').strip("'")
+
+        if key and key not in os.environ:
+            os.environ[key] = value
+
+
+load_env_file()
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = "django-insecure-2dw8fi43laq52s+slh)gcm3f%6dp2eoj7m1wow&&cdf4_536$5"
@@ -23,12 +47,12 @@ INSTALLED_APPS = [
     
     # Third-party applications
     "rest_framework",
-    "rest_framework.authtoken",
     "corsheaders",
     "rest_framework_simplejwt",
     
     # Project applications
-    "users", 
+    "users",
+    "ai_plans",
 ]
 
 MIDDLEWARE = [
@@ -106,10 +130,9 @@ CORS_ALLOW_CREDENTIALS = True
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-        'rest_framework.authentication.TokenAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny',
+        'rest_framework.permissions.IsAuthenticated',
     ]
 }
 

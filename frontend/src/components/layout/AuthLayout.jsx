@@ -1,4 +1,5 @@
 import { Link, Outlet } from 'react-router-dom';
+import LogoMark from '../branding/LogoMark';
 
 const authLinks = [
   { label: 'Sign In', to: '/login' },
@@ -9,12 +10,9 @@ function AuthLayout() {
   return (
     <div className="auth-layout">
       <aside className="auth-layout__panel">
-        <span className="eyebrow">Data Diet</span>
-        <h1>A digital nutrition platform built on a clean foundation</h1>
-        <p>
-          This area is dedicated to authentication so sign-in, registration,
-          and role-based navigation remain clear from the start.
-        </p>
+        <LogoMark />
+        <h1>Personal nutrition in a calm, clear space.</h1>
+        <p>Sign in or create your account to continue.</p>
 
         <nav className="auth-layout__nav" aria-label="Authentication links">
           {authLinks.map((link) => (

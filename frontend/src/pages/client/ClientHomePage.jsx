@@ -3,22 +3,15 @@ function ClientHomePage() {
     <article className="workspace-card workspace-card--section">
       <span className="eyebrow">Client Journey</span>
       <h2>Home</h2>
-      <p>
-        Welcome to your client dashboard. This space is designed to help you move from
-        assessment to action with clear next steps and supportive tools.
-      </p>
+      <p>Everything you need stays organized in one clean place.</p>
 
       <section className="content-hero">
         <div>
-          <h3>Start with the right section</h3>
-          <p>
-            Use AI Plans when you are ready to build a personalized meal plan, open
-            Assessment Tools for quick health indicators, and check Medical Support when
-            you want to speak with an approved specialist.
-          </p>
+          <h3>Start where you need</h3>
+          <p>Use plans, tools, and support pages whenever you are ready.</p>
         </div>
         <div className="content-highlight">
-          <span className="eyebrow">Recommended flow</span>
+          <span className="eyebrow">Suggested flow</span>
           <p>Assessment Tools {'->'} AI Plans {'->'} Plans History {'->'} Medical Support</p>
         </div>
       </section>
@@ -26,24 +19,15 @@ function ClientHomePage() {
       <div className="content-grid">
         <section className="content-card">
           <h3>Build your plan</h3>
-          <p>
-            Your nutrition journey begins with personal data, goals, and practical
-            recommendations tailored to your daily needs.
-          </p>
+          <p>Create a plan based on your details and goals.</p>
         </section>
         <section className="content-card">
           <h3>Track your progress</h3>
-          <p>
-            Keep an overview of the plans you generate so you can revisit your activity
-            timeline and stay consistent.
-          </p>
+          <p>Review saved plans and stay consistent over time.</p>
         </section>
         <section className="content-card">
           <h3>Access human support</h3>
-          <p>
-            When you need expert advice, you can browse approved doctors and contact the
-            specialist that best fits your situation.
-          </p>
+          <p>Reach approved doctors whenever you need expert guidance.</p>
         </section>
       </div>
     </article>

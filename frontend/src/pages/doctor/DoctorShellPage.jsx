@@ -15,7 +15,7 @@ function DoctorShellPage() {
   return (
     <DashboardShell
       title="Doctor Dashboard"
-      description="The doctor journey is also separated into focused pages, making onboarding and profile approval much easier to build next."
+      description="A calm workspace for onboarding and doctor profile review."
       sections={doctorSections}
       homePath="/doctor/home"
     />
