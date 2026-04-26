@@ -565,21 +565,41 @@ sequenceDiagram
 ```mermaid
 sequenceDiagram
     actor Client
-    participant FE as Frontend (React)
-    participant BE as Backend (Django API)
-    participant GROQ as Groq API
+    participant Frontend as Frontend (React)
+    participant Backend as Backend API (Django REST)
+    participant Validator as Profile Validator
+    participant AIService as AI Plan Service
+    participant Groq as Groq API
+    participant DB as Database
 
-    Client->>FE: Complete questionnaire and click Generate Plan
-    FE->>FE: Normalize answers and validate form
-    FE->>BE: POST /api/ai-plans/generate/
-    BE->>BE: Validate normalized profile
-    BE->>GROQ: Send nutrition profile and prompt
-    GROQ-->>BE: Return structured JSON nutrition plan
-    BE->>BE: Validate and hydrate plan
-    BE-->>FE: Nutrition plan response
-    FE->>FE: Store plan in session state
-    FE-->>Client: Display plan summary, meals, and shopping list
+    Client->>Frontend: Fill nutrition questionnaire
+    Client->>Frontend: Click "Generate Plan"
+    Frontend->>Backend: POST /api/ai-plans/generate/ with profile + JWT
+
+    Backend->>Backend: Authenticate user
+    Backend->>Backend: Check role = client
+    Backend->>Validator: Validate submitted profile
+
+    alt Invalid profile data
+        Validator-->>Backend: Validation error
+        Backend-->>Frontend: 400 Bad Request
+        Frontend-->>Client: Show validation message
+    else Valid profile data
+        Validator-->>Backend: Profile valid
+        Backend->>AIService: Request nutrition plan
+        AIService->>Groq: Send structured prompt + client profile
+        Groq-->>AIService: Return generated plan JSON
+        AIService-->>Backend: Parsed nutrition plan
+
+        Backend->>DB: Save generated plan with profile snapshot
+        DB-->>Backend: Plan saved successfully
+
+        Backend-->>Frontend: 200 OK + saved plan data
+        Frontend-->>Client: Display nutrition plan, macros, meals, shopping list
+    end
+
 ```
+
 
 #### 3.3 Doctor Submits Application
 
