@@ -6,16 +6,13 @@
 
 * As a visitor, I want to register as either a client or a doctor, so that I can access the platform with the correct role.
 * As a registered user, I want to log in securely, so that I can access my role-specific dashboard.
+* As an authenticated user, I want the system to identify my role and route me to the correct protected dashboard, so that I can access the features available to me.
 * As a client, I want to complete a guided nutrition questionnaire, so that the system can collect the data required to generate a personalized AI nutrition plan.
 * As a client, I want to generate an AI-based nutrition plan from my questionnaire answers, so that I can receive a personalized diet structure based on my profile and goals.
+* As a client, I want my generated nutrition plan to be saved automatically in my account, so that I can review it again later.
 * As a client, I want to review my generated plan including calories, macros, meals, and shopping list, so that I can follow the plan in a practical way.
-* As a client, I want to make simple local adjustments such as:
-
-  * replacing meals
-  * replacing ingredients
-  * making meals quicker
-  * making them cheaper
-    so that I can personalize the generated plan without requesting a new AI response.
+* As a client, I want to view my previously saved nutrition plans, so that I can reopen complete historical plans at any time.
+* As a client, I want to make simple local adjustments such as replacing meals, replacing ingredients, making meals quicker, and making them cheaper, so that I can personalize the generated plan without requesting a new AI response.
 * As a doctor, I want to submit a doctor application with my professional details and certificate file, so that the platform can review my eligibility.
 * As a doctor, I want to view the current status of my submitted application, so that I know whether it is pending, approved, or rejected.
 * As a client, I want to browse approved doctors and their contact details, so that I can request medical or nutrition support when needed.
@@ -25,8 +22,8 @@
 ### Should Have
 
 * As a client, I want my AI plan session to remain available during the current browser session, so that I do not lose my questionnaire answers or generated plan while navigating.
-* As a client, I want to view a lightweight history of previously generated plans, so that I can remember past plan summaries and dates.
-
+* As an authenticated user, I want the system to restore my session when possible, so that I can continue using the platform without logging in again after every refresh.
+* As a client, I want to view a lightweight summary of my saved plans before opening one in full, so that I can quickly find the plan I need.
 
 ---
 
@@ -35,17 +32,16 @@
 * As a client, I want to switch the questionnaire output language preference, so that the generated plan matches my preferred language.
 * As a client, I want additional assessment and support sections in my dashboard, so that I can explore more health-related platform features.
 * As a doctor, I want a richer professional profile page, so that clients can better understand my background and specialty.
-
+* As an administrator, I want a dedicated in-app review dashboard for doctor approvals, so that I can manage doctor applications without relying only on the Django admin panel.
 
 ---
-
 
 ### Won’t Have (for the current MVP)
 
 * As a client, I want to book appointments directly with doctors through the platform, so that I can manage consultations end to end.
 * As a client, I want real-time chat with doctors, so that I can receive live support inside the application.
-* As an administrator, I want an in-app review dashboard for doctor approval workflow, so that I can manage doctor applications from the platform interface.
-* As a client, I want persistent full plan storage and retrieval from the backend, so that I can reopen complete historical plans at any time.
+* As a doctor, I want to manage consultation schedules and patient bookings, so that I can handle appointments through the platform.
+* As a client, I want online payment for consultations or subscriptions, so that I can complete transactions inside the system.
 
 
 ---
@@ -61,7 +57,6 @@ https://www.figma.com/design/TwldpP4c4unvN9YMYzmZMB/DataDiet?node-id=0-1&t=gkbNP
 
 
 ---
-
 
 # 1. Design System Architecture
 
