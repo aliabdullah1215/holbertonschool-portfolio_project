@@ -75,11 +75,21 @@ flowchart LR
     FE -->|HTTP/JSON REST API| BE[Backend<br/>Django + Django REST Framework]
     FE -->|JWT access token in requests| BE
 
-    BE -->|User, doctor application, platform data| DB[(PostgreSQL)]
+    BE -->|Read user / doctor / nutrition profile data| DB[(PostgreSQL)]
+
     BE -->|Nutrition profile payload| GROQ[Groq API<br/>AI plan generation]
 
     GROQ -->|Structured nutrition plan response| BE
-    BE -->|JSON response| FE
+
+    BE -->|Validate + normalize nutrition plan| S[Save Nutrition Plan Service]
+
+    S -->|Create MealPlan record| DB
+    S -->|Create Meals / Days / Items records| DB
+
+    DB -->|Saved plan with ID| BE
+
+    BE -->|JSON response with saved plan_id + plan data| FE
+    FE --> U
 
 ```
 
