@@ -1203,7 +1203,7 @@ In summary, the project will use a structured Git branching model with `main`, `
 
 
 
-### Technical Justifications
+# Technical Justifications
 
 This section explains the rationale behind the main technical choices made in the Data Diet project, including the selected technologies, architecture, and implementation approach.
 
