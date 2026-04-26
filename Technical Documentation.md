@@ -1102,7 +1102,7 @@ sequenceDiagram
 
 
 
-### 5. Plan SCM and QA Strategies
+#5. Plan SCM and QA Strategies
 
 This section defines how source code will be managed throughout development and how software quality will be maintained before release. The project will use GitHub for source code management, with a structured branching model to organize feature development, integration, testing, and production release. Quality assurance will be supported through a combination of backend testing, frontend testing, API validation, and manual verification of key user flows.
 
