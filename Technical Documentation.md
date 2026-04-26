@@ -666,39 +666,49 @@ sequenceDiagram
 
 # 4. Document External and Internal APIs
 
+#### Internal APIs
+
+| API Type | Endpoint | Method | Purpose | Authentication | Notes |
+|---|---|---|---|---|---|
+| Internal | `/api/users/register/` | `POST` | Register a new user | No | Creates a new user with role such as `client` or `doctor` |
+| Internal | `/api/users/login/` | `POST` | Log in a user | No | Returns JWT access and refresh tokens |
+| Internal | `/api/users/me/` | `GET` | Get current user profile | Yes | Returns authenticated user data |
+| Internal | `/api/users/doctor-application/` | `GET` | Get current doctor application | Yes | Available for authenticated doctor users |
+| Internal | `/api/users/doctor-application/` | `POST` | Submit doctor application | Yes | Accepts form data including certificate file |
+| Internal | `/api/users/approved-doctors/` | `GET` | List approved doctors | Yes | Returns doctors whose applications are approved |
+| Internal | `/api/ai-plans/generate/` | `POST` | Generate AI nutrition plan | Yes | Validates profile, requests plan from Groq, saves plan, and returns saved plan metadata with full generated plan |
+| Internal | `/api/ai-plans/` | `GET` | List saved nutrition plans | Yes | Returns all saved plans for the authenticated client |
+| Internal | `/api/ai-plans/{id}/` | `GET` | Get saved nutrition plan details | Yes | Returns full details of one saved plan for the authenticated client |
+| Internal | `/api/token/` | `POST` | Obtain JWT tokens | No | Standard SimpleJWT token endpoint |
+| Internal | `/api/token/refresh/` | `POST` | Refresh access token | No | Standard SimpleJWT refresh endpoint |
+
 #### External APIs
 
-**1. Groq API**
-- **Purpose:** Generates personalized nutrition plans from the normalized client profile.
-- **Why it was chosen:** It supports fast LLM inference and returns structured JSON through a chat-completions style API, which fits the project’s AI nutrition-plan workflow.
-- **Used by:** Django backend only
-- **Endpoint used by the project:** `https://api.groq.com/openai/v1/chat/completions`
+| API Type | External Service | Endpoint | Method | Purpose | Notes |
+|---|---|---|---|---|---|
+| External | Groq API | `https://api.groq.com/openai/v1/chat/completions` | `POST` | Generate AI nutrition plan | Called by backend using `GROQ_API_KEY` and `GROQ_MODEL` |
+
 
 ---
 
-#### Internal API Endpoints
 
-| URL Path | Method | Input Format | Output Format | Description |
-|---|---|---|---|---|
-| `/api/users/register/` | `POST` | JSON | JSON | Registers a new user as `client` or `doctor` |
-| `/api/users/login/` | `POST` | JSON | JSON | Authenticates user and returns tokens plus user info |
-| `/api/users/me/` | `GET` | Authorization header (`Bearer token`) | JSON | Returns the current authenticated user |
-| `/api/users/doctor-application/` | `GET` | Authorization header | JSON | Returns the current doctor’s submitted application |
-| `/api/users/doctor-application/` | `POST` | `multipart/form-data` | JSON | Submits a new doctor application with certificate upload |
-| `/api/users/approved-doctors/` | `GET` | Authorization header | JSON | Returns approved doctors for client medical support |
-| `/api/ai-plans/generate/` | `POST` | JSON | JSON | Generates a nutrition plan from a normalized client profile |
-| `/api/token/` | `POST` | JSON | JSON | Returns JWT access and refresh tokens |
-| `/api/token/refresh/` | `POST` | JSON | JSON | Returns a new JWT access token using a refresh token |
+
+# Endpoint Details
+
+**Base URL:** `http://localhost:8000`
+
+**Authentication Note:** Protected endpoints require:
+`Authorization: Bearer <access_token>`
 
 ---
-
-#### Endpoint Details
 
 **1. Register User**
 - **URL:** `/api/users/register/`
 - **Method:** `POST`
-- **Input:** JSON
+- **Auth Required:** No
+- **Input Type:** `application/json`
 
+**Request Body**
 ```json
 {
   "username": "sara",
@@ -708,8 +718,7 @@ sequenceDiagram
 }
 ```
 
-- **Output:** JSON
-
+**Response**
 ```json
 {
   "user": {
@@ -724,11 +733,13 @@ sequenceDiagram
 
 ---
 
-**2. Login User**
+**2. Login User (Custom Login Endpoint)**
 - **URL:** `/api/users/login/`
 - **Method:** `POST`
-- **Input:** JSON
+- **Auth Required:** No
+- **Input Type:** `application/json`
 
+**Request Body**
 ```json
 {
   "username": "sara",
@@ -736,8 +747,7 @@ sequenceDiagram
 }
 ```
 
-- **Output:** JSON
-
+**Response**
 ```json
 {
   "refresh": "jwt_refresh_token",
@@ -752,13 +762,17 @@ sequenceDiagram
 }
 ```
 
+**Note:** This custom endpoint exists in the backend, but the current frontend login flow uses `/api/token/` followed by `/api/users/me/`.
+
 ---
 
 **3. Obtain JWT Token Pair**
 - **URL:** `/api/token/`
 - **Method:** `POST`
-- **Input:** JSON
+- **Auth Required:** No
+- **Input Type:** `application/json`
 
+**Request Body**
 ```json
 {
   "username": "sara",
@@ -766,8 +780,7 @@ sequenceDiagram
 }
 ```
 
-- **Output:** JSON
-
+**Response**
 ```json
 {
   "refresh": "jwt_refresh_token",
@@ -782,16 +795,17 @@ sequenceDiagram
 **4. Refresh JWT Access Token**
 - **URL:** `/api/token/refresh/`
 - **Method:** `POST`
-- **Input:** JSON
+- **Auth Required:** No
+- **Input Type:** `application/json`
 
+**Request Body**
 ```json
 {
   "refresh": "jwt_refresh_token"
 }
 ```
 
-- **Output:** JSON
-
+**Response**
 ```json
 {
   "access": "new_jwt_access_token"
@@ -803,6 +817,7 @@ sequenceDiagram
 **5. Get Current User**
 - **URL:** `/api/users/me/`
 - **Method:** `GET`
+- **Auth Required:** Yes
 - **Input:** Authorization header
 - **Output:** JSON
 
@@ -820,7 +835,9 @@ sequenceDiagram
 **6. Submit Doctor Application**
 - **URL:** `/api/users/doctor-application/`
 - **Method:** `POST`
-- **Input:** `multipart/form-data`
+- **Auth Required:** Yes
+- **Allowed Role:** `doctor`
+- **Input Type:** `multipart/form-data`
 
 **Form Fields**
 - `full_name`
@@ -830,6 +847,36 @@ sequenceDiagram
 - `contact_email`
 - `certificate_file`
 
+**Response**
+```json
+{
+  "id": 4,
+  "full_name": "Dr. Ahmad Ali",
+  "age": 38,
+  "specialty": "Clinical Nutrition",
+  "phone_number": "+966500000000",
+  "contact_email": "doctor@example.com",
+  "certificate_file": "doctor_certificates/file.pdf",
+  "certificate_file_url": "http://localhost:8000/media/doctor_certificates/file.pdf",
+  "status": "pending",
+  "reviewed_at": null,
+  "created_at": "2026-04-17T12:00:00Z",
+  "updated_at": "2026-04-17T12:00:00Z"
+}
+```
+
+**Notes:**
+- A doctor can submit only one application.
+- If an application already exists, the endpoint returns a `400 Bad Request`.
+
+---
+
+**7. Get Doctor Application Status**
+- **URL:** `/api/users/doctor-application/`
+- **Method:** `GET`
+- **Auth Required:** Yes
+- **Allowed Role:** `doctor`
+- **Input:** Authorization header
 - **Output:** JSON
 
 ```json
@@ -849,35 +896,14 @@ sequenceDiagram
 }
 ```
 
----
-
-**7. Get Doctor Application Status**
-- **URL:** `/api/users/doctor-application/`
-- **Method:** `GET`
-- **Input:** Authorization header
-- **Output:** JSON
-
-```json
-{
-  "id": 4,
-  "full_name": "Dr. Ahmad Ali",
-  "age": 38,
-  "specialty": "Clinical Nutrition",
-  "phone_number": "+966500000000",
-  "contact_email": "doctor@example.com",
-  "certificate_file_url": "http://localhost:8000/media/doctor_certificates/file.pdf",
-  "status": "pending",
-  "reviewed_at": null,
-  "created_at": "2026-04-17T12:00:00Z",
-  "updated_at": "2026-04-17T12:00:00Z"
-}
-```
+**Note:** If no application exists, the endpoint returns `404 Not Found`.
 
 ---
 
 **8. Get Approved Doctors**
 - **URL:** `/api/users/approved-doctors/`
 - **Method:** `GET`
+- **Auth Required:** Yes
 - **Input:** Authorization header
 - **Output:** JSON array
 
@@ -899,8 +925,11 @@ sequenceDiagram
 **9. Generate AI Nutrition Plan**
 - **URL:** `/api/ai-plans/generate/`
 - **Method:** `POST`
-- **Input:** JSON
+- **Auth Required:** Yes
+- **Allowed Role:** `client`
+- **Input Type:** `application/json`
 
+**Request Body**
 ```json
 {
   "profile": {
@@ -925,39 +954,153 @@ sequenceDiagram
 }
 ```
 
+**Response**
+```json
+{
+  "id": 12,
+  "goal": "Weight Loss",
+  "focus": "High Protein",
+  "note": "Includes 3 shopping list items for quick review.",
+  "status": "active",
+  "created_at": "2026-04-17T12:00:00Z",
+  "plan": {
+    "summary": {
+      "daily_calories": 1800,
+      "daily_macros": {
+        "protein_g": 130,
+        "carbs_g": 170,
+        "fat_g": 60
+      },
+      "plan_goal": "weight_loss"
+    },
+    "days": [
+      {
+        "day_number": 1,
+        "title": "Day 1",
+        "meals": []
+      }
+    ],
+    "shopping_list": [
+      "Chicken breast",
+      "Oats",
+      "Greek yogurt"
+    ],
+    "plan_tags": [
+      "high_protein",
+      "balanced"
+    ],
+    "fallback_message": ""
+  }
+}
+```
+
+**Notes:**
+- This endpoint validates the normalized client profile before requesting the AI plan.
+- The generated plan is saved in the database after creation.
+- If the Groq API key is missing, the endpoint returns `503 Service Unavailable`.
+
+---
+
+**10. Get My Saved Nutrition Plans**
+- **URL:** `/api/ai-plans/`
+- **Method:** `GET`
+- **Auth Required:** Yes
+- **Allowed Role:** `client`
+- **Input:** Authorization header
+- **Output:** JSON array
+
+```json
+[
+  {
+    "id": 12,
+    "goal": "Weight Loss",
+    "focus": "High Protein",
+    "note": "Includes 3 shopping list items for quick review.",
+    "status": "active",
+    "created_at": "2026-04-17T12:00:00Z"
+  }
+]
+```
+
+**Note:** This endpoint is used by the plans history page in the frontend.
+
+---
+
+**11. Get Saved Nutrition Plan By ID**
+- **URL:** `/api/ai-plans/<id>/`
+- **Method:** `GET`
+- **Auth Required:** Yes
+- **Allowed Role:** `client`
+- **Input:** Authorization header
 - **Output:** JSON
 
 ```json
 {
-  "summary": {
-    "daily_calories": 1800,
-    "daily_macros": {
-      "protein_g": 130,
-      "carbs_g": 170,
-      "fat_g": 60
+  "id": 12,
+  "goal": "Weight Loss",
+  "focus": "High Protein",
+  "note": "Includes 3 shopping list items for quick review.",
+  "status": "active",
+  "created_at": "2026-04-17T12:00:00Z",
+  "updated_at": "2026-04-17T12:00:00Z",
+  "profile_snapshot": {
+    "profile": {
+      "age": 28,
+      "weight_kg": 70,
+      "height_cm": 165,
+      "sex": "female"
     },
-    "plan_goal": "weight_loss"
-  },
-  "days": [
-    {
-      "day_number": 1,
-      "title": "Day 1",
-      "meals": []
+    "goal": {
+      "type": "weight_loss",
+      "pace": "moderate"
+    },
+    "activity": {
+      "level": "moderate"
+    },
+    "health": {},
+    "preferences": {},
+    "behavior": {},
+    "output_preferences": {
+      "language": "en"
     }
-  ],
-  "shopping_list": [
-    "Chicken breast",
-    "Oats",
-    "Greek yogurt"
-  ],
-  "plan_tags": [
-    "high_protein",
-    "balanced"
-  ],
-  "fallback_message": ""
+  },
+  "plan_content": {
+    "summary": {
+      "daily_calories": 1800,
+      "daily_macros": {
+        "protein_g": 130,
+        "carbs_g": 170,
+        "fat_g": 60
+      },
+      "plan_goal": "weight_loss"
+    },
+    "days": [
+      {
+        "day_number": 1,
+        "title": "Day 1",
+        "meals": []
+      }
+    ],
+    "shopping_list": [
+      "Chicken breast",
+      "Oats",
+      "Greek yogurt"
+    ],
+    "plan_tags": [
+      "high_protein",
+      "balanced"
+    ],
+    "fallback_message": ""
+  }
 }
 ```
+
+**Note:** Users can only access their own saved plans.
+
+
 ---
+
+
 
 ### 5. Plan SCM and QA Strategies
 
