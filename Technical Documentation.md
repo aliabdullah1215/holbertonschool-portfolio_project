@@ -55,60 +55,13 @@
 
 Because this MVP includes a user interface, mockups are required for the main implemented screens.
 
-### 1. Registration Screen
+Here is the link to the "Figma" design:
 
-* **Fields:**
+https://www.figma.com/design/TwldpP4c4unvN9YMYzmZMB/DataDiet?node-id=0-1&t=gkbNPOIwerDzZuyb-1
 
-  * username
-  * email
-  * password
-  * account type
-* **Purpose:**
-  Create either a client or doctor account
 
 ---
 
-### 2. Login Screen
-
-* **Fields:**
-
-  * username
-  * password
-* **Purpose:**
-  Authenticate users and route them to the correct dashboard
-
----
-
-### 3. Client AI Plans Screen
-
-* Multi-step questionnaire
-* Generate Plan action
-* **Purpose:**
-  Collect nutrition profile data and trigger AI plan generation
-
----
-
-### 5. Doctor Join / Application Screen
-
-* **Fields:**
-
-  * full name
-  * age
-  * specialty
-  * phone number
-  * contact email
-  * certificate upload
-* **Purpose:**
-  Submit doctor verification request
-
----
-
-### 6. Medical Support Screen
-
-* Approved doctor cards
-* Contact details for each approved doctor
-* **Purpose:**
-  Allow clients to find verified nutrition specialists
 
 # 1. Design System Architecture
 
@@ -128,7 +81,6 @@ flowchart LR
     GROQ -->|Structured nutrition plan response| BE
     BE -->|JSON response| FE
 
-    FE -->|Session-based temporary plan state| SS[Browser Session Storage]
 ```
 
 
@@ -203,215 +155,164 @@ flowchart LR
 
 ## Back-End Component and Class Descriptions
 
-### 1. User Model
 
-* **Purpose:** Represents authenticated platform users.
+1. Authentication Classes
 
-* **Class:** `User`
+```mermaid
+   classDiagram
+    direction TB
 
-* **Base Class:** `AbstractUser`
+    class RegisterView {
+        +post()
+    }
 
-* **Attributes:**
+    class LoginView {
+        +post()
+    }
 
-  * `id`
-  * `username`
-  * `email`
-  * `password`
-  * `role` (`client` or `doctor`)
+    class CurrentUserView {
+        +get_object()
+    }
 
-* **Key Behavior:**
+    class UserSerializer {
+        +create()
+    }
 
-  * Supports role-based access across the platform.
+    class CurrentUserSerializer
+
+    class User
+
+    RegisterView --> UserSerializer : uses
+    RegisterView --> User : creates
+
+    LoginView --> User : authenticates
+
+    CurrentUserView --> CurrentUserSerializer : returns user
+    CurrentUserView --> User : reads current user
+```
+
+2. Doctor Application Classes
+
+
+```mermaid
+   classDiagram
+    direction TB
+
+    class DoctorApplicationView {
+        +get_queryset()
+        +get()
+        +post()
+    }
+
+    class ApprovedDoctorListView {
+        +get_queryset()
+    }
+
+    class IsDoctorUser {
+        +has_permission()
+    }
+
+    class DoctorApplicationSerializer {
+        +get_certificate_file_url()
+    }
+
+    class ApprovedDoctorSerializer
+
+    class DoctorApplication
+
+    DoctorApplicationView --> IsDoctorUser : permission
+    DoctorApplicationView --> DoctorApplicationSerializer : uses
+    DoctorApplicationView --> DoctorApplication : create/retrieve
+
+    ApprovedDoctorListView --> ApprovedDoctorSerializer : uses
+    ApprovedDoctorListView --> DoctorApplication : filters approved
+```
+
+3. AI Plan Generation Classes
+
+```mermaid
+classDiagram
+    direction TB
+
+    class GenerateAiPlanView {
+        +post()
+    }
+
+    class IsClientUser {
+        +has_permission()
+    }
+
+    class GroqClientService {
+        +strip_code_fences()
+        +request_nutrition_plan()
+    }
+
+    class PromptBuilderService {
+        +build_system_prompt()
+        +build_user_prompt()
+    }
+
+    class PlanValidationService {
+        +hydrate_generated_plan()
+        +validate_normalized_profile()
+        +validate_generated_plan()
+    }
+
+    class GroqAPI {
+        +generatePlan()
+    }
+
+    class SavedNutritionPlan
+
+    GenerateAiPlanView --> IsClientUser : permission
+    GenerateAiPlanView --> PlanValidationService : validates
+    GenerateAiPlanView --> GroqClientService : requests AI plan
+    GenerateAiPlanView --> SavedNutritionPlan : saves
+
+    GroqClientService --> PromptBuilderService : builds prompts
+    GroqClientService --> PlanValidationService : validates output
+    GroqClientService --> GroqAPI : sends request
+```
+
+4. Saved Nutrition Plans Classes
+
+```mermaid
+
+classDiagram
+    direction TB
+
+    class SavedNutritionPlanListView {
+        +get_queryset()
+    }
+
+    class SavedNutritionPlanDetailView {
+        +get_queryset()
+    }
+
+    class IsClientUser {
+        +has_permission()
+    }
+
+    class SavedNutritionPlanListSerializer
+
+    class SavedNutritionPlanDetailSerializer
+
+    class SavedNutritionPlan
+
+    SavedNutritionPlanListView --> IsClientUser : permission
+    SavedNutritionPlanListView --> SavedNutritionPlanListSerializer : uses
+    SavedNutritionPlanListView --> SavedNutritionPlan : retrieves plans
+
+    SavedNutritionPlanDetailView --> IsClientUser : permission
+    SavedNutritionPlanDetailView --> SavedNutritionPlanDetailSerializer : uses
+    SavedNutritionPlanDetailView --> SavedNutritionPlan : retrieves one
+
+```
+
+
 
 ---
 
-### 2. Doctor Profile Model
-
-* **Purpose:** Stores extended doctor profile information.
-
-* **Class:** `DoctorProfile`
-
-* **Attributes:**
-
-  * `id`
-  * `user` (One-to-One with `User`)
-  * `specialty`
-  * `bio`
-  * `is_verified`
-
-* **Key Behavior:**
-
-  * Intended to represent a verified doctor profile.
-
-* **Note:**
-
-  * This model exists in the backend but is not currently used by the active doctor application flow.
-
----
-
-### 3. Doctor Application Model
-
-* **Purpose:** Stores doctor onboarding requests submitted through the platform.
-
-* **Class:** `DoctorApplication`
-
-* **Attributes:**
-
-  * `id`
-  * `user` (One-to-One with `User`)
-  * `full_name`
-  * `age`
-  * `specialty`
-  * `phone_number`
-  * `contact_email`
-  * `certificate_file`
-  * `status` (`pending`, `approved`, `rejected`)
-  * `reviewed_at`
-  * `created_at`
-  * `updated_at`
-
-* **Key Behavior:**
-
-  * Tracks the doctor verification lifecycle.
-
----
-
-## Back-End API and Service Classes
-
-### 4. RegisterView
-
-* **Purpose:** Handles user registration.
-* **Methods:**
-
-  * `post()` creates a new user through `UserSerializer`.
-
----
-
-### 5. LoginView
-
-* **Purpose:** Authenticates users and returns JWT tokens.
-* **Methods:**
-
-  * `post()` validates credentials and returns `access`, `refresh`, and basic user data.
-
----
-
-### 6. CurrentUserView
-
-* **Purpose:** Returns the currently authenticated user.
-* **Methods:**
-
-  * `get_object()` returns `request.user`.
-
----
-
-### 7. DoctorApplicationView
-
-* **Purpose:** Handles doctor application submission and retrieval.
-
-* **Methods:**
-
-  * `get_queryset()` returns the current user’s application
-  * `get()` fetches the current application
-  * `post()` creates a new application with uploaded certificate
-
----
-
-### 8. ApprovedDoctorListView
-
-* **Purpose:** Lists approved doctors for clients.
-* **Methods:**
-
-  * `get_queryset()` returns doctor applications with `status='approved'`
-
----
-
-### 9. GenerateAiPlanView
-
-* **Purpose:** Accepts a normalized nutrition profile and returns an AI-generated nutrition plan.
-
-* **Methods:**
-
-  * `post()` validates input, checks API key availability, requests a plan from Groq, validates the returned plan, and sends it back to the client
-
----
-
-### 10. Permission Classes
-
-* **`IsDoctorUser`**
-
-  * Restricts access to authenticated users with role `doctor`
-
-* **`IsClientUser`**
-
-  * Restricts access to authenticated users with role `client`
-
----
-
-## Back-End Serializers
-
-### 11. UserSerializer
-
-* **Purpose:** Validates and creates users.
-* **Fields:** `id`, `username`, `email`, `password`, `role`
-* **Key Method:** `create()`
-
----
-
-### 12. CurrentUserSerializer
-
-* **Purpose:** Returns authenticated user profile data.
-* **Fields:** `id`, `username`, `email`, `role`
-
----
-
-### 13. DoctorApplicationSerializer
-
-* **Purpose:** Validates and serializes doctor application records.
-* **Fields:** application fields plus `certificate_file_url`
-* **Key Method:** `get_certificate_file_url()`
-
----
-
-### 14. ApprovedDoctorSerializer
-
-* **Purpose:** Returns approved doctor data to clients.
-* **Fields:** `id`, `username`, `full_name`, `specialty`, `phone_number`, `contact_email`
-
----
-
-## Back-End AI Service Functions
-
-### 15. `request_nutrition_plan(profile)`
-
-* Sends the normalized client profile to the Groq API and returns a validated JSON nutrition plan.
-
-### 16. `build_system_prompt()`
-
-* Builds the system-level prompt that defines the expected nutrition plan JSON structure.
-
-### 17. `build_user_prompt(profile)`
-
-* Builds the user prompt using the submitted client profile.
-
-### 18. `validate_normalized_profile(profile)`
-
-* Ensures the incoming AI profile payload contains all required sections and key fields.
-
-### 19. `validate_generated_plan(plan)`
-
-* Ensures the generated plan includes required keys and at least one day.
-
-### 20. `hydrate_generated_plan(plan)`
-
-* Adds optional plan fields such as:
-
-  * `shopping_list`
-  * `plan_tags`
-  * `fallback_message`
-    if missing.
-
----
 
 ## Front-End Main Components and Interactions
 
