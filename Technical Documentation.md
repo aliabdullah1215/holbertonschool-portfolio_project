@@ -321,12 +321,11 @@ classDiagram
 
 ---
 
-
 ## Front-End Main Components and Interactions
 
 ### 1. AuthProvider / AuthContext
 
-* Manages authentication state, session restoration, login, logout, and registration.
+* Manages authentication state, session restoration, login, logout, and registration actions.
 * Interacts with auth services and browser storage.
 
 ---
@@ -368,17 +367,14 @@ classDiagram
 ### 7. AiPlansWorkspace
 
 * Main orchestration component for the client AI plan journey.
-
 * Maintains:
-
   * questionnaire answers
   * current step
   * generated plan
   * validation state
   * local plan edits
-
+  * saved plan metadata
 * Interacts with:
-
   * `AiPlanQuestionnaire`
   * `NutritionPlanView`
   * AI plan service
@@ -397,14 +393,12 @@ classDiagram
 ### 9. NutritionPlanView
 
 * Displays generated nutrition plan data:
-
   * daily calories
   * macros
   * meals
   * substitutions
   * shopping list
   * plan tags
-
 * Triggers local plan-editing actions without another backend call.
 
 ---
@@ -424,8 +418,8 @@ classDiagram
 
 ### 12. ClientPlansHistoryPage
 
-* Displays a lightweight history view.
-* Currently uses static sample data on the front end rather than persisted backend records.
+* Fetches the user's saved plans from the backend.
+* Displays plan summaries and allows opening a persisted saved plan in read-only mode.
 
 ---
 
