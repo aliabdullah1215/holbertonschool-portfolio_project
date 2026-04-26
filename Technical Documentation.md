@@ -492,9 +492,15 @@ erDiagram
 
 ---
 
-## Non-Persistent AI Plan Data Structure
 
-The generated nutrition plan is **not currently stored in the database**. It is returned from the backend and handled in the frontend session.
+## Persistent AI Plan Data Structure
+
+The generated nutrition plan is currently stored in the database after generation.
+
+The backend persists:
+- the normalized client profile as `profile_snapshot`
+- the generated nutrition plan as `plan_content`
+- summary metadata such as goal, focus, note, status, and timestamps
 
 ---
 
@@ -511,8 +517,6 @@ The generated nutrition plan is **not currently stored in the database**. It is 
   "output_preferences": {}
 }
 ```
-
-
 ### Generated Nutrition Plan Structure
 
 ```json
