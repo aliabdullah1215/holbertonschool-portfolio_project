@@ -441,15 +441,19 @@ The project uses a **relational database (PostgreSQL)**.
 
 ```mermaid
 erDiagram
-    USER ||--o| DOCTOR_PROFILE : has
-    USER ||--o| DOCTOR_APPLICATION : submits
-
     USER {
         bigint id PK
         varchar username
-        varchar email
         varchar password
+        varchar first_name
+        varchar last_name
+        varchar email
         varchar role
+        boolean is_staff
+        boolean is_active
+        boolean is_superuser
+        datetime last_login
+        datetime date_joined
     }
 
     DOCTOR_PROFILE {
@@ -474,46 +478,25 @@ erDiagram
         datetime created_at
         datetime updated_at
     }
+
+    SAVED_NUTRITION_PLAN {
+        bigint id PK
+        bigint user_id FK
+        varchar goal
+        varchar focus
+        text note
+        json profile_snapshot
+        json plan_content
+        varchar status
+        datetime created_at
+        datetime updated_at
+    }
+
+    USER ||--o| DOCTOR_PROFILE : has
+    USER ||--o| DOCTOR_APPLICATION : submits
+    USER ||--o{ SAVED_NUTRITION_PLAN : saves
+
 ```
-
----
-
-## Relational Schema
-
-### Table: `users_user`
-
-* `id` – Primary key
-* `username` – Required
-* `email` – Required in current registration flow
-* `password` – Required
-* `role` – Required, default is `client`
-
----
-
-### Table: `users_doctorprofile`
-
-* `id` – Primary key
-* `user_id` – One-to-one foreign key to `users_user`
-* `specialty` – Required
-* `bio` – Required
-* `is_verified` – Default `false`
-
----
-
-### Table: `users_doctorapplication`
-
-* `id` – Primary key
-* `user_id` – One-to-one foreign key to `users_user`
-* `full_name` – Required
-* `age` – Required
-* `specialty` – Required
-* `phone_number` – Required
-* `contact_email` – Required
-* `certificate_file` – Required
-* `status` – Default `pending`
-* `reviewed_at` – Optional
-* `created_at` – Auto-generated
-* `updated_at` – Auto-generated
 
 ---
 
