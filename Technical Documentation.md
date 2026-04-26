@@ -89,6 +89,8 @@ flowchart LR
 ```
 
 
+---
+
 
 ## Data Flow
 
@@ -96,14 +98,17 @@ flowchart LR
 
 * The user interacts with the React frontend to register or log in.
 * The frontend sends authentication requests to the Django REST backend.
-* The backend validates credentials and returns JWT tokens.
-* The frontend stores the authentication data locally and attaches the access token to protected API requests.
+* For login, the frontend obtains JWT tokens from the backend and then requests the current user profile.
+* The backend validates credentials and returns access and refresh tokens.
+* The frontend stores authentication data locally and attaches the access token to protected API requests.
+* When needed, the frontend uses the refresh token to request a new access token.
 
 ---
 
 ### 2. Role-Based Application Flow
 
-* After login, the frontend routes the user based on role (`client` or `doctor`).
+* After login, the frontend retrieves the authenticated user profile and determines the user role (`client` or `doctor`).
+* The frontend routes the user to the correct protected dashboard based on role.
 * Protected client and doctor pages communicate with the backend through authenticated REST endpoints.
 
 ---
@@ -115,15 +120,10 @@ flowchart LR
 * The Django backend validates the submitted nutrition profile.
 * The backend sends the profile to the **Groq API** for nutrition plan generation.
 * Groq returns a structured plan to the backend.
-* The backend returns the generated plan to the frontend.
+* The backend saves the generated plan and profile snapshot in PostgreSQL.
+* The backend returns the generated plan and saved plan metadata to the frontend.
 * The frontend displays the plan and stores the current session state in browser session storage.
-* Simple refinements such as:
-
-  * replacing meals
-  * replacing ingredients
-  * increasing variety
-  * making meals quicker or cheaper
-    are handled locally in the frontend without sending another AI request.
+* Simple refinements such as replacing meals, replacing ingredients, increasing variety, and making meals quicker or cheaper are handled locally in the frontend without sending another AI request.
 
 ---
 
@@ -131,17 +131,19 @@ flowchart LR
 
 * A doctor fills in the join form and uploads a certificate file from the frontend.
 * The frontend sends a multipart form request to the Django backend.
-* The backend stores application data in PostgreSQL.
-* Verify doctor eligibility through system administrator.
-* If the doctor is qualified, they will be added to the medical support as a doctor.
-  
-  ---
+* The backend stores the doctor application data in PostgreSQL.
+* A system administrator reviews the submitted application and certificate.
+* If approved, the application status is updated to `approved`.
+* Approved doctor records then become available in the client Medical Support section.
+
+---
 
 ### 5. Medical Support Flow
 
 * A client opens the Medical Support page in the frontend.
 * The frontend requests the approved doctors list from the backend.
-* The backend queries PostgreSQL and returns approved doctor records.
+* The backend queries PostgreSQL for doctor applications with approved status.
+* The backend returns the approved doctor records to the frontend.
 * The frontend displays doctor contact information to the client.
 
 ---
@@ -153,7 +155,10 @@ flowchart LR
 * **Authentication:** JWT via `rest_framework_simplejwt`
 * **Database:** PostgreSQL
 * **External Service:** Groq API for AI nutrition plan generation
-* **Client-Side Temporary State:** Browser session storage for questionnaire and generated plan session
+* **Persistent Plan Storage:** Generated nutrition plans are stored in PostgreSQL
+* **Client-Side Temporary State:** Browser session storage for questionnaire progress and the current generated plan session
+
+---
 
 
 # 2. Define Components, Classes, and Database Design
@@ -313,8 +318,6 @@ classDiagram
     SavedNutritionPlanDetailView --> SavedNutritionPlan : retrieves one
 
 ```
-
-
 
 ---
 
