@@ -163,8 +163,70 @@ flowchart LR
 
 # 2. Define Components, Classes, and Database Design
 
-## Back-End Component and Class Descriptions
+## Database Design:
 
+```mermaid
+erDiagram
+    USER {
+        bigint id PK
+        varchar username
+        varchar password
+        varchar first_name
+        varchar last_name
+        varchar email
+        varchar role
+        boolean is_staff
+        boolean is_active
+        boolean is_superuser
+        datetime last_login
+        datetime date_joined
+    }
+
+    DOCTOR_PROFILE {
+        bigint id PK
+        bigint user_id FK
+        varchar specialty
+        text bio
+        boolean is_verified
+    }
+
+    DOCTOR_APPLICATION {
+        bigint id PK
+        bigint user_id FK
+        varchar full_name
+        int age
+        varchar specialty
+        varchar phone_number
+        varchar contact_email
+        varchar certificate_file
+        varchar status
+        datetime reviewed_at
+        datetime created_at
+        datetime updated_at
+    }
+
+    SAVED_NUTRITION_PLAN {
+        bigint id PK
+        bigint user_id FK
+        varchar goal
+        varchar focus
+        text note
+        json profile_snapshot
+        json plan_content
+        varchar status
+        datetime created_at
+        datetime updated_at
+    }
+
+    USER ||--o| DOCTOR_PROFILE : has
+    USER ||--o| DOCTOR_APPLICATION : submits
+    USER ||--o{ SAVED_NUTRITION_PLAN : saves
+
+```
+
+
+
+## Back-End Component and Class Descriptions
 
 1. Authentication Classes
 
