@@ -399,7 +399,7 @@ classDiagram
 
 ---
 
-### 3. ProtectedRoute / GuestRoute
+### 3. ProtectedRoute.
 
 * Enforces route access control based on authentication and role.
 
