@@ -10,11 +10,15 @@ const LoginScreen = () => {
     username: '',
     password: '',
   });
+
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
-    setCredentials({ ...credentials, [e.target.name]: e.target.value });
+    setCredentials({
+      ...credentials,
+      [e.target.name]: e.target.value,
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -23,13 +27,30 @@ const LoginScreen = () => {
     setError('');
 
     try {
-      // Endpoint for the login API
-      const response = await axios.post('http://localhost:8000/api/users/login/', credentials);
+      // ✅ استخدم نفس الرابط الناجح في Postman
+      const response = await axios.post(
+        'http://127.0.0.1:8000/api/users/login/',
+        credentials
+      );
+
       if (response.status === 200) {
+        // ✅ حفظ التوكن
+        localStorage.setItem('access', response.data.access);
+        localStorage.setItem('refresh', response.data.refresh);
+
         alert('Login successful!');
       }
+
     } catch (err) {
-      setError('Invalid username or password. Please check your credentials.');
+      // ✅ طباعة الخطأ الحقيقي للتشخيص
+      console.log('Login error:', err.response?.data || err.message);
+
+      // ✅ عرض رسالة مناسبة
+      setError(
+        err.response?.data?.detail ||
+        'Invalid username or password. Please check your credentials.'
+      );
+
     } finally {
       setLoading(false);
     }
@@ -38,37 +59,52 @@ const LoginScreen = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
       <div className="max-w-md w-full space-y-8 bg-white p-10 rounded-2xl shadow-sm border border-gray-100">
+        
         <div className="text-center">
           <h2 className="text-3xl font-bold text-gray-900">Data Diet</h2>
           <p className="mt-2 text-sm text-gray-600">Sign in to your account</p>
         </div>
-        
+
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          {error && <div className="text-red-500 text-sm text-center bg-red-50 p-2 rounded-lg border border-red-100">{error}</div>}
           
+          {error && (
+            <div className="text-red-500 text-sm text-center bg-red-50 p-2 rounded-lg border border-red-100">
+              {error}
+            </div>
+          )}
+
           <div className="space-y-4">
+            
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Username</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Username
+              </label>
               <input
                 name="username"
                 type="text"
                 required
+                value={credentials.username}
+                onChange={handleChange}
                 className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
                 placeholder="Username"
-                onChange={handleChange}
               />
             </div>
+
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Password
+              </label>
               <input
                 name="password"
                 type="password"
                 required
+                value={credentials.password}
+                onChange={handleChange}
                 className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
                 placeholder="Password"
-                onChange={handleChange}
               />
             </div>
+
           </div>
 
           <button
@@ -78,6 +114,7 @@ const LoginScreen = () => {
           >
             {loading ? 'Logging in...' : 'Sign In'}
           </button>
+
         </form>
       </div>
     </div>
