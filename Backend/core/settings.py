@@ -76,7 +76,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'datadiet',
         'USER': 'd-max',
-        'PASSWORD': '',  
+        'PASSWORD': 'DD123456',  
         'HOST': 'localhost',
         'PORT': '5432',
     }
