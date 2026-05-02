@@ -27,14 +27,14 @@ const LoginScreen = () => {
     setError('');
 
     try {
-      // ✅ استخدم نفس الرابط الناجح في Postman
+
       const response = await axios.post(
         'http://127.0.0.1:8000/api/users/login/',
         credentials
       );
 
       if (response.status === 200) {
-        // ✅ حفظ التوكن
+
         localStorage.setItem('access', response.data.access);
         localStorage.setItem('refresh', response.data.refresh);
 
@@ -42,10 +42,10 @@ const LoginScreen = () => {
       }
 
     } catch (err) {
-      // ✅ طباعة الخطأ الحقيقي للتشخيص
+
       console.log('Login error:', err.response?.data || err.message);
 
-      // ✅ عرض رسالة مناسبة
+
       setError(
         err.response?.data?.detail ||
         'Invalid username or password. Please check your credentials.'
