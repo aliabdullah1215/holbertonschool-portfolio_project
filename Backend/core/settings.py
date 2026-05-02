@@ -77,7 +77,7 @@ DATABASES = {
         'NAME': 'datadiet',
         'USER': 'd-max',
         'PASSWORD': 'DD123456',  
-        'HOST': 'localhost',
+        'HOST': '127.0.0.1',
         'PORT': '5432',
     }
 }
