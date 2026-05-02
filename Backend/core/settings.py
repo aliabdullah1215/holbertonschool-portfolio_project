@@ -68,16 +68,19 @@ TEMPLATES = [
 WSGI_APPLICATION = 'core.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/6.0/ref/settings/#databases
+WSGI_APPLICATION = "core.wsgi.application"
 
+
+
+# Database configuration (PostgreSQL)
+# Ensure your PostgreSQL service is running and the database 'data_diet_db' exists
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'datadiet',
-        'USER': 'd-max',
-        'PASSWORD': 'DD123456',  
-        'HOST': '127.0.0.1',
+        'NAME': 'data_diet_db',
+        'USER': 'postgres',
+        'PASSWORD': 'Welcome@123',
+        'HOST': 'localhost',
         'PORT': '5432',
     }
 }
