@@ -1,4 +1,5 @@
 import React from 'react';
+import DataDietLogo from '../../components/Logo/DataDietLogo';
 
 const WelcomeScreen = () => {
   return (
@@ -11,8 +12,15 @@ const WelcomeScreen = () => {
       {/* Navigation */}
       <nav className="relative z-50 bg-white/70 backdrop-blur-md border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
-          <div className="text-2xl font-black text-indigo-600 italic tracking-tighter">Data Diet</div>
-          <div className="text-sm font-bold text-gray-600 cursor-pointer hover:text-indigo-600">Sign In</div>
+          
+          <div className="scale-75 origin-left">
+            <DataDietLogo />
+          </div>
+
+          <div className="text-sm font-bold text-gray-600 cursor-pointer hover:text-indigo-600">
+            Sign In
+          </div>
+
         </div>
       </nav>
 
