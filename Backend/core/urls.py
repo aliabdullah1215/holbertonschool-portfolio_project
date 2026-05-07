@@ -1,4 +1,3 @@
-# في ملف Backend/settings.py (أو urls.py الرئيسي)
 from django.contrib import admin
 from django.urls import path, include
 
