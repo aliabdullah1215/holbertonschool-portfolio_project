@@ -1,10 +1,8 @@
 import RegisterScreen from './features/auth/RegisterScreen';
 import LoginScreen from "./features/auth/LoginScreen";
 
-/**
- * Main Application Component for Data Diet.
- * Integrated both Registration and Login screens for development testing.
- */
+
+
 function App() {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col gap-10 py-10">
