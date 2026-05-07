@@ -1,55 +1,50 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-/**
- * RegisterScreen Component
- * Handles user registration for both Clients and Doctors.
- */
+
 const RegisterScreen = () => {
-  // Main form state holding user credentials and designated role
+
+  
   const [formData, setFormData] = useState({
     username: '',
     email: '',
     password: '',
-    role: 'client', // Default role as per technical documentation
+    role: 'client', 
   });
 
-  // UI States for error feedback and submission loading
+
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  /**
-   * Updates form state dynamically based on input name attribute.
-   */
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  /**
-   * Handles the registration form submission.
-   * Sends a POST request to the Django backend.
-   */
+
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError('');
 
     try {
-      // POST request to the internal registration endpoint
+
+      
       const response = await axios.post('http://localhost:8000/api/users/register/', formData);
       
       if (response.status === 201 || response.status === 200) {
         alert('Registration successful! You can now log in.');
-        // TODO: Implement navigation to Login page using useNavigate()
+      
       }
     } catch (err) {
-      // Handles server-side validation errors or network issues
+     
       setError(
         err.response?.data?.message || 
         'An error occurred during registration. Please ensure the backend is running.'
       );
     } finally {
-      setLoading(false); // Reset loading state regardless of outcome
+      setLoading(false); 
     }
   };
 
