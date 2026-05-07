@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-/**
- * LoginScreen Component
- * Handles user authentication for the Data Diet platform.
- */
+
 const LoginScreen = () => {
   const [credentials, setCredentials] = useState({
     username: '',
