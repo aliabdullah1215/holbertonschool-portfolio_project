@@ -4,11 +4,11 @@ const WelcomeScreen = () => {
   return (
     <div className="min-h-screen bg-white relative overflow-hidden font-sans text-left" dir="ltr">
       
-      {/* Background Decorative Blurs */}
+      
       <div className="absolute top-0 -left-20 w-96 h-96 bg-indigo-100 rounded-full blur-[120px] opacity-60"></div>
       <div className="absolute bottom-0 -right-20 w-96 h-96 bg-blue-100 rounded-full blur-[120px] opacity-60"></div>
 
-      {/* Navigation */}
+     
       <nav className="relative z-50 bg-white/70 backdrop-blur-md border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
           <div className="text-2xl font-black text-indigo-600 italic tracking-tighter">Data Diet</div>
@@ -16,7 +16,7 @@ const WelcomeScreen = () => {
         </div>
       </nav>
 
-      {/* Hero Section */}
+    
       <main className="relative z-10 flex-grow">
         <div className="max-w-7xl mx-auto py-24 px-6 text-center">
           <div className="inline-block px-4 py-1.5 mb-8 text-xs font-bold tracking-widest uppercase text-indigo-600 bg-indigo-50 rounded-full">
@@ -39,7 +39,7 @@ const WelcomeScreen = () => {
           </div>
         </div>
 
-        {/* Comparison Table Section */}
+       
         <div className="max-w-4xl mx-auto px-6 pb-24">
           <div className="bg-white/80 backdrop-blur-sm border border-gray-100 rounded-[2.5rem] shadow-xl shadow-gray-200/50 overflow-hidden">
             <div className="p-8 border-b border-gray-50">
