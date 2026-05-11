@@ -12,7 +12,7 @@ export async function registerUser(payload) {
 }
 
 export async function loginUser(credentials) {
-  const tokenResponse = await api.post('token/', credentials);
+  const tokenResponse = await api.post('users/login/', credentials);
   const { access, refresh } = tokenResponse.data;
 
   setAuthStorage({
@@ -49,7 +49,7 @@ export async function refreshAccessToken() {
     throw new Error('Missing refresh token');
   }
 
-  const response = await api.post('token/refresh/', { refresh });
+  const response = await api.post('users/token/refresh/', { refresh });
   setAuthStorage({
     access: response.data.access,
     refresh,
