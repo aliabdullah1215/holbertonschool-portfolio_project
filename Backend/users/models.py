@@ -1,6 +1,8 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
+from backend.core import settings
+
 
 class User(AbstractUser):
     ROLE_CHOICES = (
@@ -27,7 +29,7 @@ class DoctorApplication(models.Model):
     )
 
     user = models.OneToOneField(
-        User,
+        settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name='doctor_application',
     )
