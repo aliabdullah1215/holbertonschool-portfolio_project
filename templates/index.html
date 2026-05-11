@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>مستشارك الغذائي الذكي</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; text-align: center; padding: 20px; direction: rtl; }
+        .container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .question-block { text-align: right; margin-bottom: 20px; padding: 15px; border-bottom: 1px solid #eee; }
+        .question-block label { font-weight: bold; display: block; margin-bottom: 10px; }
+        .options { display: flex; flex-wrap: wrap; gap: 10px; }
+        .btn-submit { background-color: #27ae60; color: white; border: none; padding: 15px 30px; border-radius: 8px; cursor: pointer; font-size: 18px; width: 100%; }
+        .meal-card { background: #fff; border-right: 5px solid #27ae60; margin: 15px 0; padding: 15px; text-align: right; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>الاستبيان الغذائي الاحترافي</h2>
+    <form id="nutritionForm">
+        <div class="question-block">
+            <label>1. ما هو هدفك الأساسي؟</label>
+            <div class="options">
+                <input type="radio" name="goal" value="تنزيل وزن" required> تنزيل وزن
+                <input type="radio" name="goal" value="بناء عضلات"> بناء عضلات
+                <input type="radio" name="goal" value="محافظة"> محافظة
+            </div>
+        </div>
+
+        <div class="question-block">
+            <label>2. مستوى نشاطك البدني؟</label>
+            <div class="options">
+                <input type="radio" name="activity" value="خامل"> خامل
+                <input type="radio" name="activity" value="متوسط"> متوسط
+                <input type="radio" name="activity" value="رياضي عالي"> رياضي عالي
+            </div>
+        </div>
+
+        <div class="question-block">
+            <label>3. كم وجبة تفضل في اليوم؟</label>
+            <div class="options">
+                <input type="radio" name="meals_count" value="3 وجبات"> 3 وجبات
+                <input type="radio" name="meals_count" value="5 وجبات (مع سناك)"> 5 وجبات
+            </div>
+        </div>
+
+        <div class="question-block">
+            <label>4. العمر، الوزن، والطول؟ (مثال: 25 سنة، 80kg، 175cm)</label>
+            <input type="text" name="info" style="width: 90%; padding: 8px;" placeholder="اكتب بياناتك هنا...">
+        </div>
+
+        <button type="button" class="btn-submit" onclick="submitQuiz()">تحليل وتوليد الجدول</button>
+    </form>
+
+    <div id="result-container" style="display:none; margin-top: 30px;">
+        <h3>جدولك الغذائي المقترح:</h3>
+        <div id="meal-plan"></div>
+    </div>
+</div>
+
+<script>
+    async function submitQuiz() {
+        const form = document.getElementById('nutritionForm');
+        const formData = new FormData(form);
+        let answers = {};
+        formData.forEach((value, key) => { answers[key] = value; });
+
+        // إظهار رسالة انتظار
+        document.getElementById('meal-plan').innerHTML = "جاري الحساب عبر الذكاء الاصطناعي...";
+        document.getElementById('result-container').style.display = 'block';
+
+        try {
+            const response = await fetch('/query', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({answers: answers})
+            });
+
+            const data = await response.json();
+            displayPlan(data);
+        } catch (error) {
+            console.error("Error:", error);
+            alert("حدث خطأ في الاتصال بالسيرفر");
+        }
+    }
+
+    function displayPlan(data) {
+        const container = document.getElementById('meal-plan');
+        let html = '';
+        
+        // محاولة استخراج الوجبات من الرد
+        let content = data.meals || data.plan || data;
+
+        for (let meal in content) {
+            html += `
+                <div class="meal-card">
+                    <strong>${meal}:</strong>
+                    <p contenteditable="true">${content[meal]}</p>
+                </div>`;
+        }
+        container.innerHTML = html || "لم يتم استلام بيانات صحيحة من الذكاء الاصطناعي";
+    }
+</script>
+
+</body>
+</html>

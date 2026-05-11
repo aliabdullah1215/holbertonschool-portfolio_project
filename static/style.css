@@ -1,0 +1,29 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f7f6;
+    text-align: center;
+    padding: 20px;
+}
+
+.meal-card {
+    background: white;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 10px auto;
+    width: 80%;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.meal-card p {
+    border: 1px dashed #ccc;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.edit-btn {
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    padding: 5px 15px;
+    border-radius: 5px;
+}
