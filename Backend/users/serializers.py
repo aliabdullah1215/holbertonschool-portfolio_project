@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import DoctorApplication, User
 
+
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
 
@@ -9,7 +10,6 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('id', 'username', 'email', 'password', 'role')
 
     def create(self, validated_data):
-        # Create the user while hashing the password
         user = User.objects.create_user(
             username=validated_data['username'],
             email=validated_data.get('email', ''),
@@ -30,25 +30,29 @@ class DoctorApplicationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = DoctorApplication
-        fields = '__all__'
-        read_only_fields = (
+        fields = [
+            'id',
+            'full_name',
+            'age',
+            'specialty',
+            'phone_number',
+            'contact_email',
+            'certificate_file',
+            'certificate_file_url',
             'status',
             'reviewed_at',
             'created_at',
             'updated_at',
-            'certificate_file_url',
-        )
+        ]
+        read_only_fields = ['status', 'reviewed_at', 'created_at', 'updated_at']
 
     def get_certificate_file_url(self, obj):
         if not obj.certificate_file:
             return None
-
         request = self.context.get('request')
         url = obj.certificate_file.url
-
         if request:
             return request.build_absolute_uri(url)
-
         return url
 
     def validate_certificate_file(self, value):
@@ -56,17 +60,17 @@ class DoctorApplicationSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("File too large (max 5MB).")
         return value
 
-    def validate(self, data):
-        request = self.context.get('request')
-        user = request.user if request else None
 
-        if user is None:
-            raise serializers.ValidationError("Request user is required.")
+class ApprovedDoctorSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(source='user.username')
 
-        if DoctorApplication.objects.filter(user=user).exists():
-            raise serializers.ValidationError("You already submitted an application.")
-
-        if user.role != 'client':
-            raise serializers.ValidationError("Only clients can apply to become doctors.")
-
-        return data
+    class Meta:
+        model = DoctorApplication
+        fields = [
+            'id',
+            'username',
+            'full_name',
+            'specialty',
+            'phone_number',
+            'contact_email',
+        ]
