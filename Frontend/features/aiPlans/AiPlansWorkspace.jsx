@@ -58,6 +58,7 @@ function AiPlansWorkspace() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isApplyingLocalEdit, setIsApplyingLocalEdit] = useState(false);
 
+/* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     const storedValue = sessionStorage.getItem(storageKey);
 
