@@ -46,7 +46,7 @@ api.interceptors.response.use(
                 // IMPORTANT: Ensure this path matches your Django JWT refresh URL
                 // If using SimpleJWT default views, it might be 'token/refresh/' or similar
                 const refreshResponse = await axios.post(
-                    'http://localhost:8000/api/users/token/refresh/', 
+                    'http://localhost:8000/api/token/refresh/', 
                     { refresh: refreshToken }
                 );
 
