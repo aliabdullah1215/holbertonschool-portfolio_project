@@ -121,7 +121,7 @@ class ApprovedDoctorListView(generics.ListAPIView):
     permission_classes = [permissions.AllowAny]
 
     def get_queryset(self):
-        return DoctorApplication.objects.filter(status='approved')
+        return DoctorApplication.objects.filter(is_verifyed=True)
 
 
 class ApproveDoctorApplicationView(APIView):
