@@ -2,63 +2,60 @@ import { Link, NavLink, Outlet } from 'react-router-dom';
 import LogoMark from '../branding/LogoMark';
 import useAuth from '../../context/useAuth';
 
-function DashboardShell({ title, description, sections, homePath }) {
+function DashboardShell({ title, description, sections, homePath = '/' }) {
   const { logout, user } = useAuth();
+  const teamPath = homePath.startsWith('/doctor') ? '/doctor/team' : '/client/team';
 
   return (
-    <div className="dashboard-layout">
-      <header className="dashboard-layout__header">
-        <div className="dashboard-layout__brand-block">
-          <LogoMark />
-          <h1>{title}</h1>
-          <p>{description}</p>
-          {user ? (
-            <p className="dashboard-layout__welcome">
-              Current account: <strong>{user.username}</strong>
-            </p>
-          ) : null}
+    <div className="dashboard-layout dashboard-layout--topnav">
+      <header className="dashboard-topbar">
+        <div className="dashboard-topbar__brand">
+          <LogoMark compact to={homePath} />
+
         </div>
 
-        <nav className="dashboard-layout__actions" aria-label="Quick navigation">
-          <Link className="ghost-link" to="/">
-            Public Home
-          </Link>
-          <Link className="primary-link" to={homePath}>
-            Refresh View
-          </Link>
-          <button className="ghost-link ghost-link--button" type="button" onClick={logout}>
-            Sign Out
-          </button>
+        <nav className="dashboard-topbar__nav" aria-label="Dashboard navigation">
+          {sections.map((section) => (
+            <NavLink
+              key={section.to}
+              to={section.to}
+              className={({ isActive }) =>
+                `dashboard-topbar__link${isActive ? ' dashboard-topbar__link--active' : ''}`
+              }
+            >
+              {section.label || section.title}
+            </NavLink>
+          ))}
         </nav>
+
+        <button className="dashboard-topbar__logout" type="button" onClick={logout}>
+          Logout
+        </button>
       </header>
 
-      <div className="dashboard-layout__body">
-        <aside className="dashboard-sidebar" aria-label="Dashboard sections">
-          <div className="dashboard-sidebar__header">
-            <h2>Sections</h2>
-            <p>Move through the workspace without clutter.</p>
-          </div>
+      <main className="dashboard-page">
 
-          <nav className="dashboard-sidebar__nav">
-            {sections.map((section) => (
-              <NavLink
-                key={section.to}
-                to={section.to}
-                className={({ isActive }) =>
-                  `dashboard-nav-link${isActive ? ' dashboard-nav-link--active' : ''}`
-                }
-              >
-                <strong>{section.title}</strong>
-                <span>{section.description}</span>
-              </NavLink>
-            ))}
-          </nav>
-        </aside>
 
         <section className="dashboard-layout__workspace">
           <Outlet />
         </section>
-      </div>
+      </main>
+      <footer className="dashboard-footer">
+        <div className="dashboard-footer__brand">
+          <span className="dashboard-footer__logo">D</span>
+          <span>© 2026 DataDiet. All rights reserved.</span>
+        </div>
+
+        <div className="dashboard-footer__links">
+          <Link to={teamPath} aria-label="GitHub team page">
+            GitHub
+          </Link>
+          <Link to={teamPath} aria-label="LinkedIn team page">
+            LinkedIn
+          </Link>
+        </div>
+      </footer>
+
     </div>
   );
 }

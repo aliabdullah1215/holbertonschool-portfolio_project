@@ -6,9 +6,9 @@ function LogoMark({ to = '/', compact = false }) {
   return (
     <Link className={className} to={to} aria-label="Data Diet home">
       <span className="logo-mark__badge" aria-hidden="true">
-        DD
+        D
       </span>
-      {!compact ? <span className="logo-mark__text">Data Diet</span> : null}
+      {null}
     </Link>
   );
 }

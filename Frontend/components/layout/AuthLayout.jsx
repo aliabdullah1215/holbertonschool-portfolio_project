@@ -1,29 +1,29 @@
 import { Link, Outlet } from 'react-router-dom';
 import LogoMark from '../branding/LogoMark';
 
-const authLinks = [
-  { label: 'Sign In', to: '/login' },
-  { label: 'Create Account', to: '/register' },
-];
-
 function AuthLayout() {
   return (
-    <div className="auth-layout">
-      <aside className="auth-layout__panel">
-        <LogoMark />
-        <h1>Personal nutrition in a calm, clear space.</h1>
-        <p>Sign in or create your account to continue.</p>
+    <div className="auth-page">
+      <header className="auth-topbar">
+        <div className="auth-topbar__brand">
+          <LogoMark compact />
+        </div>
 
-        <nav className="auth-layout__nav" aria-label="Authentication links">
-          {authLinks.map((link) => (
-            <Link key={link.to} className="ghost-link" to={link.to}>
-              {link.label}
-            </Link>
-          ))}
+        <nav className="auth-topbar__links" aria-label="Authentication navigation">
+          
         </nav>
-      </aside>
 
-      <main className="auth-layout__content">
+        <div className="auth-topbar__actions">
+          <Link className="ghost-link" to="/login">
+            Sign In
+          </Link>
+          <Link className="primary-link" to="/register">
+            Sign Up
+          </Link>
+        </div>
+      </header>
+
+      <main className="auth-page__main">
         <Outlet />
       </main>
     </div>

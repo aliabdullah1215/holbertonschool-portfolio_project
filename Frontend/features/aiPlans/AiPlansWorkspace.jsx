@@ -57,8 +57,9 @@ function AiPlansWorkspace() {
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isApplyingLocalEdit, setIsApplyingLocalEdit] = useState(false);
+  const [hasStarted, setHasStarted] = useState(false);
 
-/* eslint-disable react-hooks/set-state-in-effect */
+  /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     const storedValue = sessionStorage.getItem(storageKey);
 
@@ -101,16 +102,28 @@ function AiPlansWorkspace() {
   }
 
   function handleNextStep() {
-    const nextErrors = validateAiPlanAnswers(answers, questionnaireSteps[currentStepIndex].id);
+    const currentStep = questionnaireSteps[currentStepIndex];
+    const nextErrors = validateAiPlanAnswers(answers, currentStep.id);
 
     if (Object.keys(nextErrors).length > 0) {
+      const visibleFields = currentStep.fields.filter(
+        (field) => !field.condition || field.condition(answers)
+      );
+      const firstMissingFieldIndex = visibleFields.findIndex((field) => nextErrors[field.id]);
+
       setStepErrors(nextErrors);
+      window.dispatchEvent(
+        new CustomEvent('ai-plan-question-error', {
+          detail: { fieldIndex: Math.max(firstMissingFieldIndex, 0) },
+        })
+      );
       return;
     }
 
     setStepErrors({});
     setCurrentStepIndex((current) => Math.min(current + 1, questionnaireSteps.length - 1));
   }
+
 
   function handlePreviousStep() {
     setCurrentStepIndex((current) => Math.max(current - 1, 0));
@@ -167,65 +180,46 @@ function AiPlansWorkspace() {
       setGeneratedPlan(originalPlan);
     }
   }
-
   return (
     <article className="workspace-card workspace-card--section">
-      <span className="eyebrow">Client Journey</span>
-      <h2>AI Plans</h2>
-      <p>
-        Complete the dynamic questionnaire, generate a structured nutrition plan once, and
-        then refine it locally without calling AI again for simple changes.
-      </p>
-
-      <section className="content-grid ai-plans-intro">
-        <div className="content-card">
-          <span className="eyebrow">Smart Intake</span>
-          <h3>Complete one guided questionnaire</h3>
-          <p>
-            Move step by step through the intake so the plan is built from clear and
-            structured client data.
-          </p>
-        </div>
-        <div className="content-card">
-          <span className="eyebrow">One AI Call</span>
-          <h3>Generate once, then refine locally</h3>
-          <p>
-            The backend sends your profile to Groq one time, then simple adjustments happen
-            directly in the current session.
-          </p>
-        </div>
-        <div className="content-card">
-          <span className="eyebrow">Flexible Output</span>
-          <h3>Review meals with quick adjustments</h3>
-          <p>
-            After generation, you can make meals quicker, cheaper, or swap alternatives
-            without rebuilding the whole plan.
-          </p>
-        </div>
-      </section>
-
       {error ? <p className="form-feedback form-feedback--error">{error}</p> : null}
 
-      <AiPlanQuestionnaire
-        answers={answers}
-        currentStepIndex={currentStepIndex}
-        errors={stepErrors}
-        isSubmitting={isSubmitting}
-        onBack={handlePreviousStep}
-        onChange={handleAnswerChange}
-        onNext={handleNextStep}
-        onSubmit={handleGeneratePlan}
-      />
+      {!hasStarted && !generatedPlan ? (
+        <section className="assessment-start-card">
+          <span className="eyebrow">AI Nutrition Plan</span>
+          <h2>Start your nutrition questionnaire</h2>
+          <p>
+            Answer each section step by step so Data Diet can build a personalized
+            nutrition plan based on your profile, goals, and preferences.
+          </p>
+          <button type="button" onClick={() => setHasStarted(true)}>
+            Start
+          </button>
+        </section>
+      ) : null}
+
+      {hasStarted && !generatedPlan ? (
+        <AiPlanQuestionnaire
+          answers={answers}
+          currentStepIndex={currentStepIndex}
+          errors={stepErrors}
+          isSubmitting={isSubmitting}
+          onBack={handlePreviousStep}
+          onChange={handleAnswerChange}
+          onNext={handleNextStep}
+          onSubmit={handleGeneratePlan}
+        />
+      ) : null}
 
       {generatedPlan ? (
         <>
           {savedPlanMeta ? (
             <div className="section-note">
-              <h3>Plan saved to Your Plans</h3>
-              <p>
-                This plan was saved automatically and will stay available the next time you
-                sign in.
-              </p>
+              <h3 className="saved-plan-title">
+                Plan saved to your dashboard
+                <span aria-hidden="true">✓</span>
+              </h3>
+
             </div>
           ) : null}
           <NutritionPlanView
@@ -243,14 +237,11 @@ function AiPlansWorkspace() {
             onReset={resetLocalEdits}
           />
         </>
-      ) : (
-        <div className="section-note">
-          <h3>No generated plan yet</h3>
-          <p>Complete the questionnaire and generate your first plan to review it here.</p>
-        </div>
-      )}
+      ) : null}
     </article>
   );
+
+
 }
 
 export default AiPlansWorkspace;

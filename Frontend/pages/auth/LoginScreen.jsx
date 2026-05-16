@@ -34,10 +34,20 @@ function LoginScreen() {
   }
 
   return (
-    <section className="auth-card">
-      <span className="eyebrow">Sign In</span>
-      <h2>Access your account</h2>
-      <p>Continue to your personal workspace.</p>
+    <section className="auth-card auth-card--centered">
+      <div className="auth-card__heading">
+        <h2>Welcome</h2>
+        <p>Sign in to your account or create a new one</p>
+      </div>
+
+      <div className="auth-tabs" aria-label="Authentication tabs">
+        <Link className="auth-tabs__item auth-tabs__item--active" to="/login">
+          Sign In
+        </Link>
+        <Link className="auth-tabs__item" to="/register">
+          Sign Up
+        </Link>
+      </div>
 
       <form className="auth-form" onSubmit={handleSubmit}>
         <label>
@@ -45,7 +55,7 @@ function LoginScreen() {
           <input
             name="username"
             type="text"
-            placeholder="Enter your username"
+            placeholder="your_username"
             value={formData.username}
             onChange={handleChange}
             required
@@ -70,10 +80,6 @@ function LoginScreen() {
           {isSubmitting ? 'Signing in...' : 'Sign In'}
         </button>
       </form>
-
-      <p className="auth-card__footer">
-        Need an account? <Link to="/register">Create one</Link>
-      </p>
     </section>
   );
 }

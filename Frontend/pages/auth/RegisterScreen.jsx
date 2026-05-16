@@ -45,10 +45,20 @@ function RegisterScreen() {
   }
 
   return (
-    <section className="auth-card">
-      <span className="eyebrow">Create Account</span>
-      <h2>Start your account</h2>
-      <p>Create your profile and continue inside Data Diet.</p>
+    <section className="auth-card auth-card--centered">
+      <div className="auth-card__heading">
+        <h2>Welcome</h2>
+        <p>Sign in to your account or create a new one</p>
+      </div>
+
+      <div className="auth-tabs" aria-label="Authentication tabs">
+        <Link className="auth-tabs__item" to="/login">
+          Sign In
+        </Link>
+        <Link className="auth-tabs__item auth-tabs__item--active" to="/register">
+          Sign Up
+        </Link>
+      </div>
 
       <form className="auth-form" onSubmit={handleSubmit}>
         <label>
@@ -56,7 +66,7 @@ function RegisterScreen() {
           <input
             name="username"
             type="text"
-            placeholder="Choose a username"
+            placeholder="your_username"
             value={formData.username}
             onChange={handleChange}
             required
@@ -104,12 +114,9 @@ function RegisterScreen() {
           {isSubmitting ? 'Creating account...' : 'Create Account'}
         </button>
       </form>
-
-      <p className="auth-card__footer">
-        Already have an account? <Link to="/login">Go to sign in</Link>
-      </p>
     </section>
   );
+
 }
 
 export default RegisterScreen;

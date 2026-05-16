@@ -71,27 +71,7 @@ function ClientPlansHistoryPage() {
   }
 
   return (
-    <article className="workspace-card workspace-card--section">
-      <span className="eyebrow">Client Journey</span>
-      <h2>Your Plans</h2>
-      <p>
-        This section keeps your saved AI plans available after sign-in so you can return to
-        previous nutrition recommendations any time.
-      </p>
-
-      <section className="content-hero">
-        <div>
-          <h3>Your plans are now saved automatically</h3>
-          <p>
-            Each plan generated from the AI Plans section is stored in your account and can
-            be opened again from this page.
-          </p>
-        </div>
-        <div className="content-highlight">
-          <span className="eyebrow">What you can do</span>
-          <p>Review summaries first, then open any saved plan for full details.</p>
-        </div>
-      </section>
+    <article className="workspace-card workspace-card--section plans-history-page">
 
       {error ? <p className="form-feedback form-feedback--error">{error}</p> : null}
 
@@ -104,36 +84,39 @@ function ClientPlansHistoryPage() {
         </div>
       ) : null}
 
-      <div className="history-list">
-        {plans.map((plan) => (
-          <article className="history-card" key={plan.id}>
-            <div className="history-card__top">
-              <div>
-                <span className="eyebrow">Created {formatDate(plan.created_at)}</span>
-                <h3>{plan.goal}</h3>
+      <section className="plans-history-box">
+        <h2>Your plans</h2>
+
+        <div className="history-list">
+          {plans.map((plan) => (
+            <article className="history-card" key={plan.id}>
+              <div className="history-card__top">
+                <div>
+                  <span className="eyebrow">Created {formatDate(plan.created_at)}</span>
+                  <h3>{plan.goal}</h3>
+                </div>
+
+                <button
+                  className="history-view-button"
+                  type="button"
+                  onClick={() => handleSelectPlan(plan.id)}
+                  disabled={isPlanLoading}
+                >
+                  {selectedPlan?.id === plan.id ? 'Reload plan' : 'View plan'}
+                </button>
               </div>
-              <span className="history-status">{plan.status === 'active' ? 'Ready' : plan.status}</span>
-            </div>
 
-            <div className="history-meta">
-              <span>
-                <strong>Focus:</strong> {plan.focus}
-              </span>
-              <span>
-                <strong>Date:</strong> {formatDate(plan.created_at)}
-              </span>
-            </div>
+              <div className="history-meta">
+                <span>
+                  <strong>Focus:</strong> {plan.focus}
+                </span>
+              </div>
+            </article>
 
-            <p>{plan.note}</p>
+          ))}
+        </div>
+      </section>
 
-            <div className="meal-actions">
-              <button type="button" onClick={() => handleSelectPlan(plan.id)} disabled={isPlanLoading}>
-                {selectedPlan?.id === plan.id ? 'Reload plan' : 'View plan'}
-              </button>
-            </div>
-          </article>
-        ))}
-      </div>
 
       {isPlanLoading ? <p>Loading selected plan...</p> : null}
 

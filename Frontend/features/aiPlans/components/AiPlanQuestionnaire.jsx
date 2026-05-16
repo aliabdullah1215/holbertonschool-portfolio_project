@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { questionnaireSteps } from '../config/questionnaireConfig';
 import { updateCheckboxArray } from '../utils/answerHelpers';
 
@@ -83,7 +84,6 @@ function FieldControl({ field, value, onChange }) {
     />
   );
 }
-
 function AiPlanQuestionnaire({
   answers,
   currentStepIndex,
@@ -94,29 +94,73 @@ function AiPlanQuestionnaire({
   onNext,
   onSubmit,
 }) {
+  const [currentFieldIndex, setCurrentFieldIndex] = useState(0);
   const currentStep = questionnaireSteps[currentStepIndex];
   const visibleFields = currentStep.fields.filter(
     (field) => !field.condition || field.condition(answers)
   );
+  const currentField = visibleFields[currentFieldIndex] || visibleFields[0];
   const isLastStep = currentStepIndex === questionnaireSteps.length - 1;
+  const isLastQuestion = currentFieldIndex === visibleFields.length - 1;
+
+  useEffect(() => {
+    setCurrentFieldIndex(0);
+  }, [currentStepIndex]);
+
+  useEffect(() => {
+    if (currentFieldIndex > visibleFields.length - 1) {
+      setCurrentFieldIndex(Math.max(visibleFields.length - 1, 0));
+    }
+  }, [currentFieldIndex, visibleFields.length]);
+
+  useEffect(() => {
+    function handleQuestionError(event) {
+      setCurrentFieldIndex(event.detail.fieldIndex);
+    }
+
+    window.addEventListener('ai-plan-question-error', handleQuestionError);
+
+    return () => {
+      window.removeEventListener('ai-plan-question-error', handleQuestionError);
+    };
+  }, []);
+
+  function handlePreviousQuestion() {
+    if (currentFieldIndex > 0) {
+      setCurrentFieldIndex((current) => current - 1);
+      return;
+    }
+
+    onBack();
+  }
+
+  function handleNextQuestion() {
+    if (errors[currentField.id]) {
+      return;
+    }
+
+    if (!isLastQuestion) {
+      setCurrentFieldIndex((current) => current + 1);
+      return;
+    }
+
+    if (isLastStep) {
+      onSubmit();
+      return;
+    }
+
+    onNext();
+  }
+
 
   return (
-    <section className="assessment-card assessment-card--form">
-      <div className="assessment-card__header">
-        <span className="eyebrow">
-          Step {currentStepIndex + 1} of {questionnaireSteps.length}
-        </span>
-        <h3>{currentStep.title}</h3>
-      </div>
-      <p>{currentStep.description}</p>
-
-      <div className="step-progress">
+    <section className="assessment-card assessment-card--form assessment-card--single-question">
+      <div className="step-progress step-progress--compact">
         {questionnaireSteps.map((step, index) => (
           <div
             key={step.id}
-            className={`step-progress__item ${
-              index === currentStepIndex ? 'step-progress__item--active' : ''
-            } ${index < currentStepIndex ? 'step-progress__item--done' : ''}`}
+            className={`step-progress__item ${index === currentStepIndex ? 'step-progress__item--active' : ''
+              } ${index < currentStepIndex ? 'step-progress__item--done' : ''}`}
           >
             <span>{index + 1}</span>
             <small>{step.title}</small>
@@ -124,34 +168,60 @@ function AiPlanQuestionnaire({
         ))}
       </div>
 
-      <div className="auth-form assessment-form">
-        {visibleFields.map((field) => (
-          <label key={field.id}>
-            {field.label}
-            <FieldControl field={field} value={answers[field.id]} onChange={onChange} />
-            {errors[field.id] ? <span className="field-error">{errors[field.id]}</span> : null}
-          </label>
-        ))}
-      </div>
+      <div className="assessment-question-card">
+        <div className="assessment-card__header">
+          <span className="eyebrow">
+            Section {currentStepIndex + 1} of {questionnaireSteps.length}
+          </span>
+          <h3>{currentStep.title}</h3>
+          <p>{currentStep.description}</p>
+        </div>
 
-      <div className="wizard-actions">
-        <button
-          className="ghost-link ghost-link--button"
-          type="button"
-          onClick={onBack}
-          disabled={currentStepIndex === 0}
-        >
-          Back
-        </button>
-        {isLastStep ? (
-          <button type="button" onClick={onSubmit} disabled={isSubmitting}>
-            {isSubmitting ? 'Generating plan...' : 'Generate plan'}
+        <div className="question-progress">
+          Question {currentFieldIndex + 1} of {visibleFields.length}
+        </div>
+        {Object.keys(errors).length > 0 ? (
+          <p className="question-error-alert">
+            Please answer the required question before continuing.
+          </p>
+        ) : null}
+
+        <div className="auth-form assessment-form assessment-form--single">
+          <label>
+            {currentField.label}
+            <FieldControl field={currentField} value={answers[currentField.id]} onChange={onChange} />
+            {errors[currentField.id] ? (
+              <span className="field-error">{errors[currentField.id]}</span>
+            ) : null}
+          </label>
+        </div>
+
+        <div className="wizard-actions wizard-actions--question">
+          <button
+            className="ghost-link ghost-link--button"
+            type="button"
+            onClick={handlePreviousQuestion}
+            disabled={currentStepIndex === 0 && currentFieldIndex === 0}
+          >
+            Previous
           </button>
-        ) : (
-          <button type="button" onClick={onNext}>
-            Continue
+
+          <button
+            className="wizard-next-button"
+            type="button"
+            onClick={handleNextQuestion}
+            disabled={isSubmitting}
+          >
+
+            {isLastStep && isLastQuestion
+              ? isSubmitting
+                ? 'Generating plan...'
+                : 'Generate plan'
+              : isLastQuestion
+                ? 'Next section'
+                : 'Next question'}
           </button>
-        )}
+        </div>
       </div>
     </section>
   );

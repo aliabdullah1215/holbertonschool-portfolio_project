@@ -90,7 +90,8 @@ Rules:
 - Prefer concise but useful shopping items.
 - Use English only.
 - Keep the plan internally consistent with the user's profile.
-- Always include shopping_list, plan_tags, and fallback_message even if they are empty.
+- Always include shopping_list and plan_tags with useful non-empty values. Use fallback_message only when needed; otherwise use "No fallback message was needed for this plan."
+
 """.strip()
 
 

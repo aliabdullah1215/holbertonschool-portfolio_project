@@ -16,6 +16,7 @@ import DoctorHomePage from '../pages/doctor/DoctorHomePage';
 import DoctorJoinPage from '../pages/doctor/DoctorJoinPage';
 import DoctorShellPage from '../pages/doctor/DoctorShellPage';
 import LandingPage from '../pages/shared/LandingPage';
+import TeamPage from '../pages/shared/TeamPage';
 import GuestRoute from './GuestRoute';
 import ProtectedRoute from './ProtectedRoute';
 
@@ -45,13 +46,15 @@ function AppRoutes() {
       >
         <Route index element={<Navigate replace to="home" />} />
         <Route path="home" element={<ClientHomePage />} />
-        <Route path="about" element={<ClientAboutPage />} />
-        <Route path="contact" element={<ClientContactPage />} />
-        <Route path="ai-plans" element={<ClientAiPlansPage />} />
-        <Route path="plans-history" element={<ClientPlansHistoryPage />} />
         <Route path="assessment-tools" element={<ClientAssessmentToolsPage />} />
+        <Route path="plans-history" element={<ClientPlansHistoryPage />} />
+        <Route path="ai-plans" element={<ClientAiPlansPage />} />
         <Route path="medical-support" element={<ClientMedicalSupportPage />} />
+        <Route path="contact" element={<ClientContactPage />} />
+        <Route path="about" element={<ClientAboutPage />} />
+        <Route path="team" element={<TeamPage />} />
       </Route>
+
       <Route
         path="/doctor"
         element={
@@ -62,9 +65,10 @@ function AppRoutes() {
       >
         <Route index element={<Navigate replace to="home" />} />
         <Route path="home" element={<DoctorHomePage />} />
-        <Route path="about" element={<DoctorAboutPage />} />
         <Route path="join" element={<DoctorJoinPage />} />
         <Route path="contact" element={<DoctorContactPage />} />
+        <Route path="about" element={<DoctorAboutPage />} />
+        <Route path="team" element={<TeamPage />} />
       </Route>
 
       <Route path="*" element={<Navigate replace to="/" />} />

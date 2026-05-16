@@ -66,4 +66,14 @@ def validate_generated_plan(plan):
     if not isinstance(plan.get("days"), list) or not plan["days"]:
         return "The generated plan must include at least one day."
 
+    if not isinstance(plan.get("shopping_list"), list) or not plan["shopping_list"]:
+        return "The generated plan must include a non-empty shopping list."
+
+    if not isinstance(plan.get("plan_tags"), list) or not plan["plan_tags"]:
+        return "The generated plan must include non-empty plan tags."
+
+    if not plan.get("fallback_message"):
+        plan["fallback_message"] = "No fallback message was needed for this plan."
+
     return None
+

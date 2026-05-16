@@ -88,19 +88,12 @@ function ClientAssessmentToolsPage() {
   }, [values]);
 
   return (
-    <article className="workspace-card workspace-card--section">
-      <span className="eyebrow">Client Journey</span>
+    <article className="workspace-card workspace-card--section assessment-tools-page">
       <h2>Assessment Tools</h2>
-      <p>
-        Use these quick frontend-only tools to estimate your BMI, daily calorie needs,
-        and hydration target in a few seconds.
-      </p>
 
       <div className="assessment-grid">
         <section className="assessment-card assessment-card--form">
-          <h3>Your information</h3>
-          <p>Enter your current measurements to update all tools at once.</p>
-
+          
           <form className="auth-form assessment-form">
             <label>
               Weight (kg)
@@ -162,7 +155,7 @@ function ClientAssessmentToolsPage() {
 
         <section className="assessment-card">
           <div className="assessment-card__header">
-            <span className="eyebrow">Tool 01</span>
+            <span className="eyebrow"></span>
             <h3>BMI Calculator</h3>
           </div>
           {results.bmi ? (
@@ -178,7 +171,7 @@ function ClientAssessmentToolsPage() {
 
         <section className="assessment-card">
           <div className="assessment-card__header">
-            <span className="eyebrow">Tool 02</span>
+            <span className="eyebrow"></span>
             <h3>Estimated Daily Calories</h3>
           </div>
           {results.maintenanceCalories ? (
@@ -198,7 +191,7 @@ function ClientAssessmentToolsPage() {
 
         <section className="assessment-card">
           <div className="assessment-card__header">
-            <span className="eyebrow">Tool 03</span>
+            <span className="eyebrow"></span>
             <h3>Daily Water Target</h3>
           </div>
           {results.waterLiters ? (
