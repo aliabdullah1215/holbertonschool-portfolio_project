@@ -5,11 +5,22 @@ function ClientHomePage() {
     <section className="client-home-page">
       <div className="client-home-hero">
         <h1>DataDiet</h1>
-        <p>Build a nutrition plan that fits your body, goals, and daily routine.</p>
+        <p>
+          Create your personalized nutrition plan, or connect with nutrition
+          specialists for professional support.
+        </p>
 
-        <Link className="client-home-cta" to="/client/ai-plans">
-          Generate your plan
-        </Link>
+
+        <div className="client-home-actions">
+          <Link className="client-home-cta" to="/client/ai-plans">
+            Generate your plan
+          </Link>
+
+          <Link className="client-home-cta" to="/client/medical-support">
+            Medical support
+          </Link>
+        </div>
+
       </div>
     </section>
   );
