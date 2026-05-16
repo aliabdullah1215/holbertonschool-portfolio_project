@@ -97,13 +97,7 @@ function DoctorJoinPage() {
   }
 
   return (
-    <article className="workspace-card workspace-card--section">
-      <span className="eyebrow">Doctor Journey</span>
-      <h2>Join Us as a Doctor</h2>
-      <p>
-        Submit your professional details so the platform team can review your profile
-        before listing you in the medical support section.
-      </p>
+    <article className="workspace-card workspace-card--section doctor-join-page">
 
       {application ? (
         <div className="section-note-list">
@@ -136,88 +130,99 @@ function DoctorJoinPage() {
           ) : null}
         </div>
       ) : (
-        <form className="auth-form doctor-form" onSubmit={handleSubmit}>
-          <label>
-            Full name
-            <input
-              name="fullName"
-              type="text"
-              placeholder="Enter your full name"
-              value={formData.fullName}
-              onChange={handleChange}
-              required
-            />
-          </label>
+        <div className="doctor-join-layout">
+          <form className="auth-form doctor-form" onSubmit={handleSubmit}>
+            <label>
+              Full name
+              <input
+                name="fullName"
+                type="text"
+                placeholder="Enter your full name"
+                value={formData.fullName}
+                onChange={handleChange}
+                required
+              />
+            </label>
 
-          <label>
-            Age
-            <input
-              name="age"
-              type="number"
-              min="18"
-              placeholder="Enter your age"
-              value={formData.age}
-              onChange={handleChange}
-              required
-            />
-          </label>
+            <label>
+              Age
+              <input
+                name="age"
+                type="number"
+                min="18"
+                placeholder="Enter your age"
+                value={formData.age}
+                onChange={handleChange}
+                required
+              />
+            </label>
 
-          <label>
-            Specialty
-            <input
-              name="specialty"
-              type="text"
-              placeholder="Clinical Nutrition"
-              value={formData.specialty}
-              onChange={handleChange}
-              required
-            />
-          </label>
+            <label>
+              Specialty
+              <input
+                name="specialty"
+                type="text"
+                placeholder="Clinical Nutrition"
+                value={formData.specialty}
+                onChange={handleChange}
+                required
+              />
+            </label>
 
-          <label>
-            Phone number
-            <input
-              name="phoneNumber"
-              type="text"
-              placeholder="+966..."
-              value={formData.phoneNumber}
-              onChange={handleChange}
-              required
-            />
-          </label>
+            <label>
+              Phone number
+              <input
+                name="phoneNumber"
+                type="text"
+                placeholder="+966..."
+                value={formData.phoneNumber}
+                onChange={handleChange}
+                required
+              />
+            </label>
 
-          <label>
-            Contact email
-            <input
-              name="contactEmail"
-              type="email"
-              placeholder="doctor@example.com"
-              value={formData.contactEmail}
-              onChange={handleChange}
-              required
-            />
-          </label>
+            <label>
+              Contact email
+              <input
+                name="contactEmail"
+                type="email"
+                placeholder="doctor@example.com"
+                value={formData.contactEmail}
+                onChange={handleChange}
+                required
+              />
+            </label>
 
-          <label>
-            Educational certificate
-            <input
-              name="certificateFile"
-              type="file"
-              accept=".pdf,.png,.jpg,.jpeg"
-              onChange={handleFileChange}
-              required
-            />
-          </label>
+            <label>
+              Educational certificate
+              <input
+                name="certificateFile"
+                type="file"
+                accept=".pdf,.png,.jpg,.jpeg"
+                onChange={handleFileChange}
+                required
+              />
+            </label>
 
-          {successMessage ? (
-            <p className="form-feedback form-feedback--success">{successMessage}</p>
-          ) : null}
-          {error ? <p className="form-feedback form-feedback--error">{error}</p> : null}
+            {successMessage ? (
+              <p className="form-feedback form-feedback--success">{successMessage}</p>
+            ) : null}
+            {error ? <p className="form-feedback form-feedback--error">{error}</p> : null}
 
-          <button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? 'Submitting application...' : 'Submit Application'}
-          </button>
-        </form>
+            <button type="submit" disabled={isSubmitting}>
+              {isSubmitting ? 'Submitting application...' : 'Submit Application'}
+            </button>
+          </form>
+
+          <aside className="doctor-join-copy">
+            <h3>Join our medical team</h3>
+            <p>
+              Share your professional details so clients can discover your expertise
+              after your profile is approved.
+            </p>
+          </aside>
+        </div>
+
       )}
     </article>
   );

@@ -4,11 +4,11 @@ const doctorSections = [
   { title: 'Home', to: '/doctor/home', description: 'The main doctor landing page.' },
   { title: 'About', to: '/doctor/about', description: 'An overview of the platform and its purpose.' },
   {
-    title: 'Join Us as a Doctor',
+    title: 'Join Our Medical Team',
     to: '/doctor/join',
     description: 'The future onboarding and approval flow.',
   },
-  { title: 'Contact', to: '/doctor/contact', description: 'General contact information.' },
+  { title: 'Contact Us', to: '/doctor/contact', description: 'General contact information.' },
 ];
 
 function DoctorShellPage() {

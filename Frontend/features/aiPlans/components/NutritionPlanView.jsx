@@ -1,3 +1,97 @@
+function printPlanAsPdf(plan) {
+  const printWindow = window.open('', '_blank');
+
+  if (!printWindow) {
+    return;
+  }
+
+  const mealsHtml = plan.days
+    .map((day) =>
+      day.meals
+        .map(
+          (meal) => `
+            <section class="meal">
+              <p class="meal-type">${meal.meal_type}</p>
+              <h3>${meal.title}</h3>
+              <ul>
+                ${meal.foods
+              .map((food) => `<li><strong>${food.name}</strong> - ${food.quantity}</li>`)
+              .join('')}
+              </ul>
+            </section>
+          `
+        )
+        .join('')
+    )
+    .join('');
+
+  printWindow.document.write(`
+    <html>
+      <head>
+        <title>Nutrition Plan</title>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            color: #143222;
+            padding: 32px;
+          }
+
+          h1 {
+            color: #043d18;
+            font-size: 32px;
+            margin-bottom: 8px;
+          }
+
+          .summary {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin: 24px 0;
+          }
+
+          .summary div,
+          .meal {
+            border: 1px solid #cfe4d4;
+            border-radius: 14px;
+            padding: 16px;
+          }
+
+          .meal {
+            margin-bottom: 16px;
+          }
+
+          .meal-type {
+            color: #2f6a42;
+            font-weight: 700;
+            text-transform: capitalize;
+          }
+        </style>
+      </head>
+      <body>
+        <h1>${plan.summary.plan_goal?.replace('_', ' ') || 'Nutrition Plan'}</h1>
+
+        <div class="summary">
+          <div><p>Calories</p><strong>${plan.summary.daily_calories}</strong></div>
+          <div><p>Protein</p><strong>${plan.summary.daily_macros.protein_g} g</strong></div>
+          <div><p>Carbs</p><strong>${plan.summary.daily_macros.carbs_g} g</strong></div>
+          <div><p>Fat</p><strong>${plan.summary.daily_macros.fat_g} g</strong></div>
+        </div>
+
+        ${mealsHtml}
+
+        <h2>Shopping list</h2>
+        <ul>
+          ${plan.shopping_list.map((item) => `<li>${item}</li>`).join('')}
+        </ul>
+      </body>
+    </html>
+  `);
+
+  printWindow.document.close();
+  printWindow.focus();
+  printWindow.print();
+}
+
 function NutritionPlanView({
   isApplyingLocalEdit,
   plan,
@@ -19,11 +113,22 @@ function NutritionPlanView({
               <h3>{plan.summary.plan_goal?.replace('_', ' ') || 'Personalized Nutrition Plan'}</h3>
             </div>
 
-            {!readOnly ? (
-              <button className="ghost-link ghost-link--button" type="button" onClick={onReset}>
-                Reset the plan
+            <div className="plan-summary-actions">
+              <button
+                className="ghost-link ghost-link--button"
+                type="button"
+                onClick={() => printPlanAsPdf(plan)}
+              >
+                Save as PDF
               </button>
-            ) : null}
+
+              {!readOnly ? (
+                <button className="ghost-link ghost-link--button" type="button" onClick={onReset}>
+                  Reset the plan
+                </button>
+              ) : null}
+            </div>
+
           </div>
 
           <div className="macro-grid">

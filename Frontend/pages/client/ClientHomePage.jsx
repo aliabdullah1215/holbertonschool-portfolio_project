@@ -6,7 +6,7 @@ function ClientHomePage() {
       <div className="client-home-hero">
         <h1>DataDiet</h1>
         <p>
-          Create your personalized nutrition plan, or connect with nutrition
+          Create your personalized nutrition plan, and connect with nutrition
           specialists for professional support.
         </p>
 

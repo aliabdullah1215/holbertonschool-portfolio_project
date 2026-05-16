@@ -1,33 +1,34 @@
 function ClientContactPage() {
   return (
-    <article className="workspace-card workspace-card--section">
-      <span className="eyebrow">Client Journey</span>
-      <h2>Contact Us</h2>
-      <p>
-        Reach the platform team through the support channels below for account help,
-        onboarding questions, or general guidance.
-      </p>
-
-      <div className="content-grid">
-        <section className="content-card">
-          <h3>Phone support</h3>
-          <p>+966 50 000 0000</p>
-          <p>Available during standard working hours for general inquiries.</p>
-        </section>
-        <section className="content-card">
+    <article className="workspace-card workspace-card--section contact-page">
+      <div className="contact-page__header">
+        <h2>Contact our friendly team</h2>
+        <p>Let us know how can we help you</p>
+      </div>
+      <div className="contact-methods">
+        <section className="contact-method-card">
           <h3>Email</h3>
-          <p>support@datadiet.app</p>
-          <p>Best for follow-up questions, account issues, and onboarding requests.</p>
+          <p>Email — Professional inbox support.</p>
+          <a href="mailto:support@datadiet.app">support@datadiet.app</a>
         </section>
-        <section className="content-card">
-          <h3>Response guidance</h3>
-          <p>
-            For faster assistance, include your username and a short description of the
-            issue you are facing.
-          </p>
+
+        <section className="contact-method-card">
+          <h3>Phone</h3>
+          <p>Phone — Direct expert assistance.</p>
+          <a href="tel:+966500000000">+966 50 000 0000</a>
+        </section>
+
+        <section className="contact-method-card">
+          <h3>WhatsApp</h3>
+          <p>WhatsApp — Instant support.</p>
+          <a href="https://wa.me/966500000000" target="_blank" rel="noreferrer">
+            +966 50 000 0000
+          </a>
         </section>
       </div>
+
     </article>
+
   );
 }
 

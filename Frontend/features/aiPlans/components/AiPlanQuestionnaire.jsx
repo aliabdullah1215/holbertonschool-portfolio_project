@@ -180,19 +180,12 @@ function AiPlanQuestionnaire({
         <div className="question-progress">
           Question {currentFieldIndex + 1} of {visibleFields.length}
         </div>
-        {Object.keys(errors).length > 0 ? (
-          <p className="question-error-alert">
-            Please answer the required question before continuing.
-          </p>
-        ) : null}
 
         <div className="auth-form assessment-form assessment-form--single">
           <label>
             {currentField.label}
             <FieldControl field={currentField} value={answers[currentField.id]} onChange={onChange} />
-            {errors[currentField.id] ? (
-              <span className="field-error">{errors[currentField.id]}</span>
-            ) : null}
+            
           </label>
         </div>
 

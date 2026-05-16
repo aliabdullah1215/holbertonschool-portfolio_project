@@ -60,12 +60,12 @@ const steps = [
   {
     number: '4',
     title: 'Adjust with ease',
-    text: 'Replace meals, swap ingredients, or make meals quicker and cheaper.',
+    text: 'Adjust the meals, and save the meal plan with the meals you prefer.',
   },
   {
     number: '5',
     title: 'Find expert support',
-    text: 'Browse approved doctors when you need professional guidance.',
+    text: 'Browse nutritionists when you need professional guidance.',
   },
 ];
 const features = [
@@ -77,7 +77,7 @@ const features = [
   {
     icon: featureIcons.history,
     title: 'Clear plan history',
-    text: 'Every generated plan is saved automatically so clients can return to it later.',
+    text: 'Every generated plan is saved automatically so clients can return to it later and download it.',
   },
   {
     icon: featureIcons.meals,
@@ -86,8 +86,8 @@ const features = [
   },
   {
     icon: featureIcons.edits,
-    title: 'Local meal edits',
-    text: 'Simple changes happen instantly without sending another AI request.',
+    title: 'meal edits',
+    text: 'Simple changes happen instantly.',
   },
   {
     icon: featureIcons.doctors,
@@ -144,7 +144,7 @@ function LandingPage() {
             <h1>Build a nutrition plan that fits real life.</h1>
             <p>
               Data Diet helps clients generate personalized AI meal plans, save them,
-              adjust meals locally, and connect with approved doctors when support is needed.
+              and connect with nutritionists when support is needed.
             </p>
 
             <div className="hero-actions">
@@ -214,7 +214,7 @@ function LandingPage() {
           <div className="landing-section__header">
             <span className="eyebrow">Why choose Data Diet?</span>
             <h2>AI plans that stay useful after generation.</h2>
-            <p>The platform is designed around practical nutrition, saved progress, and human support.</p>
+            <p>The platform is designed around practical nutrition, and human support.</p>
           </div>
 
           <div className="feature-grid">

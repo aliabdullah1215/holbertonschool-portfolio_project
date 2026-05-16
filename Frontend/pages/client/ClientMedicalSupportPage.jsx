@@ -35,13 +35,8 @@ function ClientMedicalSupportPage() {
   }, []);
 
   return (
-    <article className="workspace-card workspace-card--section">
-      <span className="eyebrow">Client Journey</span>
+    <article className="workspace-card workspace-card--section medical-support-page">
       <h2>Medical Support</h2>
-      <p>
-        Browse approved nutrition specialists on the platform and use their shared
-        contact details if you want to request a consultation.
-      </p>
 
       {isLoading ? <div className="section-note">Loading approved doctors...</div> : null}
       {error ? <p className="form-feedback form-feedback--error">{error}</p> : null}
@@ -57,29 +52,35 @@ function ClientMedicalSupportPage() {
       ) : null}
 
       {!isLoading && !error && doctors.length > 0 ? (
-        <div className="doctor-directory">
-          {doctors.map((doctor) => (
-            <article className="doctor-card" key={doctor.id}>
-              <div className="doctor-card__header">
-                <span className="eyebrow">Approved Doctor</span>
-                <h3>{doctor.full_name}</h3>
-              </div>
-              <p>{doctor.specialty}</p>
-              <div className="doctor-card__details">
-                <span>
-                  <strong>Username:</strong> {doctor.username}
-                </span>
-                <span>
-                  <strong>Email:</strong> {doctor.contact_email}
-                </span>
-                <span>
-                  <strong>Phone:</strong> {doctor.phone_number}
-                </span>
-              </div>
-            </article>
-          ))}
+        <div className="medical-support-content">
+          <div className="doctor-directory">
+            {doctors.map((doctor) => (
+              <article className="doctor-card" key={doctor.id}>
+                <div className="doctor-card__header">
+                  <h3>Dr. {doctor.full_name}</h3>
+                </div>
+                <p>{doctor.specialty}</p>
+                <div className="doctor-card__details">
+                  <span>
+                    <strong>Email:</strong> {doctor.contact_email}
+                  </span>
+                  <span>
+                    <strong>Phone:</strong> {doctor.phone_number}
+                  </span>
+                </div>
+              </article>
+            ))}
+          </div>
+
+          <div className="medical-support-statement">
+            <span>Trusted by certified</span>
+            <span>nutrition specialists</span>
+            <span>with proven expertise.</span>
+          </div>
+
         </div>
       ) : null}
+
     </article>
   );
 }

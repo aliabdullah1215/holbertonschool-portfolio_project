@@ -208,13 +208,6 @@ select {
 
 
 
-.logo-mark__text {
-  color: #082f18;
-  font-weight: 900;
-  letter-spacing: 0;
-  font-size: 1.05rem;
-}
-
 .workspace-card h2,
 .auth-card h2 {
   margin: 0 0 10px;
@@ -315,10 +308,218 @@ select {
   display: grid;
 }
 
+.client-about-page {
+  min-height: 900px;
+  padding: 42px;
+}
+
+.client-about-hero {
+  max-width: 760px;
+}
+
+.client-about-hero h1 {
+  margin: 18px 0 22px;
+  color: #043d18;
+  font-size: 4.2rem;
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: 0;
+}
+
+.client-about-hero p,
+.client-about-section__header p,
+.client-about-feature-card p,
+.client-about-step-card p {
+  color: var(--text-muted) !important;
+}
+
+.client-about-hero p {
+  max-width: 720px;
+  font-size: 1.15rem;
+  line-height: 1.8;
+}
+
+.client-about-section {
+  margin-top: 72px;
+}
+
+.client-about-section__header {
+  max-width: 760px;
+  margin: 0 auto 34px;
+  text-align: center;
+}
+
+.client-about-section__header h2 {
+  margin: 14px 0 14px;
+  color: #043d18;
+  font-size: 3rem;
+  font-weight: 900;
+  line-height: 1.08;
+}
+
+.client-about-feature-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 22px;
+}
+
+.client-about-feature-card,
+.client-about-step-card {
+  padding: 26px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid var(--line);
+  box-shadow: 0 18px 40px rgba(70, 120, 81, 0.1);
+}
+
+.client-about-feature-card h3,
+.client-about-step-card h3 {
+  margin: 0 0 10px;
+  color: #043d18;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.client-about-steps-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 18px;
+}
+
+.client-about-step-card {
+  text-align: center;
+}
+
+.client-about-step-card span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  margin-bottom: 18px;
+  border-radius: 999px;
+  background: #0b8f34;
+  color: #ffffff;
+  font-weight: 900;
+}
+
+.contact-page {
+  min-height: 620px;
+}
+
+.contact-page__header {
+  display: grid;
+  gap: 12px;
+  justify-items: center;
+  text-align: center;
+  margin-top: 25px;
+}
+
+.contact-page__header h2 {
+  margin: 0;
+  color: #043d18;
+  font-size: 2.8rem;
+  font-weight: 750;
+  line-height: 1.05;
+  letter-spacing: 0;
+}
+
+.contact-page__header p {
+  margin: 0;
+  color: #4f5a52 !important;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.contact-methods {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+  margin-top: 80px;
+}
+
+.contact-method-card {
+  min-height: 170px;
+  padding: 26px;
+  border-radius: 22px;
+  background: #044715;
+  color: #ffffff;
+  box-shadow: 0 18px 40px rgba(4, 61, 24, 0.18);
+}
+
+.contact-method-card h3 {
+  margin: 0 0 14px;
+  color: #ffffff;
+  font-size: 1.05rem;
+  font-weight: 500;
+}
+
+.contact-method-card p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.82) !important;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
 .workspace-card--section {
   gap: 18px;
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(250, 255, 250, 0.93));
+}
+
+.doctor-join-page {
+  min-height: 720px;
+}
+
+.doctor-join-layout {
+  display: grid;
+  grid-template-columns: minmax(360px, 520px) 1fr;
+  align-items: start;
+  gap: 72px;
+  margin-top: 28px;
+}
+
+.doctor-form {
+  max-width: 520px;
+  margin-top: 0;
+}
+
+.doctor-form input {
+  background: rgba(215, 235, 220, 0.72);
+  border: 1px solid rgba(127, 171, 136, 0.45);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 12px 26px rgba(70, 120, 81, 0.1);
+}
+
+.doctor-form input:focus {
+  background: rgba(230, 242, 232, 0.92);
+  border-color: rgba(8, 123, 43, 0.55);
+  box-shadow: 0 0 0 4px rgba(8, 123, 43, 0.12);
+}
+
+.doctor-join-copy {
+  padding-top: 0;
+  position: sticky;
+  top: 110px;
+}
+
+
+.doctor-join-copy h3 {
+  margin: 0 0 18px;
+  color: #043d18;
+  font-size: 3.4rem;
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: 0;
+}
+
+.doctor-join-copy p {
+  max-width: 520px;
+  margin: 0;
+  color: var(--text-muted) !important;
+  font-size: 1.1rem;
+  line-height: 1.8;
 }
 
 .assessment-tools-page {
@@ -369,20 +570,58 @@ select {
   font-weight: 700;
 }
 
+.medical-support-content {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  align-items: start;
+  gap: 72px;
+  margin-top: 20px;
+}
+
+
 .doctor-directory {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: max-content;
   gap: 16px;
-  margin-top: 20px;
+  margin-top: 0;
 }
 
 .doctor-card {
   display: grid;
   gap: 14px;
+  width: 360px;
   padding: 18px;
   border-radius: 18px;
-  background: rgba(250, 255, 250, 0.95);
-  border: 1px solid var(--line);
+  background: rgba(215, 235, 220, 0.92);
+  border: 1px solid rgba(127, 171, 136, 0.35);
+  backdrop-filter: blur(50px);
+  box-shadow: 0 16px 36px rgba(70, 120, 81, 0.14);
+}
+
+.medical-support-statement {
+  align-self: start;
+  position: sticky;
+  top: 110px;
+  justify-self: center;
+
+  max-width: 540px;
+
+  margin-top: 40px;
+
+  margin-right: 0;
+
+  color: #043d18;
+
+  font-size: clamp(2.2rem, 4vw, 4.2rem);
+  font-weight: 900;
+  line-height: 1.15;
+  letter-spacing: -1.5px;
+
+  text-align: left;
+
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
 }
 
 .doctor-card__header {
@@ -608,17 +847,7 @@ select {
   margin-top: 20px;
 }
 
-.ai-plans-intro {
-  margin-top: 16px;
-}
-
-.ai-plans-intro .content-card {
-  min-height: 180px;
-  align-content: start;
-}
-
-.content-card,
-.content-highlight {
+.content-card {
   display: grid;
   gap: 12px;
   padding: 20px;
@@ -650,16 +879,8 @@ select {
   line-height: 1.55;
 }
 
-.content-card h3,
-.content-highlight p {
+.content-card h3 {
   margin: 0;
-}
-
-.content-highlight {
-  align-content: start;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(248, 253, 248, 0.92)),
-    radial-gradient(circle at top right, rgba(143, 207, 157, 0.16), transparent 42%);
 }
 
 .plans-history-box {
@@ -725,7 +946,7 @@ select {
   align-items: flex-start;
 }
 
-.history-card__top > div {
+.history-card__top>div {
   min-width: 0;
   max-width: calc(100% - 112px);
 }
@@ -773,19 +994,6 @@ select {
   cursor: not-allowed;
   opacity: 0.6;
   box-shadow: none;
-}
-
-.history-status {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 38px;
-  padding: 0 14px;
-  border-radius: 999px;
-  background: var(--primary-soft);
-  color: var(--secondary);
-  font-weight: 600;
-  white-space: nowrap;
 }
 
 .step-progress {
@@ -884,21 +1092,6 @@ select {
 }
 
 
-.field-error {
-  color: #8f1d1d;
-  font-size: 0.92rem;
-}
-
-.question-error-alert {
-  margin: 0;
-  padding: 10px 12px;
-  border-radius: 12px;
-  background: rgba(143, 29, 29, 0.08);
-  color: #8f1d1d;
-  font-size: 0.9rem;
-  font-weight: 600;
-}
-
 .wizard-actions {
   display: flex;
   flex-wrap: wrap;
@@ -906,17 +1099,10 @@ select {
   margin-top: 20px;
 }
 
-.wizard-actions--stacked {
-  display: grid;
-}
-
 .nutrition-plan {
   display: grid;
   gap: 20px;
   margin-top: 28px;
-}
-
-.nutrition-plan {
   font-family: Inter, 'Segoe UI', system-ui, sans-serif;
   letter-spacing: 0;
 }
@@ -936,6 +1122,13 @@ select {
   gap: 20px;
 }
 
+.plan-summary-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
 .plan-summary-card__top h3 {
   margin-top: 14px;
 }
@@ -944,18 +1137,10 @@ select {
   min-width: 180px;
   min-height: 48px;
   border-radius: 999px;
-}
-
-.plan-reset-action {
-  display: flex;
-  align-items: end;
-  justify-content: center;
-}
-
-.plan-reset-action .ghost-link {
-  width: 100%;
-  min-height: 52px;
-  border-radius: 999px;
+  background: #043d18;
+  border-color: #043d18;
+  color: #ffffff;
+  box-shadow: 0 14px 28px rgba(4, 61, 24, 0.18);
 }
 
 .macro-grid {
@@ -1128,6 +1313,7 @@ select {
   font-weight: 800;
 }
 
+
 .dashboard-footer__links a {
   color: #64748b;
   font-weight: 600;
@@ -1137,7 +1323,6 @@ select {
   color: #087b2b;
 }
 
-.plan-day-card__header,
 .plan-meal-card__header,
 .food-row {
   display: flex;
@@ -1154,11 +1339,40 @@ select {
   line-height: 1.45;
 }
 
-.plan-meal-badges,
 .tag-list {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+}
+
+@media (max-width: 920px) {
+
+  .client-about-feature-grid,
+  .client-about-steps-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .client-about-hero h1 {
+    font-size: 3rem;
+  }
+
+  .doctor-directory,
+  .assessment-grid,
+  .content-hero,
+  .content-grid,
+  .step-progress,
+  .macro-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .history-card__top {
+    flex-direction: column;
+  }
+
+  .plan-meal-card__header,
+  .food-row {
+    flex-direction: column;
+  }
 }
 
 .tag-pill {
@@ -1197,6 +1411,7 @@ select {
   color: var(--text-muted);
 }
 
+
 .status-card {
   width: min(480px, calc(100% - 32px));
   margin: 48px auto;
@@ -1220,28 +1435,6 @@ select {
 
 .landing-page .hero-actions {
   margin-top: 28px;
-}
-
-@media (max-width: 920px) {
-
-  .doctor-directory,
-  .assessment-grid,
-  .content-hero,
-  .content-grid,
-  .step-progress,
-  .macro-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .history-card__top {
-    flex-direction: column;
-  }
-
-  .plan-day-card__header,
-  .plan-meal-card__header,
-  .food-row {
-    flex-direction: column;
-  }
 }
 
 @media (max-width: 640px) {
@@ -1325,6 +1518,7 @@ select {
   gap: 12px;
   flex-shrink: 0;
 }
+
 .landing-nav__brand {
   justify-self: start;
 }
@@ -1616,6 +1810,7 @@ select {
   font-weight: 800;
   box-shadow: 0 14px 30px var(--brand-green-glow);
 }
+
 .feature-card__icon svg {
   width: 25px;
   height: 25px;
@@ -2041,6 +2236,23 @@ html {
   width: 100%;
 }
 
+.doctor-home-page {
+  width: 100%;
+  min-height: calc(100svh - 76px);
+  display: grid;
+  place-items: center;
+  text-align: center;
+  background:
+    linear-gradient(180deg, rgba(232, 255, 240, 0.78), rgba(255, 255, 255, 0.92)),
+    radial-gradient(circle at center, rgba(8, 123, 43, 0.16), transparent 44%);
+}
+
+.dashboard-layout--topnav .dashboard-layout__workspace:has(.doctor-home-page) {
+  width: 100%;
+  min-height: calc(100svh - 76px);
+  padding: 0;
+}
+
 .client-home-page {
   width: 100%;
   min-height: calc(100svh - 76px);
@@ -2100,6 +2312,7 @@ html {
 }
 
 @keyframes floatButton {
+
   0%,
   100% {
     transform: translateY(0);
@@ -2110,35 +2323,8 @@ html {
   }
 }
 
-.dashboard-page__hero {
-  min-height: 360px;
-  display: grid;
-  place-items: center;
-  align-content: center;
-  gap: 14px;
-  text-align: center;
-  padding: 72px 24px;
-  background:
-    linear-gradient(180deg, rgba(236, 255, 242, 0.76), rgba(255, 255, 255, 0.92)),
-    radial-gradient(circle at center, rgba(8, 123, 43, 0.12), transparent 42%);
-  border-bottom: 1px solid rgba(8, 123, 43, 0.08);
-}
-
-.dashboard-page__hero h1 {
-  margin: 0;
-  max-width: 760px;
-  color: #073d18;
-  font-size: clamp(2.6rem, 5vw, 4.8rem);
-  line-height: 0.98;
-  letter-spacing: 0;
-}
-
-.dashboard-page__hero p {
-  max-width: 700px;
-  margin: 0;
-  color: #475569;
-  font-size: 1.12rem;
-  line-height: 1.7;
+.dashboard-layout--topnav .dashboard-layout__workspace:has(.doctor-join-page) {
+  width: min(1250px, calc(100% - 32px));
 }
 
 .dashboard-layout--topnav .dashboard-layout__workspace {
@@ -2156,7 +2342,23 @@ html {
   padding: 0;
 }
 
+.dashboard-layout--topnav .dashboard-layout__workspace:has(.contact-page) {
+  width: min(1120px, calc(100% - 32px));
+}
+
+.dashboard-layout--topnav .dashboard-layout__workspace:has(.client-about-page) {
+  width: min(1250px, calc(100% - 32px));
+}
+
+.dashboard-layout--topnav .dashboard-layout__workspace:has(.doctor-about-page) {
+  width: min(1250px, calc(100% - 32px));
+}
+
 .dashboard-layout--topnav .dashboard-layout__workspace:has(.plans-history-page) {
+  width: min(1120px, calc(100% - 32px));
+}
+
+.dashboard-layout--topnav .dashboard-layout__workspace:has(.medical-support-page) {
   width: min(1120px, calc(100% - 32px));
 }
 
@@ -2182,8 +2384,4 @@ html {
     gap: 14px;
   }
 
-  .dashboard-page__hero {
-    min-height: 300px;
-    padding: 46px 18px;
-  }
 }
