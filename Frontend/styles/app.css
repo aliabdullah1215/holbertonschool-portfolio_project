@@ -534,7 +534,7 @@ select {
 }
 
 .dashboard-layout--topnav .dashboard-layout__workspace:has(.assessment-tools-page) {
-  width: min(900px, calc(100% - 32px));
+  width: min(1050px, calc(100% - 32px));
 }
 
 .section-note-list {
@@ -881,6 +881,102 @@ select {
 
 .content-card h3 {
   margin: 0;
+}
+
+.plans-history-content {
+  display: grid;
+  grid-template-columns: minmax(360px, 460px) minmax(360px, 1fr);
+  align-items: start;
+  gap: 28px;
+}
+
+.plan-stats-column {
+  display: grid;
+  gap: 22px;
+}
+
+.plan-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  justify-self: end;
+  width: min(540px, 100%);
+}
+
+.plan-stat-card {
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  min-height: 86px;
+  max-height: 96px;
+  padding: 14px;
+  border-radius: 16px;
+  background: rgba(250, 255, 250, 0.95);
+  border: 1px solid rgba(8, 123, 43, 0.16);
+  box-shadow: 0 12px 24px rgba(8, 123, 43, 0.07);
+}
+
+.plan-stat-card__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  background: rgba(8, 123, 43, 0.1);
+  color: #087b2b;
+}
+
+.plan-stat-card__icon svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.plan-stat-card__label {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.plan-stat-card strong {
+  display: block;
+  color: var(--text);
+  font-size: 1rem;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.plan-stats-message {
+  width: min(560px, 100%);
+  justify-self: end;
+  margin: 24px 0 0;
+  color: #043d18 !important;
+  font-size: clamp(1.75rem, 2.6vw, 2.85rem);
+  font-weight: 900;
+  line-height: 1.18;
+  letter-spacing: 0;
+  text-align: left;
+}
+
+.plan-stats-message span,
+.plan-stats-message strong {
+  display: block;
+}
+
+.plan-stats-message strong {
+  margin-top: 10px;
+  color: #087b2b;
+  font-size: clamp(1.2rem, 1.6vw, 1.65rem);
+  font-weight: 800;
+  line-height: 1.35;
 }
 
 .plans-history-box {
@@ -1373,6 +1469,13 @@ select {
   .food-row {
     flex-direction: column;
   }
+}
+
+.plans-history-grid,
+
+
+.plan-stats-panel {
+  position: static;
 }
 
 .tag-pill {
