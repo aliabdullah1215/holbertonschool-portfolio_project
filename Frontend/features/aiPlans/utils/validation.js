@@ -4,6 +4,24 @@ function isEmptyValue(value) {
   return value === '' || value === null || value === undefined;
 }
 
+export function validateAiPlanField(field, answers) {
+  const value = answers[field.id];
+
+  if (field.type === 'checkbox-group' && (!Array.isArray(value) || value.length === 0)) {
+    return 'Please select at least one option.';
+  }
+
+  if (isEmptyValue(value)) {
+    return 'This field is required.';
+  }
+
+  if (field.type === 'number' && Number(value) <= 0) {
+    return 'Please enter a valid value.';
+  }
+
+  return '';
+}
+
 export function validateAiPlanAnswers(answers, stepId = null) {
   const errors = {};
   const stepsToValidate = stepId

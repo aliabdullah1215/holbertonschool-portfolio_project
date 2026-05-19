@@ -1,7 +1,7 @@
 const teamMembers = [
   {
     name: 'Ali Summan',
-    role: 'Frontend Developer',
+    role: 'Project Manager',
   },
   {
     name: 'Mohammed Basuliman',
@@ -13,7 +13,7 @@ const teamMembers = [
   },
   {
     name: 'Hussam Almutairi',
-    role: 'AI Engineer',
+    role: 'Backend Developer',
   },
 ];
 

@@ -12,7 +12,7 @@ import {
   replaceMealWithAlternative,
 } from './utils/planEditors';
 import { validateNutritionPlan } from './utils/planValidation';
-import { validateAiPlanAnswers } from './utils/validation';
+import { validateAiPlanAnswers, validateAiPlanField } from './utils/validation';
 
 const storageKey = 'data-diet-ai-plans-session';
 
@@ -99,6 +99,24 @@ function AiPlansWorkspace() {
       [name]: value,
     }));
     setStepErrors((current) => ({ ...current, [name]: undefined }));
+  }
+
+  function handleValidateField(field) {
+    const fieldError = validateAiPlanField(field, answers);
+
+    if (fieldError) {
+      setStepErrors((current) => ({
+        ...current,
+        [field.id]: fieldError,
+      }));
+      return false;
+    }
+
+    setStepErrors((current) => ({
+      ...current,
+      [field.id]: undefined,
+    }));
+    return true;
   }
 
   function handleNextStep() {
@@ -208,6 +226,7 @@ function AiPlansWorkspace() {
           onChange={handleAnswerChange}
           onNext={handleNextStep}
           onSubmit={handleGeneratePlan}
+          onValidateField={handleValidateField}
         />
       ) : null}
 

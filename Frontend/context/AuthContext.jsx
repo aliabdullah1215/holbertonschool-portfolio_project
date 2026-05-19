@@ -46,14 +46,14 @@ function AuthProvider({ children }) {
         }
       } catch {
         try {
-          const { access } = await refreshAccessToken();
+          const { access, refresh } = await refreshAccessToken();
           const currentUser = await fetchCurrentUser();
 
           if (isMounted) {
             setUser(currentUser);
             setAuthStorage({
               access,
-              refresh: refreshToken,
+              refresh: refresh || refreshToken,
               user: currentUser,
             });
           }

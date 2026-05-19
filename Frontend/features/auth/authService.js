@@ -49,10 +49,10 @@ export async function refreshAccessToken() {
     throw new Error('Missing refresh token');
   }
 
-  const response = await api.post('users/token/refresh/', { refresh });
+  const response = await api.post('token/refresh/', { refresh });
   setAuthStorage({
     access: response.data.access,
-    refresh,
+    refresh: response.data.refresh || refresh,
     user: getStoredUser(),
   });
   return response.data;

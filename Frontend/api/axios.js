@@ -9,7 +9,7 @@ import {
 
 const api = axios.create({
     // Use port 8000 to match the Django backend
-    baseURL: 'http://localhost:8000/api/', 
+    baseURL: 'http://localhost:8000/api/',
     headers: {
         'Content-Type': 'application/json'
     }
@@ -46,16 +46,16 @@ api.interceptors.response.use(
                 // IMPORTANT: Ensure this path matches your Django JWT refresh URL
                 // If using SimpleJWT default views, it might be 'token/refresh/' or similar
                 const refreshResponse = await axios.post(
-                    'http://localhost:8000/api/token/refresh/', 
+                    'http://localhost:8000/api/token/refresh/',
                     { refresh: refreshToken }
                 );
 
                 const nextAccessToken = refreshResponse.data.access;
+                const nextRefreshToken = refreshResponse.data.refresh || refreshToken;
 
-                // Update the storage with the new access token
                 setAuthStorage({
                     access: nextAccessToken,
-                    refresh: refreshToken,
+                    refresh: nextRefreshToken,
                     user: getStoredUser(),
                 });
 

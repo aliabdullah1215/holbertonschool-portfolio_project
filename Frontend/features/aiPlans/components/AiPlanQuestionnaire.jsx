@@ -93,6 +93,7 @@ function AiPlanQuestionnaire({
   onChange,
   onNext,
   onSubmit,
+  onValidateField,
 }) {
   const [currentFieldIndex, setCurrentFieldIndex] = useState(0);
   const currentStep = questionnaireSteps[currentStepIndex];
@@ -135,7 +136,7 @@ function AiPlanQuestionnaire({
   }
 
   function handleNextQuestion() {
-    if (errors[currentField.id]) {
+    if (!onValidateField(currentField)) {
       return;
     }
 
@@ -151,7 +152,6 @@ function AiPlanQuestionnaire({
 
     onNext();
   }
-
 
   return (
     <section className="assessment-card assessment-card--form assessment-card--single-question">
@@ -185,7 +185,10 @@ function AiPlanQuestionnaire({
           <label>
             {currentField.label}
             <FieldControl field={currentField} value={answers[currentField.id]} onChange={onChange} />
-            
+            {errors[currentField.id] ? (
+              <p className="form-feedback form-feedback--error">{errors[currentField.id]}</p>
+            ) : null}
+
           </label>
         </div>
 

@@ -109,7 +109,7 @@ select {
   padding: 0 20px;
   border-radius: 999px;
   border: 1px solid transparent;
-  font-weight: 700;
+  font-weight: 620;
   transition:
     transform 160ms ease,
     background-color 160ms ease,
@@ -793,7 +793,7 @@ select {
   border: none;
   border-radius: 999px;
   color: #ffffff;
-  font-weight: 700;
+  font-weight: 620;
   background: linear-gradient(135deg, var(--brand-green-light), var(--brand-green), var(--brand-green-dark));
   box-shadow: 0 16px 34px var(--brand-green-glow);
   cursor: pointer;
@@ -1442,6 +1442,13 @@ select {
 }
 
 @media (max-width: 920px) {
+  .plan-stats-column {
+    order: -1;
+  }
+
+  .plans-history-box {
+    order: 1;
+  }
 
   .client-about-feature-grid,
   .client-about-steps-grid {
@@ -2409,7 +2416,7 @@ html {
   border-radius: 999px;
   background: linear-gradient(135deg, #16a34a, #087b2b, #055f21);
   color: #ffffff;
-  font-weight: 700;
+  font-weight: 620;
   box-shadow: 0 16px 34px rgba(8, 123, 43, 0.26);
   animation: floatButton 2.4s ease-in-out infinite;
 }
@@ -2487,4 +2494,290 @@ html {
     gap: 14px;
   }
 
+}
+@media (max-width: 920px) {
+  .plans-history-content {
+    display: grid;
+    grid-template-columns: 1fr !important;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  .plan-stats-column {
+    order: -1;
+    width: 100%;
+    max-width: 100%;
+    justify-self: stretch;
+  }
+
+  .plans-history-box {
+    order: 1;
+    width: 100%;
+    max-width: 100%;
+    justify-self: stretch;
+  }
+
+  .plan-stats-grid {
+    grid-template-columns: 1fr;
+    width: 100%;
+    max-width: 100%;
+    justify-self: stretch;
+  }
+
+  .plan-stats-message {
+    width: 100%;
+    max-width: 100%;
+    justify-self: stretch;
+    overflow-wrap: anywhere;
+  }
+}
+@media (max-width: 920px) {
+  .medical-support-content {
+    grid-template-columns: 1fr !important;
+    gap: 20px;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  .doctor-directory {
+    grid-template-columns: 1fr !important;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .doctor-card {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .medical-support-statement {
+    position: static;
+    order: -1;
+    width: 100%;
+    max-width: 100%;
+    margin-top: 0;
+    font-size: 1.8rem;
+    line-height: 1.18;
+    letter-spacing: 0;
+    overflow-wrap: anywhere;
+  }
+}
+
+@media (max-width: 560px) {
+  .dashboard-layout--topnav .dashboard-layout__workspace:has(.medical-support-page) {
+    width: min(100%, calc(100% - 20px));
+  }
+
+  .medical-support-page {
+    min-height: auto;
+  }
+
+  .doctor-card {
+    padding: 16px;
+    border-radius: 16px;
+  }
+
+  .doctor-card__details span {
+    overflow-wrap: anywhere;
+  }
+
+  .medical-support-statement {
+    font-size: 1.55rem;
+    gap: 8px;
+  }
+}
+@media (max-width: 920px) {
+  .contact-page {
+    min-height: auto;
+    overflow: hidden;
+  }
+
+  .contact-page__header {
+    margin-top: 10px;
+  }
+
+  .contact-page__header h2 {
+    font-size: 2rem;
+    line-height: 1.12;
+    overflow-wrap: anywhere;
+  }
+
+  .contact-methods {
+    grid-template-columns: 1fr !important;
+    gap: 16px;
+    margin-top: 32px;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .contact-method-card {
+    width: 100%;
+    max-width: 100%;
+    min-height: auto;
+    padding: 20px;
+    border-radius: 16px;
+  }
+
+  .contact-method-card a,
+  .contact-method-card p {
+    overflow-wrap: anywhere;
+  }
+}
+
+@media (max-width: 560px) {
+  .dashboard-layout--topnav .dashboard-layout__workspace:has(.contact-page) {
+    width: min(100%, calc(100% - 20px));
+  }
+
+  .contact-page__header h2 {
+    font-size: 1.7rem;
+  }
+
+  .contact-page__header p {
+    font-size: 0.95rem;
+  }
+
+  .contact-method-card {
+    padding: 18px;
+  }
+}
+@media (max-width: 920px) {
+  .doctor-join-layout {
+    grid-template-columns: 1fr !important;
+    gap: 24px;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  .doctor-join-copy {
+    position: static;
+    order: -1;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .doctor-join-copy h3 {
+    font-size: 2rem;
+    line-height: 1.12;
+    overflow-wrap: anywhere;
+  }
+
+  .doctor-join-copy p {
+    max-width: 100%;
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .doctor-form {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .doctor-form input,
+  .doctor-form button {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 560px) {
+  .dashboard-layout--topnav .dashboard-layout__workspace:has(.doctor-join-page) {
+    width: min(100%, calc(100% - 20px));
+  }
+
+  .doctor-join-page {
+    min-height: auto;
+  }
+
+  .doctor-join-layout {
+    margin-top: 12px;
+  }
+
+  .doctor-join-copy h3 {
+    font-size: 1.65rem;
+  }
+
+  .doctor-form input {
+    min-height: 48px;
+  }
+}
+.client-home-page {
+  position: relative;
+  overflow: hidden;
+}
+
+.client-home-page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      120deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0) 35%,
+      rgba(255, 255, 255, 0.95) 48%,
+      rgba(180, 255, 205, 0.75) 52%,
+      rgba(255, 255, 255, 0) 66%,
+      transparent 100%
+    );
+  transform: translateX(-130%);
+  animation: pageShine 3s ease-in-out infinite;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+.client-home-hero {
+  position: relative;
+  z-index: 1;
+}
+
+.client-home-hero h1 {
+  position: relative;
+  color: #087b2b;
+  text-shadow:
+    0 0 14px rgba(8, 123, 43, 0.35),
+    0 0 34px rgba(22, 163, 74, 0.35),
+    0 0 58px rgba(134, 239, 172, 0.45);
+  animation: titleGlow 2.2s ease-in-out infinite;
+}
+
+@keyframes pageShine {
+  0% {
+    transform: translateX(-130%);
+    opacity: 0;
+  }
+
+  20% {
+    opacity: 1;
+  }
+
+  65% {
+    transform: translateX(130%);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateX(130%);
+    opacity: 0;
+  }
+}
+
+@keyframes titleGlow {
+  0%,
+  100% {
+    text-shadow:
+      0 0 12px rgba(8, 123, 43, 0.28),
+      0 0 28px rgba(22, 163, 74, 0.28),
+      0 0 46px rgba(134, 239, 172, 0.35);
+  }
+
+  50% {
+    text-shadow:
+      0 0 20px rgba(8, 123, 43, 0.55),
+      0 0 46px rgba(22, 163, 74, 0.55),
+      0 0 82px rgba(134, 239, 172, 0.75);
+  }
 }
