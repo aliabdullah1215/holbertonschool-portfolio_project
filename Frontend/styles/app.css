@@ -1533,6 +1533,113 @@ select {
   text-align: center;
 }
 
+.dashboard-layout--topnav .dashboard-layout__workspace:has(.admin-doctor-applications-page) {
+  width: min(1180px, calc(100% - 48px));
+  justify-items: center;
+}
+
+.admin-doctor-applications-page {
+  width: 100%;
+  display: grid;
+  gap: 24px;
+}
+
+.admin-doctor-applications-page .dashboard-section-page__heading {
+  width: 100%;
+  max-width: 1180px;
+  margin-inline: auto;
+}
+
+.admin-doctor-applications-page .dashboard-section-page__heading h1 {
+  margin-bottom: 12px;
+}
+.admin-table-wrap {
+  width: 100%;
+  max-width: 1180px;
+  overflow-x: auto;
+  margin: 0 auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.94);
+}
+
+.admin-table {
+  width: 100%;
+  min-width: 980px;
+  border-collapse: collapse;
+}
+
+.admin-table th,
+.admin-table td {
+  padding: 16px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  vertical-align: middle;
+}
+
+.admin-table th {
+  color: #496755;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.admin-table td {
+  color: var(--text);
+}
+
+.admin-table td strong {
+  display: block;
+  margin-bottom: 6px;
+}
+
+.admin-table td span {
+  display: block;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.admin-status {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  justify-content: center;
+  min-width: 86px;
+  padding: 7px 12px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  text-transform: capitalize;
+}
+
+.admin-status--pending {
+  background: #fff4d6;
+  color: #7a5200;
+}
+
+.admin-status--approved {
+  background: #dff8e7;
+  color: #136b35;
+}
+
+.admin-status--rejected {
+  background: #ffe1e1;
+  color: #9d1c1c;
+}
+
+.admin-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-actions button {
+  min-height: 38px;
+  padding: 8px 14px;
+  border-radius: 5px;
+}
+
 .eyebrow {
   display: inline-flex;
   align-items: center;
@@ -2495,6 +2602,7 @@ html {
   }
 
 }
+
 @media (max-width: 920px) {
   .plans-history-content {
     display: grid;
@@ -2532,6 +2640,7 @@ html {
     overflow-wrap: anywhere;
   }
 }
+
 @media (max-width: 920px) {
   .medical-support-content {
     grid-template-columns: 1fr !important;
@@ -2588,6 +2697,7 @@ html {
     gap: 8px;
   }
 }
+
 @media (max-width: 920px) {
   .contact-page {
     min-height: auto;
@@ -2643,6 +2753,7 @@ html {
     padding: 18px;
   }
 }
+
 @media (max-width: 920px) {
   .doctor-join-layout {
     grid-template-columns: 1fr !important;
@@ -2704,6 +2815,7 @@ html {
     min-height: 48px;
   }
 }
+
 .client-home-page {
   position: relative;
   overflow: hidden;
@@ -2714,15 +2826,13 @@ html {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(
-      120deg,
+    linear-gradient(120deg,
       transparent 0%,
       rgba(255, 255, 255, 0) 35%,
       rgba(255, 255, 255, 0.95) 48%,
       rgba(180, 255, 205, 0.75) 52%,
       rgba(255, 255, 255, 0) 66%,
-      transparent 100%
-    );
+      transparent 100%);
   transform: translateX(-130%);
   animation: pageShine 3s ease-in-out infinite;
   pointer-events: none;
@@ -2766,6 +2876,7 @@ html {
 }
 
 @keyframes titleGlow {
+
   0%,
   100% {
     text-shadow:
@@ -2780,4 +2891,45 @@ html {
       0 0 46px rgba(22, 163, 74, 0.55),
       0 0 82px rgba(134, 239, 172, 0.75);
   }
+}
+.dashboard-layout--topnav .dashboard-layout__workspace:has(.admin-doctor-applications-page) {
+  width: min(1180px, calc(100% - 48px));
+  margin-inline: auto;
+  justify-items: center;
+}
+
+.admin-doctor-applications-page {
+  width: 100%;
+  margin-inline: auto;
+}
+
+.admin-table-wrap {
+  width: 100%;
+  max-width: 1180px;
+  margin-inline: auto;
+}
+.dashboard-layout--topnav .dashboard-layout__workspace:has(.admin-users-page) {
+  width: min(1040px, calc(100% - 48px));
+  margin-inline: auto;
+  justify-items: center;
+}
+
+.admin-users-page {
+  width: 100%;
+  margin-inline: auto;
+}
+.admin-status--client {
+  background: #e8f1ff;
+  color: #1d4f91;
+}
+
+.admin-status--doctor {
+  background: #e7f8ec;
+  color: #126531;
+}
+
+.admin-status--admin,
+.admin-status--superuser {
+  background: #ede9fe;
+  color: #5b21b6;
 }

@@ -5,6 +5,8 @@ from .views import (
     CurrentUserView,
     DoctorApplicationView,
     ApprovedDoctorListView,
+    AdminDoctorApplicationListView,
+    AdminUserListView,
     ApproveDoctorApplicationView,
     RejectDoctorApplicationView,
 )
@@ -14,7 +16,9 @@ urlpatterns = [
     path('login/', LoginView.as_view(), name='login'),
     path('me/', CurrentUserView.as_view(), name='current-user'),
     path('doctor-application/', DoctorApplicationView.as_view(), name='doctor-application'),
+    path('admin/users/', AdminUserListView.as_view(), name='admin-users'),
     path('approved-doctors/', ApprovedDoctorListView.as_view(), name='approved-doctors'),
+    path('admin/doctor-applications/', AdminDoctorApplicationListView.as_view(), name='admin-doctor-applications'),
     path('doctor-applications/<int:pk>/approve/', ApproveDoctorApplicationView.as_view(), name='approve-doctor-application'),
     path('doctor-applications/<int:pk>/reject/', RejectDoctorApplicationView.as_view(), name='reject-doctor-application'),
 ]

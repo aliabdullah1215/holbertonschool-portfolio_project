@@ -6,8 +6,10 @@ from django.contrib.auth import authenticate
 from django.utils import timezone
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from .models import DoctorApplication, DoctorProfile
+from .models import DoctorApplication, DoctorProfile, User
 from .serializers import (
+    AdminDoctorApplicationSerializer,
+    AdminUserSerializer,
     ApprovedDoctorSerializer,
     CurrentUserSerializer,
     DoctorApplicationSerializer,
@@ -44,16 +46,27 @@ class LoginView(APIView):
 
         if user is not None:
             refresh = RefreshToken.for_user(user)
-
+            user_role = 'admin' if user.is_staff or user.is_superuser else getattr(user, 'role', 'client')
             return Response({
                 "refresh": str(refresh),
                 "access": str(refresh.access_token),
-                "user": {
+
+                              "user": {
                     "id": user.id,
                     "username": user.username,
                     "email": user.email,
-                    "role": getattr(user, 'role', 'client')
+                    "role": user_role,
+                    "is_staff": user.is_staff,
+                    "is_superuser": user.is_superuser,
+                    "permissions": [
+                        'view_dashboard',
+                        'view_users',
+                        'view_doctor_applications',
+                        'approve_doctor_applications',
+                        'reject_doctor_applications',
+                    ] if user_role == 'admin' else [],
                 },
+
                 "message": "Login successful"
             }, status=status.HTTP_200_OK)
 
@@ -91,9 +104,9 @@ class DoctorApplicationView(generics.GenericAPIView):
     def post(self, request, *args, **kwargs):
         if request.user.role != 'doctor':
             return Response(
-        {"detail": "Only doctor accounts can submit doctor applications."},
-        status=status.HTTP_403_FORBIDDEN
-    )
+                {"detail": "Only doctor accounts can submit doctor applications."},
+                status=status.HTTP_403_FORBIDDEN
+            )
 
         if DoctorApplication.objects.filter(user=request.user).exists():
             return Response(
@@ -115,6 +128,19 @@ class ApprovedDoctorListView(generics.ListAPIView):
     def get_queryset(self):
         return DoctorApplication.objects.filter(status='approved')
 
+class AdminUserListView(generics.ListAPIView):
+    serializer_class = AdminUserSerializer
+    permission_classes = [permissions.IsAdminUser]
+
+    def get_queryset(self):
+        return User.objects.all().order_by('-date_joined')
+    
+class AdminDoctorApplicationListView(generics.ListAPIView):
+    serializer_class = AdminDoctorApplicationSerializer
+    permission_classes = [permissions.IsAdminUser]
+
+    def get_queryset(self):
+        return DoctorApplication.objects.select_related('user').all()
 
 class ApproveDoctorApplicationView(APIView):
     permission_classes = [permissions.IsAdminUser]

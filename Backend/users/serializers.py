@@ -20,9 +20,38 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class CurrentUserSerializer(serializers.ModelSerializer):
+    role = serializers.SerializerMethodField()
+    permissions = serializers.SerializerMethodField()
+
     class Meta:
         model = User
-        fields = ('id', 'username', 'email', 'role')
+        fields = (
+            'id',
+            'username',
+            'email',
+            'role',
+            'is_staff',
+            'is_superuser',
+            'permissions',
+        )
+
+    def get_role(self, obj):
+        if obj.is_staff or obj.is_superuser:
+            return 'admin'
+
+        return obj.role
+
+    def get_permissions(self, obj):
+        if not (obj.is_staff or obj.is_superuser):
+            return []
+
+        return [
+            'view_dashboard',
+            'view_users',
+            'view_doctor_applications',
+            'approve_doctor_applications',
+            'reject_doctor_applications',
+        ]
 
 
 class DoctorApplicationSerializer(serializers.ModelSerializer):
@@ -89,21 +118,69 @@ class DoctorApplicationSerializer(serializers.ModelSerializer):
 
         return normalized_value
 
-    def validate(self, data):
+class AdminUserSerializer(serializers.ModelSerializer):
+    display_role = serializers.SerializerMethodField()
+
+    class Meta:
+        model = User
+        fields = [
+            'id',
+            'username',
+            'email',
+            'role',
+            'display_role',
+            'is_staff',
+            'is_superuser',
+            'is_active',
+            'date_joined',
+        ]
+
+    def get_display_role(self, obj):
+        if obj.is_superuser:
+            return 'superuser'
+
+        if obj.is_staff:
+            return 'admin'
+
+        return obj.role
+    
+class AdminDoctorApplicationSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(source='user.username', read_only=True)
+    user_email = serializers.EmailField(source='user.email', read_only=True)
+    user_role = serializers.CharField(source='user.role', read_only=True)
+    certificate_file_url = serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = DoctorApplication
+        fields = [
+            'id',
+            'username',
+            'user_email',
+            'user_role',
+            'full_name',
+            'age',
+            'specialty',
+            'phone_number',
+            'contact_email',
+            'certificate_file_url',
+            'status',
+            'reviewed_at',
+            'created_at',
+            'updated_at',
+        ]
+
+    def get_certificate_file_url(self, obj):
+        if not obj.certificate_file:
+            return None
+
         request = self.context.get('request')
-        user = request.user
+        url = obj.certificate_file.url
 
-        if user.role != 'doctor':
-            raise serializers.ValidationError(
-                "Only doctor accounts can submit doctor applications."
-            )
+        if request:
+            return request.build_absolute_uri(url)
 
-        if DoctorApplication.objects.filter(user=user).exists():
-            raise serializers.ValidationError(
-                "You already submitted a doctor application."
-            )
-
-        return data
+        return url
+    
 
 
 class ApprovedDoctorSerializer(serializers.ModelSerializer):

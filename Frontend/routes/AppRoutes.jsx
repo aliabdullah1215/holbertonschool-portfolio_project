@@ -2,6 +2,10 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import AuthLayout from '../components/layout/AuthLayout';
 import LoginScreen from '../pages/auth/LoginScreen';
 import RegisterScreen from '../pages/auth/RegisterScreen';
+import AdminDoctorApplicationsPage from '../pages/admin/AdminDoctorApplicationsPage';
+import AdminHomePage from '../pages/admin/AdminHomePage';
+import AdminShellPage from '../pages/admin/AdminShellPage';
+import AdminUsersPage from '../pages/admin/AdminUsersPage';
 import ClientAboutPage from '../pages/client/ClientAboutPage';
 import ClientAiPlansPage from '../pages/client/ClientAiPlansPage';
 import ClientAssessmentToolsPage from '../pages/client/ClientAssessmentToolsPage';
@@ -34,6 +38,20 @@ function AppRoutes() {
       >
         <Route path="/login" element={<LoginScreen />} />
         <Route path="/register" element={<RegisterScreen />} />
+      </Route>
+
+      <Route
+        path="/admin-dashboard"
+        element={
+          <ProtectedRoute allowedRole="admin">
+            <AdminShellPage />
+          </ProtectedRoute>
+        }
+      >
+        <Route index element={<Navigate replace to="home" />} />
+        <Route path="home" element={<AdminHomePage />} />
+        <Route path="doctor-applications" element={<AdminDoctorApplicationsPage />} />
+        <Route path="users" element={<AdminUsersPage />} />
       </Route>
 
       <Route
