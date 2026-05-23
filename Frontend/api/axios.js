@@ -7,9 +7,11 @@ import {
     setAuthStorage,
 } from '../features/auth/authStorage';
 
+const API_BASE_URL =
+    import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api/';
+
 const api = axios.create({
-    // Use port 8000 to match the Django backend
-    baseURL: 'http://localhost:8000/api/',
+    baseURL: API_BASE_URL,
     headers: {
         'Content-Type': 'application/json'
     }
@@ -46,7 +48,7 @@ api.interceptors.response.use(
                 // IMPORTANT: Ensure this path matches your Django JWT refresh URL
                 // If using SimpleJWT default views, it might be 'token/refresh/' or similar
                 const refreshResponse = await axios.post(
-                    'http://localhost:8000/api/token/refresh/',
+                    `${API_BASE_URL}token/refresh/`,
                     { refresh: refreshToken }
                 );
 
