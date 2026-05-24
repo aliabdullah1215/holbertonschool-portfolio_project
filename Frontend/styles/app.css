@@ -2295,7 +2295,6 @@ html {
   position: sticky;
   top: 0;
   z-index: 30;
-  box-shadow: none;
 }
 
 .dashboard-topbar__brand {
@@ -2335,15 +2334,12 @@ html {
   color: #0f172a;
   font-weight: 600;
   cursor: pointer;
-  box-shadow: none;
+  box-shadow: 0 10px 24px rgba(8, 123, 43, 0.08);
 }
 
-.dashboard-topbar__logout:hover,
-.dashboard-topbar__logout:focus,
-.dashboard-topbar__logout:focus-visible {
+.dashboard-topbar__logout:hover {
   color: #ffffff;
   background: linear-gradient(135deg, #16a34a, #087b2b, #043f17);
-  box-shadow: none;
 }
 
 .dashboard-page {
