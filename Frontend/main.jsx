@@ -4,6 +4,7 @@ import './index.css'
 import './styles/app.css'
 import AppRoot from './app/AppRoot.jsx'
 
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <AppRoot />
