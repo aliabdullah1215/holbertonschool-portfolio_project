@@ -18,8 +18,8 @@ function AdminHomePage() {
             Doctor applications
           </Link>
 
-          <Link className="client-home-cta" to="/admin-dashboard/permissions">
-            View permissions
+          <Link className="client-home-cta" to="/admin-dashboard/users">
+            View users
           </Link>
         </div>
       </div>
