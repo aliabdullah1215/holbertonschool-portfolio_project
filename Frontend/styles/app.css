@@ -1553,6 +1553,7 @@ select {
 .admin-doctor-applications-page .dashboard-section-page__heading h1 {
   margin-bottom: 12px;
 }
+
 .admin-table-wrap {
   width: 100%;
   max-width: 1180px;
@@ -2402,6 +2403,7 @@ html {
   position: sticky;
   top: 0;
   z-index: 30;
+  box-shadow: none;
 }
 
 .dashboard-topbar__brand {
@@ -2441,12 +2443,15 @@ html {
   color: #0f172a;
   font-weight: 600;
   cursor: pointer;
-  box-shadow: 0 10px 24px rgba(8, 123, 43, 0.08);
+  box-shadow: none;
 }
 
-.dashboard-topbar__logout:hover {
+.dashboard-topbar__logout:hover,
+.dashboard-topbar__logout:focus,
+.dashboard-topbar__logout:focus-visible {
   color: #ffffff;
   background: linear-gradient(135deg, #16a34a, #087b2b, #043f17);
+  box-shadow: none;
 }
 
 .dashboard-page {
@@ -2891,7 +2896,9 @@ html {
       0 0 46px rgba(22, 163, 74, 0.55),
       0 0 82px rgba(134, 239, 172, 0.75);
   }
+
 }
+
 .dashboard-layout--topnav .dashboard-layout__workspace:has(.admin-doctor-applications-page) {
   width: min(1180px, calc(100% - 48px));
   margin-inline: auto;
@@ -2908,6 +2915,7 @@ html {
   max-width: 1180px;
   margin-inline: auto;
 }
+
 .dashboard-layout--topnav .dashboard-layout__workspace:has(.admin-users-page) {
   width: min(1040px, calc(100% - 48px));
   margin-inline: auto;
@@ -2918,6 +2926,7 @@ html {
   width: 100%;
   margin-inline: auto;
 }
+
 .admin-status--client {
   background: #e8f1ff;
   color: #1d4f91;
