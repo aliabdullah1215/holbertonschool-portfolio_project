@@ -1251,29 +1251,6 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
-
-      {/* ─── FOOTER ─── */}
-      <footer className="footer">
-        <div className="container">
-          <div className="footer-inner">
-            <div className="footer-logo">
-              <div className="footer-logo-icon">
-                <i className="fas fa-seedling"></i>
-              </div>
-              <span className="footer-logo-text">Data Diet</span>
-            </div>
-            <div className="footer-links">
-              <Link to="/">Home</Link>
-              <Link to="/how">About</Link>
-              <Link to="/client/contact">Contact Us</Link>
-            </div>
-          </div>
-          <div className="footer-divider"></div>
-          <div className="footer-bottom">
-            <span className="footer-copy">© 2026 Data Diet. All rights reserved.</span>
-            <span className="footer-tagline">Built with care for healthier lives 🌱</span>          </div>
-        </div>
-      </footer>
     </div>
   );
 }

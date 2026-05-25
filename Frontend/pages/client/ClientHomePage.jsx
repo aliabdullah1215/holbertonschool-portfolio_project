@@ -657,33 +657,6 @@ export default function ClientHomePage() {
           </div>
         </div>
       </section>
-
-      {/* FOOTER */}
-      <footer className="footer">
-        <div className="container">
-          <div className="footer-inner">
-            <div className="footer-logo">
-              <div className="footer-logo-icon">
-                <i className="fas fa-seedling"></i>
-              </div>
-              <div className="footer-logo-text">DataDiet</div>
-            </div>
-
-            <div className="footer-links">
-              <Link to="/client/home">Dashboard</Link>
-              <Link to="/client/ai-plans">AI Plans</Link>
-              <Link to="/client/contact">Contact</Link>
-            </div>
-          </div>
-
-          <div className="footer-divider"></div>
-
-          <div className="footer-bottom">
-            <div className="footer-copy">© 2026 DataDiet. All rights reserved.</div>
-            <div className="footer-tagline">Built with care for healthier lives 🌱</div>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }

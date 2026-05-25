@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-
+import { generateAiPlan } from '../../features/aiPlans/services/aiPlansService';
+import { normalizeAiPlanAnswers } from '../../features/aiPlans/utils/normalizeAnswers';
 export const questionnaireSteps = [
   {
     id: 'goal',
@@ -298,6 +299,7 @@ export const questionnaireSteps = [
 
 export default function ClientAiPlansPage() {
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
+  const [currentFieldIndex, setCurrentFieldIndex] = useState(0);
   const [answers, setAnswers] = useState({
     goalType: 'weight_loss',
     goalPace: 'moderate',
@@ -331,8 +333,16 @@ export default function ClientAiPlansPage() {
 
   const [loading, setLoading] = useState(false);
   const [planGenerated, setPlanGenerated] = useState(false);
-
+  const [generatedPlan, setGeneratedPlan] = useState(null);
+  const [error, setError] = useState('');
   const currentStep = questionnaireSteps[currentStepIndex];
+
+  const getVisibleFields = (step) =>
+    step.fields.filter((field) => !field.condition || field.condition(answers));
+
+  const visibleFields = getVisibleFields(currentStep);
+  const safeFieldIndex = Math.min(currentFieldIndex, Math.max(visibleFields.length - 1, 0));
+  const currentField = visibleFields[safeFieldIndex];
 
   const handleInputChange = (fieldId, value) => {
     setAnswers((prev) => ({ ...prev, [fieldId]: value }));
@@ -348,22 +358,52 @@ export default function ClientAiPlansPage() {
     });
   };
 
-  const handleNext = (e) => {
+  const handleNext = async (e) => {
     e.preventDefault();
+    setError('');
+
+    if (safeFieldIndex < visibleFields.length - 1) {
+      setCurrentFieldIndex((prev) => prev + 1);
+      return;
+    }
+
     if (currentStepIndex < questionnaireSteps.length - 1) {
       setCurrentStepIndex((prev) => prev + 1);
-    } else {
-      setLoading(true);
-      setTimeout(() => {
-        setLoading(false);
-        setPlanGenerated(true);
-      }, 2000);
+      setCurrentFieldIndex(0);
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const normalizedProfile = normalizeAiPlanAnswers(answers);
+      const savedPlan = await generateAiPlan(normalizedProfile);
+
+      setGeneratedPlan(savedPlan.plan);
+      setPlanGenerated(true);
+    } catch (requestError) {
+      setError(
+        requestError.response?.data?.detail ||
+        requestError.message ||
+        'Unable to generate a nutrition plan right now.'
+      );
+    } finally {
+      setLoading(false);
     }
   };
 
   const handlePrev = () => {
+    if (safeFieldIndex > 0) {
+      setCurrentFieldIndex((prev) => prev - 1);
+      return;
+    }
+
     if (currentStepIndex > 0) {
+      const previousStep = questionnaireSteps[currentStepIndex - 1];
+      const previousVisibleFields = getVisibleFields(previousStep);
+
       setCurrentStepIndex((prev) => prev - 1);
+      setCurrentFieldIndex(Math.max(previousVisibleFields.length - 1, 0));
     }
   };
 
@@ -895,9 +935,15 @@ export default function ClientAiPlansPage() {
 
                     <p className="step-description">{currentStep.description}</p>
 
+                    {error && (
+                      <p className="step-description" style={{ color: '#b42318', fontWeight: 700 }}>
+                        {error}
+                      </p>
+                    )}
+
                     <div className="progress-bar-container">
-                      <div 
-                        className="progress-bar-fill" 
+                      <div
+                        className="progress-bar-fill"
                         style={{ width: `${((currentStepIndex + 1) / questionnaireSteps.length) * 100}%` }}
                       ></div>
                     </div>
@@ -905,108 +951,97 @@ export default function ClientAiPlansPage() {
                     <div className="divider"></div>
 
                     <form onSubmit={handleNext}>
-                      {currentStep.fields.map((field) => {
-                        if (field.condition && !field.condition(answers)) {
-                          return null;
-                        }
+                      {currentField && (
+                        <div className="form-group" key={currentField.id}>
+                          <label className="form-label">{currentField.label}</label>
 
-                        return (
-                          <div className="form-group" key={field.id}>
-                            <label className="form-label">{field.label}</label>
-
-                            {/* SELECT ELEMENT AS CIRCLE SELECTION BUTTONS */}
-                            {field.type === 'select' && (
-                              <div className="button-group-grid">
-                                {field.options.map((opt) => {
-                                  const isSelected = answers[field.id] === opt.value;
-                                  return (
-                                    <div
-                                      key={opt.value}
-                                      className={`custom-choice-btn ${isSelected ? 'selected' : ''}`}
-                                      onClick={() => handleInputChange(field.id, opt.value)}
-                                    >
-                                      <div className="choice-indicator-circle">
-                                        {isSelected && <span className="choice-indicator-dot"></span>}
-                                      </div>
-                                      <span>{opt.label}</span>
+                          {currentField.type === 'select' && (
+                            <div className="button-group-grid">
+                              {currentField.options.map((opt) => {
+                                const isSelected = answers[currentField.id] === opt.value;
+                                return (
+                                  <div
+                                    key={opt.value}
+                                    className={`custom-choice-btn ${isSelected ? 'selected' : ''}`}
+                                    onClick={() => handleInputChange(currentField.id, opt.value)}
+                                  >
+                                    <div className="choice-indicator-circle">
+                                      {isSelected && <span className="choice-indicator-dot"></span>}
                                     </div>
-                                  );
-                                })}
-                              </div>
-                            )}
+                                    <span>{opt.label}</span>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          )}
 
-                            {/* TEXT / NUMBER DATA FIELD INJECTORS */}
-                            {(field.type === 'text' || field.type === 'number') && (
-                              <input
-                                type={field.type}
-                                min={field.min}
-                                step={field.step}
-                                placeholder={field.placeholder}
-                                value={answers[field.id] || ''}
-                                onChange={(e) => handleInputChange(field.id, e.target.value)}
-                                className="form-input"
-                                required={field.type === 'number'}
-                              />
-                            )}
+                          {(currentField.type === 'text' || currentField.type === 'number') && (
+                            <input
+                              type={currentField.type}
+                              min={currentField.min}
+                              step={currentField.step}
+                              placeholder={currentField.placeholder}
+                              value={answers[currentField.id] || ''}
+                              onChange={(e) => handleInputChange(currentField.id, e.target.value)}
+                              className="form-input"
+                              required={currentField.type === 'number'}
+                            />
+                          )}
 
-                            {/* TEXTAREA DESCRIPTIVE COMPONENT */}
-                            {field.type === 'textarea' && (
-                              <textarea
-                                placeholder={field.placeholder}
-                                value={answers[field.id] || ''}
-                                onChange={(e) => handleInputChange(field.id, e.target.value)}
-                                className="form-textarea"
-                              />
-                            )}
+                          {currentField.type === 'textarea' && (
+                            <textarea
+                              placeholder={currentField.placeholder}
+                              value={answers[currentField.id] || ''}
+                              onChange={(e) => handleInputChange(currentField.id, e.target.value)}
+                              className="form-textarea"
+                            />
+                          )}
 
-                            {/* RADIO FIELDS AS CIRCLE SELECTION BUTTONS */}
-                            {field.type === 'radio' && (
-                              <div className="button-group-grid">
-                                {field.options.map((opt) => {
-                                  const isSelected = answers[field.id] === opt.value;
-                                  return (
-                                    <div
-                                      key={opt.value}
-                                      className={`custom-choice-btn ${isSelected ? 'selected' : ''}`}
-                                      onClick={() => handleInputChange(field.id, opt.value)}
-                                    >
-                                      <div className="choice-indicator-circle">
-                                        {isSelected && <span className="choice-indicator-dot"></span>}
-                                      </div>
-                                      <span>{opt.label}</span>
+                          {currentField.type === 'radio' && (
+                            <div className="button-group-grid">
+                              {currentField.options.map((opt) => {
+                                const isSelected = answers[currentField.id] === opt.value;
+                                return (
+                                  <div
+                                    key={opt.value}
+                                    className={`custom-choice-btn ${isSelected ? 'selected' : ''}`}
+                                    onClick={() => handleInputChange(currentField.id, opt.value)}
+                                  >
+                                    <div className="choice-indicator-circle">
+                                      {isSelected && <span className="choice-indicator-dot"></span>}
                                     </div>
-                                  );
-                                })}
-                              </div>
-                            )}
+                                    <span>{opt.label}</span>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          )}
 
-                            {/* CHECKBOX GROUPS AS CIRCLE SELECTION BUTTONS */}
-                            {field.type === 'checkbox-group' && (
-                              <div className="button-group-grid">
-                                {field.options.map((opt) => {
-                                  const isChecked = (answers[field.id] || []).includes(opt.value);
-                                  return (
-                                    <div
-                                      key={opt.value}
-                                      className={`custom-choice-btn ${isChecked ? 'selected' : ''}`}
-                                      onClick={() => handleCheckboxChange(field.id, opt.value, !isChecked)}
-                                    >
-                                      <div className="choice-indicator-circle">
-                                        {isChecked && <span className="choice-indicator-dot"></span>}
-                                      </div>
-                                      <span>{opt.label}</span>
+                          {currentField.type === 'checkbox-group' && (
+                            <div className="button-group-grid">
+                              {currentField.options.map((opt) => {
+                                const isChecked = (answers[currentField.id] || []).includes(opt.value);
+                                return (
+                                  <div
+                                    key={opt.value}
+                                    className={`custom-choice-btn ${isChecked ? 'selected' : ''}`}
+                                    onClick={() => handleCheckboxChange(currentField.id, opt.value, !isChecked)}
+                                  >
+                                    <div className="choice-indicator-circle">
+                                      {isChecked && <span className="choice-indicator-dot"></span>}
                                     </div>
-                                  );
-                                })}
-                              </div>
-                            )}
-                          </div>
-                        );
-                      })}
+                                    <span>{opt.label}</span>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          )}
+                        </div>
+                      )}
 
                       {/* BOTTOM ACTION LAYOUT WIZARD ROW */}
                       <div className="wizard-actions-row">
-                        {currentStepIndex > 0 && (
+                        {(currentStepIndex > 0 || safeFieldIndex > 0) && (
                           <button type="button" onClick={handlePrev} className="btn-back">
                             <i className="fas fa-arrow-left"></i> Back
                           </button>
@@ -1016,7 +1051,8 @@ export default function ClientAiPlansPage() {
                             <>
                               <i className="fas fa-spinner fa-spin"></i> Processing Profiles...
                             </>
-                          ) : currentStepIndex === questionnaireSteps.length - 1 ? (
+                          ) : currentStepIndex === questionnaireSteps.length - 1 &&
+                            safeFieldIndex === visibleFields.length - 1 ? (
                             <>
                               <i className="fas fa-wand-magic-sparkles"></i> Build My Plan
                             </>
@@ -1035,14 +1071,14 @@ export default function ClientAiPlansPage() {
                     <i className="fas fa-circle-check success-icon"></i>
                     <h3 className="success-title">Plan Successfully Processed!</h3>
                     <p className="success-text">
-                      Your target metadata, training metrics, and food rules have been configured. Your diet sheet is live on your personal tracking dashboard.
+                      Your nutrition plan has been generated and saved to your dashboard.
                     </p>
 
                     <div className="card-actions-row">
-                      <button onClick={() => { setPlanGenerated(false); setCurrentStepIndex(0); }} className="action-link-btn">
+                      <button onClick={() => { setPlanGenerated(false); setGeneratedPlan(null); setCurrentStepIndex(0); setCurrentFieldIndex(0); }} className="action-link-btn">
                         <i className="fas fa-rotate-left"></i> Retake Form
                       </button>
-                      <Link to="/client/home" className="action-link-btn" style={{ background: 'var(--green-mid)', color: 'white' }}>
+                      <Link to="/client/plans-history" className="action-link-btn" style={{ background: 'var(--green-mid)', color: 'white' }}>
                         <i className="fas fa-chart-line"></i> View Tracking
                       </Link>
                     </div>
@@ -1055,33 +1091,6 @@ export default function ClientAiPlansPage() {
           </div>
         </div>
       </section>
-
-      {/* FOOTER */}
-      <footer className="footer">
-        <div className="container">
-          <div className="footer-inner">
-            <div className="footer-logo">
-              <div className="footer-logo-icon">
-                <i className="fas fa-seedling"></i>
-              </div>
-              <div className="footer-logo-text">DataDiet</div>
-            </div>
-
-            <div className="footer-links">
-              <Link to="/client/home">Dashboard</Link>
-              <Link to="/client/ai-plans">AI Plans</Link>
-              <Link to="/client/contact">Contact</Link>
-            </div>
-          </div>
-
-          <div className="footer-divider"></div>
-
-          <div className="footer-bottom">
-            <div className="footer-copy">© 2026 DataDiet. All rights reserved.</div>
-            <div className="footer-tagline">Built with care for healthier lives 🌱</div>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }

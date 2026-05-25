@@ -32,7 +32,6 @@ function AppRoutes() {
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route path="client/contact" element={<HomeContactPage />} />
 
         <Route
           element={
