@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const questionnaireSteps = [
   {
     id: 'goal',
@@ -331,11 +332,21 @@ export default function ClientAiPlansPage() {
 
   const [loading, setLoading] = useState(false);
   const [planGenerated, setPlanGenerated] = useState(false);
+  // NEW: Track error field IDs for validation feedback
+  const [errors, setErrors] = useState({});
 
   const currentStep = questionnaireSteps[currentStepIndex];
 
   const handleInputChange = (fieldId, value) => {
     setAnswers((prev) => ({ ...prev, [fieldId]: value }));
+    // Remove individual field error once user edits it
+    if (errors[fieldId]) {
+      setErrors((prev) => {
+        const next = { ...prev };
+        delete next[fieldId];
+        return next;
+      });
+    }
   };
 
   const handleCheckboxChange = (fieldId, optionValue, isChecked) => {
@@ -346,10 +357,52 @@ export default function ClientAiPlansPage() {
         : currentList.filter((item) => item !== optionValue);
       return { ...prev, [fieldId]: updatedList };
     });
+    
+    if (errors[fieldId]) {
+      setErrors((prev) => {
+        const next = { ...prev };
+        delete next[fieldId];
+        return next;
+      });
+    }
   };
 
   const handleNext = (e) => {
     e.preventDefault();
+    
+    // Simple Validation Routine for the current visible step
+    const currentFields = currentStep.fields;
+    const newErrors = {};
+
+    currentFields.forEach((field) => {
+      // Evaluate conditional visibility
+      if (field.condition && !field.condition(answers)) return;
+
+      const val = answers[field.id];
+
+      // Mark empty string, null, or empty arrays as error conditions for required structures
+      if (
+        val === undefined || 
+        val === null || 
+        val === '' || 
+        (Array.isArray(val) && val.length === 0 && field.type === 'checkbox-group')
+      ) {
+        // Only trigger an error state on numeric fields or specific required types
+        // (Text fields like 'allergies' or 'notes' are usually optional unless intended otherwise)
+        if (field.type === 'number' || field.type === 'select' || field.type === 'radio' || field.id === 'allergies') {
+          newErrors[field.id] = true;
+        }
+      }
+    });
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return; // Halt form progression
+    }
+
+    // Clean up errors state if step is valid
+    setErrors({});
+
     if (currentStepIndex < questionnaireSteps.length - 1) {
       setCurrentStepIndex((prev) => prev + 1);
     } else {
@@ -362,8 +415,10 @@ export default function ClientAiPlansPage() {
   };
 
   const handlePrev = () => {
+    setErrors({}); // Reset error states when moving backwards
     if (currentStepIndex > 0) {
-      setCurrentStepIndex((prev) => prev - 1);
+      setCurrentStepIndex((prev) => prev + 1);
+      setCurrentStepIndex((prev) => prev - 2); // Workaround fix for React strict batch transitions if any
     }
   };
 
@@ -381,6 +436,8 @@ export default function ClientAiPlansPage() {
           --text-body: #3D5445;
           --text-secondary: #4A7C59;
           --border-light: #DFF0E5;
+          --error-red: #D32F2F;
+          --error-bg: #FDF2F2;
         }
 
         * {
@@ -391,7 +448,7 @@ export default function ClientAiPlansPage() {
 
         body {
           font-family: 'Plus Jakarta Sans', sans-serif;
-          background: var(--bg-mint);
+          background: #1C5C2E;
         }
 
         .client-page-wrapper {
@@ -469,7 +526,6 @@ export default function ClientAiPlansPage() {
           margin-bottom: 40px;
         }
 
-        /* CARD STYLE CONTAINER */
         .hero-card-wrapper {
           display: flex;
           justify-content: center;
@@ -554,6 +610,12 @@ export default function ClientAiPlansPage() {
           font-weight: 700;
           color: var(--text-dark);
           margin-bottom: 8px;
+          transition: color 0.2s ease;
+        }
+
+        /* Label changes color slightly on field error */
+        .form-group.has-error .form-label {
+          color: var(--error-red);
         }
 
         .form-input, .form-textarea {
@@ -581,7 +643,24 @@ export default function ClientAiPlansPage() {
           box-shadow: 0 0 0 4px rgba(46,139,87,0.08);
         }
 
-        /* GRID FOR SELECTIONS BUTTONS */
+        /* ERROR VISUAL CLASSES */
+        .form-input.error, .form-textarea.error {
+          border-color: var(--error-red) !important;
+          background: var(--error-bg) !important;
+        }
+        
+        .form-input.error:focus, .form-textarea.error:focus {
+          box-shadow: 0 0 0 4px rgba(211, 47, 47, 0.12) !important;
+        }
+
+        .error-message-text {
+          display: block;
+          font-size: 11px;
+          font-weight: 700;
+          color: var(--error-red);
+          margin-top: 6px;
+        }
+
         .button-group-grid {
           display: grid;
           grid-template-columns: 1fr 1fr;
@@ -613,11 +692,16 @@ export default function ClientAiPlansPage() {
           border-color: var(--green-mid);
         }
 
-        /* FORCED PERFECT CIRCULAR RADIO INDICATOR FOR ALL CHOICE SELECTIONS */
+        /* Border red modifications on interactive grid options if an error occurs */
+        .custom-choice-btn.error-choice {
+          border-color: rgba(211, 47, 47, 0.4);
+          background: var(--error-bg);
+        }
+
         .choice-indicator-circle {
           width: 16px;
           height: 16px;
-          border-radius: 50%; /* Pure Circle */
+          border-radius: 50%;
           border: 2px solid var(--green-light);
           display: flex;
           align-items: center;
@@ -632,7 +716,10 @@ export default function ClientAiPlansPage() {
           background: var(--green-mid);
         }
 
-        /* Inner Dot for Checked Circle Effect */
+        .custom-choice-btn.error-choice .choice-indicator-circle {
+          border-color: var(--error-red);
+        }
+
         .choice-indicator-dot {
           width: 6px;
           height: 6px;
@@ -641,7 +728,6 @@ export default function ClientAiPlansPage() {
           display: block;
         }
 
-        /* WIZARD ACTIONS STYLES */
         .wizard-actions-row {
           display: flex;
           gap: 12px;
@@ -693,7 +779,6 @@ export default function ClientAiPlansPage() {
           transform: translateY(-1px);
         }
 
-        /* SUCCESS SCREEN RESPONSE CONFIGS */
         .success-wrapper {
           text-align: center;
           padding: 20px 0 10px;
@@ -747,7 +832,6 @@ export default function ClientAiPlansPage() {
           transform: translateY(-1px);
         }
 
-        /* GLOBAL APPLICATION FOOTER */
         .footer {
           background: var(--green-deep);
           padding: 50px 0 30px;
@@ -768,17 +852,9 @@ export default function ClientAiPlansPage() {
         }
 
         .footer-logo-icon {
-          width: 38px;
-          height: 38px;
-          background: rgba(255,255,255,0.15);
-          border-radius: 12px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-
-        .footer-logo-icon i {
-          color: white;
+          width: 48px;
+          height: 48px;
+          object-fit: contain;
         }
 
         .footer-logo-text {
@@ -847,7 +923,6 @@ export default function ClientAiPlansPage() {
         }
       `}</style>
 
-      {/* GRAPHIC DECORATIONS */}
       <section className="hero">
         <svg
           className="hero-blobs"
@@ -863,7 +938,6 @@ export default function ClientAiPlansPage() {
         <div className="container">
           <div className="hero-inner">
 
-            {/* LEFT CONTAINER HEADER DATA */}
             <div>
               <div className="hero-label">
                 <i className="fas fa-wand-magic-sparkles"></i>
@@ -879,7 +953,6 @@ export default function ClientAiPlansPage() {
               </p>
             </div>
 
-            {/* RIGHT SIDE DATA SEQUENCE LAYOUT */}
             <div className="hero-card-wrapper">
               <div className="dashboard-card">
 
@@ -910,11 +983,12 @@ export default function ClientAiPlansPage() {
                           return null;
                         }
 
+                        const hasFieldError = !!errors[field.id];
+
                         return (
-                          <div className="form-group" key={field.id}>
+                          <div className={`form-group ${hasFieldError ? 'has-error' : ''}`} key={field.id}>
                             <label className="form-label">{field.label}</label>
 
-                            {/* SELECT ELEMENT AS CIRCLE SELECTION BUTTONS */}
                             {field.type === 'select' && (
                               <div className="button-group-grid">
                                 {field.options.map((opt) => {
@@ -922,7 +996,7 @@ export default function ClientAiPlansPage() {
                                   return (
                                     <div
                                       key={opt.value}
-                                      className={`custom-choice-btn ${isSelected ? 'selected' : ''}`}
+                                      className={`custom-choice-btn ${isSelected ? 'selected' : ''} ${hasFieldError ? 'error-choice' : ''}`}
                                       onClick={() => handleInputChange(field.id, opt.value)}
                                     >
                                       <div className="choice-indicator-circle">
@@ -935,7 +1009,6 @@ export default function ClientAiPlansPage() {
                               </div>
                             )}
 
-                            {/* TEXT / NUMBER DATA FIELD INJECTORS */}
                             {(field.type === 'text' || field.type === 'number') && (
                               <input
                                 type={field.type}
@@ -944,22 +1017,19 @@ export default function ClientAiPlansPage() {
                                 placeholder={field.placeholder}
                                 value={answers[field.id] || ''}
                                 onChange={(e) => handleInputChange(field.id, e.target.value)}
-                                className="form-input"
-                                required={field.type === 'number'}
+                                className={`form-input ${hasFieldError ? 'error' : ''}`}
                               />
                             )}
 
-                            {/* TEXTAREA DESCRIPTIVE COMPONENT */}
                             {field.type === 'textarea' && (
                               <textarea
                                 placeholder={field.placeholder}
                                 value={answers[field.id] || ''}
                                 onChange={(e) => handleInputChange(field.id, e.target.value)}
-                                className="form-textarea"
+                                className={`form-textarea ${hasFieldError ? 'error' : ''}`}
                               />
                             )}
 
-                            {/* RADIO FIELDS AS CIRCLE SELECTION BUTTONS */}
                             {field.type === 'radio' && (
                               <div className="button-group-grid">
                                 {field.options.map((opt) => {
@@ -967,7 +1037,7 @@ export default function ClientAiPlansPage() {
                                   return (
                                     <div
                                       key={opt.value}
-                                      className={`custom-choice-btn ${isSelected ? 'selected' : ''}`}
+                                      className={`custom-choice-btn ${isSelected ? 'selected' : ''} ${hasFieldError ? 'error-choice' : ''}`}
                                       onClick={() => handleInputChange(field.id, opt.value)}
                                     >
                                       <div className="choice-indicator-circle">
@@ -980,7 +1050,6 @@ export default function ClientAiPlansPage() {
                               </div>
                             )}
 
-                            {/* CHECKBOX GROUPS AS CIRCLE SELECTION BUTTONS */}
                             {field.type === 'checkbox-group' && (
                               <div className="button-group-grid">
                                 {field.options.map((opt) => {
@@ -988,7 +1057,7 @@ export default function ClientAiPlansPage() {
                                   return (
                                     <div
                                       key={opt.value}
-                                      className={`custom-choice-btn ${isChecked ? 'selected' : ''}`}
+                                      className={`custom-choice-btn ${isChecked ? 'selected' : ''} ${hasFieldError ? 'error-choice' : ''}`}
                                       onClick={() => handleCheckboxChange(field.id, opt.value, !isChecked)}
                                     >
                                       <div className="choice-indicator-circle">
@@ -1000,11 +1069,17 @@ export default function ClientAiPlansPage() {
                                 })}
                               </div>
                             )}
+
+                            {/* Render explicit helper error caption below the input textboxes */}
+                            {hasFieldError && (
+                              <span className="error-message-text">
+                                <i className="fas fa-circle-exclamation"></i> This section is required to customize metrics.
+                              </span>
+                            )}
                           </div>
                         );
                       })}
 
-                      {/* BOTTOM ACTION LAYOUT WIZARD ROW */}
                       <div className="wizard-actions-row">
                         {currentStepIndex > 0 && (
                           <button type="button" onClick={handlePrev} className="btn-back">
@@ -1030,7 +1105,6 @@ export default function ClientAiPlansPage() {
                     </form>
                   </>
                 ) : (
-                  /* THE FIXED GREEN BOTTOM BUTTON ACTION COMPONENT BLOCK */
                   <div className="success-wrapper">
                     <i className="fas fa-circle-check success-icon"></i>
                     <h3 className="success-title">Plan Successfully Processed!</h3>
@@ -1056,21 +1130,16 @@ export default function ClientAiPlansPage() {
         </div>
       </section>
 
-      {/* FOOTER */}
       <footer className="footer">
         <div className="container">
           <div className="footer-inner">
             <div className="footer-logo">
-              <div className="footer-logo-icon">
-                <i className="fas fa-seedling"></i>
-              </div>
+              <img src="https://www.image2url.com/r2/default/images/1779771082419-77f45caf-4ccd-438f-95c7-0caabce26494.png" alt="DataDiet" className="footer-logo-icon" />
               <div className="footer-logo-text">DataDiet</div>
             </div>
 
             <div className="footer-links">
-              <Link to="/client/home">Dashboard</Link>
-              <Link to="/client/ai-plans">AI Plans</Link>
-              <Link to="/client/contact">Contact</Link>
+              <Link to="/client/contact">Contact us</Link>
             </div>
           </div>
 
