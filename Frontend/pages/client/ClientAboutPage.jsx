@@ -106,7 +106,7 @@ const aboutFeatures = [
 
 export default function ClientAboutPage() {
   return (
-    <article className="workspace-card workspace-card--section client-about-page">
+    <div className="client-page-wrapper">
       <style>{`
         :root {
           --green-deep: #1C5C2E;
@@ -121,10 +121,34 @@ export default function ClientAboutPage() {
           --border-light: #DFF0E5;
         }
 
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+
+        body {
+          background: var(--green-deep);
+        }
+
+        .client-page-wrapper {
+          width: 100%;
+          min-height: 100vh;
+          background: var(--bg-mint);
+          overflow-x: hidden;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+        }
+
         .client-about-page {
           font-family: 'Plus Jakarta Sans', sans-serif;
           background: transparent;
+          flex: 1;
           width: 100%;
+          max-width: 1280px;
+          margin: 0 auto;
+          padding: 60px 60px 100px;
           box-sizing: border-box;
         }
 
@@ -231,7 +255,7 @@ export default function ClientAboutPage() {
           gap: 16px;
         }
 
-        /* SHARP DECORATIVE CARDS CONFIGURATION - FULLY CENTERED INTERNAL TEXT & ITEMS */
+        /* SHARP DECORATIVE CARDS CONFIGURATION */
         .client-about-feature-card,
         .client-about-step-card {
           background: var(--white);
@@ -293,10 +317,10 @@ export default function ClientAboutPage() {
           font-weight: 500;
         }
 
-        /* INTERNAL STEP COUNTER BADGING - MOVED TO TOP CENTER FOR TIDY SYMMETRY */
+        /* INTERNAL STEP COUNTER BADGING */
         .client-about-step-card {
           position: relative;
-          padding-top: 48px; /* Room for the absolute top badge */
+          padding-top: 48px;
         }
 
         .step-numeric-badge {
@@ -317,6 +341,84 @@ export default function ClientAboutPage() {
           letter-spacing: -0.2px;
         }
 
+        /* FOOTER MODULE DESIGN SETTINGS */
+        .footer {
+          background: var(--green-deep);
+          padding: 60px 0 40px;
+          margin-top: auto;
+          width: 100%;
+          overflow: hidden;
+        }
+
+        .footer-container {
+          width: 100%;
+          max-width: 1280px;
+          margin: 0 auto;
+          padding: 0 60px;
+          box-sizing: border-box;
+        }
+
+        .footer-inner {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 30px;
+        }
+
+        .footer-logo {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+        }
+
+        .footer-logo-icon {
+          width: 48px;
+          height: 48px;
+          object-fit: contain;
+        }
+
+        .footer-logo-text {
+          color: white;
+          font-size: 18px;
+          font-weight: 800;
+        }
+
+        .footer-links {
+          display: flex;
+          gap: 24px;
+        }
+
+        .footer-links a {
+          text-decoration: none;
+          color: rgba(255,255,255,0.70);
+          font-size: 14px;
+          font-weight: 600;
+          transition: 0.25s ease;
+        }
+
+        .footer-links a:hover {
+          color: white;
+        }
+
+        .footer-divider {
+          height: 1px;
+          background: rgba(255,255,255,0.12);
+          margin-bottom: 24px;
+          width: 100%;
+        }
+
+        .footer-bottom {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
+
+        .footer-copy,
+        .footer-tagline {
+          color: rgba(255,255,255,0.50);
+          font-size: 13px;
+        }
+
         /* RESPONSIVE CSS MEDIA QUERY OVERRIDES */
         @media (max-width: 1400px) {
           .client-about-steps-grid {
@@ -331,6 +433,18 @@ export default function ClientAboutPage() {
         }
 
         @media (max-width: 768px) {
+          .client-about-page {
+            padding: 40px 24px;
+          }
+          .footer-container {
+            padding: 0 24px;
+          }
+          .footer-inner,
+          .footer-bottom {
+            flex-direction: column;
+            gap: 20px;
+            text-align: center;
+          }
           .client-about-steps-grid {
             grid-template-columns: repeat(2, 1fr);
           }
@@ -350,58 +464,84 @@ export default function ClientAboutPage() {
         }
       `}</style>
 
-      {/* HERO COMPONENT BLOCK */}
-      <section className="client-about-hero">
-        <span className="eyebrow">AI nutrition planning with expert support</span>
-        <h1>Build a nutrition plan that fits real life.</h1>
-        <p>
-          Data Diet helps clients generate personalized AI meal plans, save them,
-          adjust meals, and connect with Nutritionists when support is needed.
-        </p>
-      </section>
+      {/* CORE DISPLAY CANVAS */}
+      <article className="client-about-page">
+        {/* HERO COMPONENT BLOCK */}
+        <section className="client-about-hero">
+          <span className="eyebrow">AI nutrition planning with expert support</span>
+          <h1>Build a nutrition plan that fits real life.</h1>
+          <p>
+            Data Diet helps clients generate personalized AI meal plans, save them,
+            adjust meals, and connect with Nutritionists when support is needed.
+          </p>
+        </section>
 
-      {/* FEATURES SEGMENT MODULE */}
-      <section className="client-about-section">
-        <div className="client-about-section__header--centered">
-          <span className="eyebrow">Why choose Data Diet?</span>
-          <h2>AI plans that stay useful after generation.</h2>
-          <p>The platform is designed around practical nutrition, and human support.</p>
-        </div>
+        {/* FEATURES SEGMENT MODULE */}
+        <section className="client-about-section">
+          <div className="client-about-section__header--centered">
+            <span className="eyebrow">Why choose Data Diet?</span>
+            <h2>AI plans that stay useful after generation.</h2>
+            <p>The platform is designed around practical nutrition, and human support.</p>
+          </div>
 
-        <div className="client-about-feature-grid">
-          {aboutFeatures.map((feature) => (
-            <article className="client-about-feature-card" key={feature.title}>
-              <div className="card-icon-wrapper">
-                {feature.icon}
-              </div>
-              <h3>{feature.title}</h3>
-              <p>{feature.text}</p>
-            </article>
-          ))}
-        </div>
-      </section>
+          <div className="client-about-feature-grid">
+            {aboutFeatures.map((feature) => (
+              <article className="client-about-feature-card" key={feature.title}>
+                <div className="card-icon-wrapper">
+                  {feature.icon}
+                </div>
+                <h3>{feature.title}</h3>
+                <p>{feature.text}</p>
+              </article>
+            ))}
+          </div>
+        </section>
 
-      {/* FLOW INSTRUCTIONS SEGMENT MODULE */}
-      <section className="client-about-section">
-        <div className="client-about-section__header--centered">
-          <span className="eyebrow">Simple flow</span>
-          <h2>How Data Diet works</h2>
-          <p>From intake to saved plans and medical support, the experience stays guided.</p>
-        </div>
+        {/* FLOW INSTRUCTIONS SEGMENT MODULE */}
+        <section className="client-about-section">
+          <div className="client-about-section__header--centered">
+            <span className="eyebrow">Simple flow</span>
+            <h2>How Data Diet works</h2>
+            <p>From intake to saved plans and medical support, the experience stays guided.</p>
+          </div>
 
-        <div className="client-about-steps-grid">
-          {aboutSteps.map((step) => (
-            <article className="client-about-step-card" key={step.number}>
-              <div className="step-numeric-badge">{step.number}</div>
-              <div className="card-icon-wrapper" style={{ color: 'var(--green-deep)' }}>
-                {step.icon}
-              </div>
-              <h3>{step.title}</h3>
-              <p>{step.text}</p>
-            </article>
-          ))}
+          <div className="client-about-steps-grid">
+            {aboutSteps.map((step) => (
+              <article className="client-about-step-card" key={step.number}>
+                <div className="step-numeric-badge">{step.number}</div>
+                <div className="card-icon-wrapper" style={{ color: 'var(--green-deep)' }}>
+                  {step.icon}
+                </div>
+                <h3>{step.title}</h3>
+                <p>{step.text}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+      </article>
+
+      {/* FOOTER */}
+      <footer className="footer">
+        <div className="footer-container">
+          <div className="footer-inner">
+            <div className="footer-logo">
+              <img src="https://www.image2url.com/r2/default/images/1779771082419-77f45caf-4ccd-438f-95c7-0caabce26494.png" alt="DataDiet" className="footer-logo-icon" />
+              <div className="footer-logo-text">DataDiet</div>
+            </div>
+
+            <div className="footer-links">
+              <Link to="/client/contact">Contact us</Link>
+            </div>
+          </div>
+
+          <div className="footer-divider"></div>
+
+          <div className="footer-bottom">
+            <div className="footer-copy">© 2026 DataDiet. All rights reserved.</div>
+            <div className="footer-tagline">Built with care for healthier lives 🌱</div>
+          </div>
         </div>
-      </section>
-    </article>
+      </footer>
+    </div>
   );
 }
