@@ -74,7 +74,7 @@ function ClientShellPage() {
 
         body {
           font-family: 'Plus Jakarta Sans', sans-serif;
-          background: var(--bg-mint);
+          background: #1C5C2E;
         }
 
         .client-shell-layout {
@@ -133,23 +133,9 @@ function ClientShellPage() {
         }
 
         .shell-logo-icon {
-          width: 44px;
-          height: 44px;
-
-          border-radius: 14px;
-
-          background: linear-gradient(
-            135deg,
-            var(--green-mid),
-            var(--green-deep)
-          );
-
-          display: flex;
-          align-items: center;
-          justify-content: center;
-
-          color: white;
-          font-size: 18px;
+          width: 52px;
+          height: 52px;
+          object-fit: contain;
         }
 
         .shell-logo-text {
@@ -279,9 +265,7 @@ function ClientShellPage() {
         <nav className="shell-navbar">
 
           <Link to="/client/home" className="shell-logo">
-            <div className="shell-logo-icon">
-              <i className="fas fa-seedling"></i>
-            </div>
+            <img src="https://www.image2url.com/r2/default/images/1779771082419-77f45caf-4ccd-438f-95c7-0caabce26494.png" alt="DataDiet" className="shell-logo-icon" />
 
             <div className="shell-logo-text">
               DataDiet
