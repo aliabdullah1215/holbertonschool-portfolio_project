@@ -1,6 +1,11 @@
 function ClientContactPage() {
   return (
     <article className="workspace-card workspace-card--section contact-page">
+      <style>{`
+        body {
+          background: #1C5C2E;
+        }
+      `}</style>
       <div className="contact-page__header">
         <h2>Contact our friendly team</h2>
         <p>Let us know how can we help you</p>
