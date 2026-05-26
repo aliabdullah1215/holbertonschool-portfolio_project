@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const initialValues = {
   weightKg: '',
@@ -76,7 +77,7 @@ export default function ClientAssessmentToolsPage() {
   }, [values]);
 
   return (
-    <article className="workspace-card workspace-card--section assessment-tools-page">
+    <div className="client-page-wrapper">
       <style>{`
         :root {
           --green-deep: #1C5C2E;
@@ -91,38 +92,72 @@ export default function ClientAssessmentToolsPage() {
           --border-light: #DFF0E5;
         }
 
-        .assessment-tools-page {
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+
+        body {
           font-family: 'Plus Jakarta Sans', sans-serif;
-          background: transparent;
+          background: var(--green-deep);
+        }
+
+        .client-page-wrapper {
+          width: 100%;
+          min-height: 100vh;
+          background: var(--bg-mint);
+          overflow-x: hidden;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+        }
+
+        .assessment-tools-content {
+          flex: 1;
+          width: 100%;
+          max-width: 1280px;
+          margin: 0 auto;
+          padding: 60px 60px 100px;
+        }
+
+        .assessment-tools-page {
           width: 100%;
         }
 
         .assessment-tools-page h2 {
-          font-size: 28px;
+          font-size: clamp(32px, 4vw, 44px);
           font-weight: 800;
           line-height: 1.1;
-          letter-spacing: -1px;
+          letter-spacing: -1.5px;
           color: var(--green-deep);
-          margin-bottom: 24px;
+          margin-bottom: 36px;
           margin-top: 0;
         }
 
         .assessment-grid {
           display: grid;
           grid-template-columns: repeat(4, 1fr);
-          gap: 20px;
+          gap: 24px;
           align-items: stretch;
+          width: 100%;
         }
 
         .assessment-card {
           background: var(--white);
           border: 1px solid var(--border-light);
-          border-radius: 24px;
-          padding: 26px;
-          box-shadow: 0 10px 30px rgba(28,92,46,0.02), 0 2px 6px rgba(0,0,0,0.02);
+          border-radius: 28px;
+          padding: 30px;
+          box-shadow: 0 20px 50px rgba(28,92,46,0.04), 0 4px 12px rgba(0,0,0,0.02);
           display: flex;
           flex-direction: column;
           position: relative;
+          transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .assessment-card:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 24px 60px rgba(28,92,46,0.06), 0 6px 18px rgba(0,0,0,0.03);
         }
 
         .assessment-card--form {
@@ -133,14 +168,14 @@ export default function ClientAssessmentToolsPage() {
         .assessment-form {
           display: flex;
           flex-direction: column;
-          gap: 16px;
+          gap: 18px;
           width: 100%;
         }
 
         .assessment-form label {
           display: flex;
           flex-direction: column;
-          gap: 6px;
+          gap: 8px;
           font-size: 13px;
           font-weight: 700;
           color: var(--text-dark);
@@ -149,11 +184,11 @@ export default function ClientAssessmentToolsPage() {
         .assessment-form input,
         .assessment-form select {
           width: 100%;
-          height: 44px;
+          height: 46px;
           background: var(--bg-mint);
           border: 1px solid var(--border-light);
-          border-radius: 12px;
-          padding: 0 14px;
+          border-radius: 14px;
+          padding: 0 16px;
           font-family: 'Plus Jakarta Sans', sans-serif;
           font-size: 14px;
           color: var(--text-dark);
@@ -173,24 +208,24 @@ export default function ClientAssessmentToolsPage() {
         .assessment-card__header {
           display: flex;
           align-items: center;
-          gap: 12px;
-          margin-bottom: 14px;
+          gap: 14px;
+          margin-bottom: 16px;
         }
 
         .card-icon-box {
           display: flex;
           align-items: center;
           justify-content: center;
-          width: 40px;
-          height: 40px;
+          width: 44px;
+          height: 44px;
           background: var(--bg-mint);
           color: var(--green-mid);
-          border-radius: 10px;
+          border-radius: 12px;
           flex-shrink: 0;
         }
 
         .assessment-card__header h3 {
-          font-size: 18px;
+          font-size: 19px;
           font-weight: 800;
           color: var(--green-deep);
           margin: 0;
@@ -205,19 +240,19 @@ export default function ClientAssessmentToolsPage() {
 
         .assessment-result-content {
           margin-top: auto;
-          padding-top: 24px;
+          padding-top: 30px;
           display: flex;
           flex-direction: column;
           align-items: flex-start;
         }
 
         .assessment-value {
-          font-size: 40px;
+          font-size: 44px;
           font-weight: 800;
           color: var(--green-mid);
           line-height: 1;
-          margin-bottom: 8px !important;
-          letter-spacing: -1px;
+          margin-bottom: 10px !important;
+          letter-spacing: -1.5px;
         }
 
         .assessment-badge {
@@ -227,175 +262,297 @@ export default function ClientAssessmentToolsPage() {
           color: var(--green-mid);
           font-size: 11px;
           font-weight: 800;
-          padding: 6px 12px;
+          padding: 6px 14px;
           border-radius: 999px;
-          margin-bottom: 12px !important;
+          margin-bottom: 14px !important;
           text-transform: uppercase;
           letter-spacing: 0.5px;
         }
 
         .assessment-card .description-text {
-          font-size: 13px;
-          line-height: 1.5;
+          font-size: 14px;
+          line-height: 1.6;
           color: var(--text-body);
+        }
+
+        /* FOOTER BRACKETS */
+        .footer {
+          background: var(--green-deep);
+          padding: 60px 0 40px;
+          margin-top: auto;
+          width: 100%;
+          overflow: hidden;
+        }
+
+        .footer-container {
+          width: 100%;
+          max-width: 1280px;
+          margin: 0 auto;
+          padding: 0 60px;
+          box-sizing: border-box;
+        }
+
+        .footer-inner {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 30px;
+        }
+
+        .footer-logo {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+        }
+
+        .footer-logo-icon {
+          width: 48px;
+          height: 48px;
+          object-fit: contain;
+        }
+
+        .footer-logo-text {
+          color: white;
+          font-size: 18px;
+          font-weight: 800;
+        }
+
+        .footer-links {
+          display: flex;
+          gap: 24px;
+        }
+
+        .footer-links a {
+          text-decoration: none;
+          color: rgba(255,255,255,0.70);
+          font-size: 14px;
+          font-weight: 600;
+          transition: 0.25s ease;
+        }
+
+        .footer-links a:hover {
+          color: white;
+        }
+
+        .footer-divider {
+          height: 1px;
+          background: rgba(255,255,255,0.12);
+          margin-bottom: 24px;
+          width: 100%;
+        }
+
+        .footer-bottom {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
+
+        .footer-copy,
+        .footer-tagline {
+          color: rgba(255,255,255,0.50);
+          font-size: 13px;
         }
 
         @media (max-width: 1200px) {
           .assessment-grid {
             grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
           }
         }
 
-        @media (max-width: 680px) {
+        @media (max-width: 768px) {
+          .assessment-tools-content {
+            padding: 40px 24px;
+          }
+          .footer-container {
+            padding: 0 24px;
+          }
+          .footer-inner,
+          .footer-bottom {
+            flex-direction: column;
+            gap: 20px;
+            text-align: center;
+          }
+        }
+
+        @media (max-width: 640px) {
           .assessment-grid {
             grid-template-columns: 1fr;
           }
         }
       `}</style>
 
-      <h2>Assessment Tools</h2>
+      {/* CORE DISPLAY ELEMENT */}
+      <main className="assessment-tools-content">
+        <div className="assessment-tools-page">
+          <h2>Assessment Tools</h2>
 
-      <div className="assessment-grid">
-        {/* INPUT PANEL COMPONENT */}
-        <section className="assessment-card assessment-card--form">
-          <form className="auth-form assessment-form" onSubmit={(e) => e.preventDefault()}>
-            <label>
-              Weight (kg)
-              <input
-                name="weightKg"
-                type="number"
-                min="1"
-                step="0.1"
-                placeholder="70"
-                value={values.weightKg}
-                onChange={handleChange}
-              />
-            </label>
+          <div className="assessment-grid">
+            {/* INPUT PANEL COMPONENT */}
+            <section className="assessment-card assessment-card--form">
+              <form className="auth-form assessment-form" onSubmit={(e) => e.preventDefault()}>
+                <label>
+                  Weight (kg)
+                  <input
+                    name="weightKg"
+                    type="number"
+                    min="1"
+                    step="0.1"
+                    placeholder="70"
+                    value={values.weightKg}
+                    onChange={handleChange}
+                  />
+                </label>
 
-            <label>
-              Height (cm)
-              <input
-                name="heightCm"
-                type="number"
-                min="1"
-                step="0.1"
-                placeholder="170"
-                value={values.heightCm}
-                onChange={handleChange}
-              />
-            </label>
+                <label>
+                  Height (cm)
+                  <input
+                    name="heightCm"
+                    type="number"
+                    min="1"
+                    step="0.1"
+                    placeholder="170"
+                    value={values.heightCm}
+                    onChange={handleChange}
+                  />
+                </label>
 
-            <label>
-              Age
-              <input
-                name="age"
-                type="number"
-                min="1"
-                placeholder="30"
-                value={values.age}
-                onChange={handleChange}
-              />
-            </label>
+                <label>
+                  Age
+                  <input
+                    name="age"
+                    type="number"
+                    min="1"
+                    placeholder="30"
+                    value={values.age}
+                    onChange={handleChange}
+                  />
+                </label>
 
-            <label>
-              Gender
-              <select name="gender" value={values.gender} onChange={handleChange}>
-                <option value="female">Female</option>
-                <option value="male">Male</option>
-              </select>
-            </label>
+                <label>
+                  Gender
+                  <select name="gender" value={values.gender} onChange={handleChange}>
+                    <option value="female">Female</option>
+                    <option value="male">Male</option>
+                  </select>
+                </label>
 
-            <label>
-              Activity level
-              <select name="activityLevel" value={values.activityLevel} onChange={handleChange}>
-                <option value="sedentary">Sedentary</option>
-                <option value="light">Lightly active</option>
-                <option value="moderate">Moderately active</option>
-                <option value="active">Very active</option>
-              </select>
-            </label>
-          </form>
-        </section>
+                <label>
+                  Activity level
+                  <select name="activityLevel" value={values.activityLevel} onChange={handleChange}>
+                    <option value="sedentary">Sedentary</option>
+                    <option value="light">Lightly active</option>
+                    <option value="moderate">Moderately active</option>
+                    <option value="active">Very active</option>
+                  </select>
+                </label>
+              </form>
+            </section>
 
-        {/* BMI CARD BLOCK */}
-        <section className="assessment-card">
-          <div className="assessment-card__header">
-            <div className="card-icon-box">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                <polyline points="14 2 14 8 20 8"></polyline>
-                <line x1="16" y1="13" x2="8" y2="13"></line>
-                <line x1="16" y1="17" x2="8" y2="17"></line>
-                <polyline points="10 9 9 9 8 9"></polyline>
-              </svg>
-            </div>
-            <h3>BMI Calculator</h3>
-          </div>
-          <p className="description-text">
-            {results.bmi 
-              ? 'Your computed body mass distribution metric based on height-to-weight alignment ratios.' 
-              : 'Enter your weight and height to calculate your body mass index.'
-            }
-          </p>
-          {results.bmi && (
-            <div className="assessment-result-content">
-              <p className="assessment-value">{results.bmi.toFixed(1)}</p>
-              <p className="assessment-badge">{results.bmiCategory}</p>
-              <p className="description-text">{results.bmiMessage}</p>
-            </div>
-          )}
-        </section>
-
-        {/* CALORIE CARD BLOCK */}
-        <section className="assessment-card">
-          <div className="assessment-card__header">
-            <div className="card-icon-box">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"></path>
-              </svg>
-            </div>
-            <h3>Estimated Daily Calories</h3>
-          </div>
-          <p className="description-text">
-            {results.maintenanceCalories 
-              ? 'This is a maintenance estimate based on the Mifflin-St Jeor equation and your selected activity level.' 
-              : 'Enter your weight, height, age, gender, and activity level to see an estimate.'
-            }
-          </p>
-          {results.maintenanceCalories && (
-            <div className="assessment-result-content">
-              <p className="assessment-value">
-                {Math.round(results.maintenanceCalories).toLocaleString()}
+            {/* BMI CARD BLOCK */}
+            <section className="assessment-card">
+              <div className="assessment-card__header">
+                <div className="card-icon-box">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                    <polyline points="10 9 9 9 8 9"></polyline>
+                  </svg>
+                </div>
+                <h3>BMI Calculator</h3>
+              </div>
+              <p className="description-text">
+                {results.bmi 
+                  ? 'Your computed body mass distribution metric based on height-to-weight alignment ratios.' 
+                  : 'Enter your weight and height to calculate your body mass index.'
+                }
               </p>
-              <p className="assessment-badge">kcal / day baseline</p>
-            </div>
-          )}
-        </section>
+              {results.bmi && (
+                <div className="assessment-result-content">
+                  <p className="assessment-value">{results.bmi.toFixed(1)}</p>
+                  <p className="assessment-badge">{results.bmiCategory}</p>
+                  <p className="description-text">{results.bmiMessage}</p>
+                </div>
+              )}
+            </section>
 
-        {/* WATER CARD BLOCK */}
-        <section className="assessment-card">
-          <div className="assessment-card__header">
-            <div className="card-icon-box">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M12 22a7 7 0 0 0 7-7c0-4.3-7-11-7-11S5 10.7 5 15a7 7 0 0 0 7 7z"></path>
-              </svg>
-            </div>
-            <h3>Daily Water Target</h3>
+            {/* CALORIE CARD BLOCK */}
+            <section className="assessment-card">
+              <div className="assessment-card__header">
+                <div className="card-icon-box">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"></path>
+                  </svg>
+                </div>
+                <h3>Estimated Daily Calories</h3>
+              </div>
+              <p className="description-text">
+                {results.maintenanceCalories 
+                  ? 'This is a maintenance estimate based on the Mifflin-St Jeor equation and your selected activity level.' 
+                  : 'Enter your weight, height, age, gender, and activity level to see an estimate.'
+                }
+              </p>
+              {results.maintenanceCalories && (
+                <div className="assessment-result-content">
+                  <p className="assessment-value">
+                    {Math.round(results.maintenanceCalories).toLocaleString()}
+                  </p>
+                  <p className="assessment-badge">kcal / day baseline</p>
+                </div>
+              )}
+            </section>
+
+            {/* WATER CARD BLOCK */}
+            <section className="assessment-card">
+              <div className="assessment-card__header">
+                <div className="card-icon-box">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M12 22a7 7 0 0 0 7-7c0-4.3-7-11-7-11S5 10.7 5 15a7 7 0 0 0 7 7z"></path>
+                  </svg>
+                </div>
+                <h3>Daily Water Target</h3>
+              </div>
+              <p className="description-text">
+                {results.waterLiters 
+                  ? 'This is a simple hydration estimate based on body weight. Hot weather and exercise may increase your needs.' 
+                  : 'Enter your weight to estimate a practical daily hydration target.'
+                }
+              </p>
+              {results.waterLiters && (
+                <div className="assessment-result-content">
+                  <p className="assessment-value">{results.waterLiters.toFixed(1)}</p>
+                  <p className="assessment-badge">Liters / day</p>
+                </div>
+              )}
+            </section>
           </div>
-          <p className="description-text">
-            {results.waterLiters 
-              ? 'This is a simple hydration estimate based on body weight. Hot weather and exercise may increase your needs.' 
-              : 'Enter your weight to estimate a practical daily hydration target.'
-            }
-          </p>
-          {results.waterLiters && (
-            <div className="assessment-result-content">
-              <p className="assessment-value">{results.waterLiters.toFixed(1)}</p>
-              <p className="assessment-badge">Liters / day</p>
+        </div>
+      </main>
+
+      {/* FOOTER */}
+      <footer className="footer">
+        <div className="footer-container">
+          <div className="footer-inner">
+            <div className="footer-logo">
+              <img src="https://www.image2url.com/r2/default/images/1779771082419-77f45caf-4ccd-438f-95c7-0caabce26494.png" alt="DataDiet" className="footer-logo-icon" />
+              <div className="footer-logo-text">DataDiet</div>
             </div>
-          )}
-        </section>
-      </div>
-    </article>
+
+            <div className="footer-links">
+              <Link to="/client/contact">Contact us</Link>
+            </div>
+          </div>
+
+          <div className="footer-divider"></div>
+
+          <div className="footer-bottom">
+            <div className="footer-copy">© 2026 DataDiet. All rights reserved.</div>
+            <div className="footer-tagline">Built with care for healthier lives 🌱</div>
+          </div>
+        </div>
+      </footer>
+    </div>
   );
 }
