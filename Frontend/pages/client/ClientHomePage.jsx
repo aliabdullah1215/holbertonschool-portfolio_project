@@ -526,7 +526,7 @@ export default function ClientHomePage() {
               </div>
 
               <h1 className="hero-heading">
-                Welcome back to <span>DataDiet.</span>
+                Welcome to <span>DataDiet.</span>
               </h1>
 
               <p className="hero-subtext">
