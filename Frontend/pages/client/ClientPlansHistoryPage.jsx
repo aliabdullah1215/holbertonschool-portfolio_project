@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import NutritionPlanView from '../../features/aiPlans/components/NutritionPlanView';
 import { getMySavedPlans, getSavedPlanById } from '../../features/aiPlans/services/aiPlansService';
 import { replaceMealWithAlternative } from '../../features/aiPlans/utils/planEditors';
@@ -205,7 +206,7 @@ export function ClientPlansHistoryPage() {
   const planStats = buildPlanStats(plans);
 
   return (
-    <article className="workspace-card workspace-card--section plans-history-page">
+    <div className="client-page-wrapper">
       <style>{`
         :root {
           --green-deep: #1C5C2E;
@@ -220,10 +221,34 @@ export function ClientPlansHistoryPage() {
           --border-light: #DFF0E5;
         }
 
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+
+        body {
+          background: var(--green-deep);
+        }
+
+        .client-page-wrapper {
+          width: 100%;
+          min-height: 100vh;
+          background: var(--bg-mint);
+          overflow-x: hidden;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+        }
+
         .plans-history-page {
           font-family: 'Plus Jakarta Sans', sans-serif;
           background: transparent;
+          flex: 1;
           width: 100%;
+          max-width: 1280px;
+          margin: 0 auto;
+          padding: 60px 60px 100px;
           box-sizing: border-box;
         }
 
@@ -296,7 +321,7 @@ export function ClientPlansHistoryPage() {
           gap: 16px;
         }
 
-        /* DECORATIVE CARD DESIGNS - INTERACTIVES WITH FLOATING PERSPECTIVES */
+        /* DECORATIVE CARD DESIGNS */
         .history-card,
         .plan-stat-card,
         .selected-plan-banner {
@@ -517,7 +542,7 @@ export function ClientPlansHistoryPage() {
           line-height: 1.5;
         }
 
-        /* LOADING, ERROR FEEDBACK BANNER ALIGNMENTS */
+        /* FEEDBACK LABELS */
         .form-feedback, .history-loading-msg, .section-note {
           text-align: center;
           padding: 20px;
@@ -553,6 +578,84 @@ export function ClientPlansHistoryPage() {
           line-height: 1.6;
         }
 
+        /* FOOTER DESIGN ELEMENTS */
+        .footer {
+          background: var(--green-deep);
+          padding: 60px 0 40px;
+          margin-top: auto;
+          width: 100%;
+          overflow: hidden;
+        }
+
+        .footer-container {
+          width: 100%;
+          max-width: 1280px;
+          margin: 0 auto;
+          padding: 0 60px;
+          box-sizing: border-box;
+        }
+
+        .footer-inner {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 30px;
+        }
+
+        .footer-logo {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+        }
+
+        .footer-logo-icon {
+          width: 48px;
+          height: 48px;
+          object-fit: contain;
+        }
+
+        .footer-logo-text {
+          color: white;
+          font-size: 18px;
+          font-weight: 800;
+        }
+
+        .footer-links {
+          display: flex;
+          gap: 24px;
+        }
+
+        .footer-links a {
+          text-decoration: none;
+          color: rgba(255,255,255,0.70);
+          font-size: 14px;
+          font-weight: 600;
+          transition: 0.25s ease;
+        }
+
+        .footer-links a:hover {
+          color: white;
+        }
+
+        .footer-divider {
+          height: 1px;
+          background: rgba(255,255,255,0.12);
+          margin-bottom: 24px;
+          width: 100%;
+        }
+
+        .footer-bottom {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
+
+        .footer-copy,
+        .footer-tagline {
+          color: rgba(255,255,255,0.50);
+          font-size: 13px;
+        }
+
         /* GRID BREAKPOINTS RESPONSIVITY OVERRIDES */
         @media (max-width: 1024px) {
           .plans-history-content {
@@ -561,6 +664,20 @@ export function ClientPlansHistoryPage() {
           }
           .plan-stats-column {
             padding-top: 0;
+          }
+        }
+        @media (max-width: 768px) {
+          .plans-history-page {
+            padding: 40px 24px;
+          }
+          .footer-container {
+            padding: 0 24px;
+          }
+          .footer-inner,
+          .footer-bottom {
+            flex-direction: column;
+            gap: 20px;
+            text-align: center;
           }
         }
         @media (max-width: 640px) {
@@ -579,186 +696,133 @@ export function ClientPlansHistoryPage() {
         }
       `}</style>
 
-      {/* CORE INTRO HEADER SEGMENT */}
-      <section className="plans-history-main-header">
-        <span className="eyebrow">Saved Plan Archives</span>
-        <h1>Your Plan History</h1>
-        <p>Review your historical saved nutrition breakdowns, monitor macro stats profiles, and open targets back inside the real-time adjustments engine.</p>
-      </section>
-
-      {error ? <p className="form-feedback form-feedback--error">{error}</p> : null}
-
-      {isLoading ? <p className="history-loading-msg">Loading your saved plans...</p> : null}
-
-      {!isLoading && plans.length === 0 ? (
-        <div className="section-note">
-          <h3>No saved plans yet</h3>
-          <p>Generate your first nutrition plan from the AI Plans page and it will appear here.</p>
-        </div>
-      ) : null}
-
-      {!isLoading && plans.length > 0 ? (
-        <div className="plans-history-content">
-          {/* LEFT INTERACTIVE LIST */}
-          <section className="plans-history-box">
-            <h2>Your plans</h2>
-
-            <div className="history-list">
-              {plans.map((plan) => (
-                <article className="history-card" key={plan.id}>
-                  <div className="history-card__top">
-                    <div>
-                      <span className="eyebrow">Created {formatDate(plan.created_at)}</span>
-                      <h3>{plan.goal}</h3>
-                    </div>
-
-                    <button
-                      className="history-view-button"
-                      type="button"
-                      onClick={() => handleSelectPlan(plan.id)}
-                      disabled={isPlanLoading}
-                    >
-                      {selectedPlan?.id === plan.id ? 'Reload plan' : 'View plan'}
-                    </button>
-                  </div>
-
-                  <div className="history-meta">
-                    <span>
-                      <strong>Focus:</strong> {plan.focus}
-                    </span>
-                  </div>
-                </article>
-              ))}
-            </div>
-          </section>
-
-          {/* RIGHT UTILITIES METRICS GRID */}
-          <aside className="plan-stats-column">
-            <section className="plan-stats-grid" aria-label="Saved plans statistics">
-              {planStats.map((stat) => (
-                <article className="plan-stat-card" key={stat.id}>
-                  <span className="plan-stat-card__icon">
-                    <StatIcon type={stat.icon} />
-                  </span>
-                  <div>
-                    <span className="plan-stat-card__label">{stat.label}</span>
-                    <strong>{stat.value}</strong>
-                  </div>
-                </article>
-              ))}
-            </section>
-
-            <p className="plan-stats-message">
-              <span>Customize your meals and download your personalized plan anytime.</span>
-              <strong>Build healthier habits, one meal at a time.</strong>
-            </p>
-          </aside>
-        </div>
-      ) : null}
-
-      {isPlanLoading ? <p className="history-loading-msg" style={{ marginTop: '40px' }}>Loading selected plan...</p> : null}
-
-      {/* PLAN OUTPUT WORKSPACE INTERFACE */}
-      {selectedPlan?.plan_content ? (
-        <section ref={selectedPlanRef} className="selected-plan-section">
-          <div className="selected-plan-banner">
-            <span className="eyebrow">Selected Workspace View</span>
-            <h3>{selectedPlan.goal}</h3>
-            <p>
-              Saved on {formatDate(selectedPlan.created_at)} with a target emphasis focused around {selectedPlan.focus}.
-            </p>
-          </div>
-
-          <NutritionPlanView
-            isApplyingLocalEdit={false}
-            plan={selectedPlan.plan_content}
-            onReplaceMeal={(mealId) =>
-              applySavedPlanLocalEdit((plan) => replaceMealWithAlternative(plan, mealId))
-            }
-            onReset={resetSavedPlanLocalEdits}
-          />
+      {/* MAIN LAYOUT CANVAS */}
+      <article className="plans-history-page">
+        {/* CORE INTRO HEADER SEGMENT */}
+        <section className="plans-history-main-header">
+          <span className="eyebrow">Saved Plan Archives</span>
+          <h1>Your Plan History</h1>
+          <p>Review your historical saved nutrition breakdowns, monitor macro stats profiles, and open targets back inside the real-time adjustments engine.</p>
         </section>
-      ) : null}
-    </article>
-  );
-}
 
-export default ClientPlansHistoryPage;                  <div className="history-card__top">
-                    <div>
-                      <span className="eyebrow">Created {formatDate(plan.created_at)}</span>
-                      <h3>{plan.goal}</h3>
+        {error ? <p className="form-feedback form-feedback--error">{error}</p> : null}
+
+        {isLoading ? <p className="history-loading-msg">Loading your saved plans...</p> : null}
+
+        {!isLoading && plans.length === 0 ? (
+          <div className="section-note">
+            <h3>No saved plans yet</h3>
+            <p>Generate your first nutrition plan from the AI Plans page and it will appear here.</p>
+          </div>
+        ) : null}
+
+        {!isLoading && plans.length > 0 ? (
+          <div className="plans-history-content">
+            {/* LEFT INTERACTIVE LIST */}
+            <section className="plans-history-box">
+              <h2>Your plans</h2>
+
+              <div className="history-list">
+                {plans.map((plan) => (
+                  <article className="history-card" key={plan.id}>
+                    <div className="history-card__top">
+                      <div>
+                        <span className="eyebrow">Created {formatDate(plan.created_at)}</span>
+                        <h3>{plan.goal}</h3>
+                      </div>
+
+                      <button
+                        className="history-view-button"
+                        type="button"
+                        onClick={() => handleSelectPlan(plan.id)}
+                        disabled={isPlanLoading}
+                      >
+                        {selectedPlan?.id === plan.id ? 'Reload plan' : 'View plan'}
+                      </button>
                     </div>
 
-                    <button
-                      className="history-view-button"
-                      type="button"
-                      onClick={() => handleSelectPlan(plan.id)}
-                      disabled={isPlanLoading}
-                    >
-                      {selectedPlan?.id === plan.id ? 'Reload plan' : 'View plan'}
-                    </button>
-                  </div>
-
-                  <div className="history-meta">
-                    <span>
-                      <strong>Focus:</strong> {plan.focus}
-                    </span>
-                  </div>
-                </article>
-              ))}
-            </div>
-          </section>
-
-                    <aside className="plan-stats-column">
-            <section className="plan-stats-grid" aria-label="Saved plans statistics">
-              {planStats.map((stat) => (
-                <article className="plan-stat-card" key={stat.id}>
-                  <span className="plan-stat-card__icon">
-                    <StatIcon type={stat.icon} />
-                  </span>
-                  <div>
-                    <span className="plan-stat-card__label">{stat.label}</span>
-                    <strong>{stat.value}</strong>
-                  </div>
-                </article>
-              ))}
+                    <div className="history-meta">
+                      <span>
+                        <strong>Focus:</strong> {plan.focus}
+                      </span>
+                    </div>
+                  </article>
+                ))}
+              </div>
             </section>
 
-            <p className="plan-stats-message">
-              <span>Customize your meals and download your personalized plan anytime.</span>
-              <strong>Build healthier habits, one meal at a time.</strong>
-            </p>
-          </aside>
-        </div>
-      ) : null}
+            {/* RIGHT UTILITIES METRICS GRID */}
+            <aside className="plan-stats-column">
+              <section className="plan-stats-grid" aria-label="Saved plans statistics">
+                {planStats.map((stat) => (
+                  <article className="plan-stat-card" key={stat.id}>
+                    <span className="plan-stat-card__icon">
+                      <StatIcon type={stat.icon} />
+                    </span>
+                    <div>
+                      <span className="plan-stat-card__label">{stat.label}</span>
+                      <strong>{stat.value}</strong>
+                    </div>
+                  </article>
+                ))}
+              </section>
 
-      {isPlanLoading ? <p>Loading selected plan...</p> : null}
+              <p className="plan-stats-message">
+                <span>Customize your meals and download your personalized plan anytime.</span>
+                <strong>Build healthier habits, one meal at a time.</strong>
+              </p>
+            </aside>
+          </div>
+        ) : null}
 
-      {selectedPlan?.plan_content ? (
-        <section ref={selectedPlanRef} className="selected-plan-section">
-          <div className="content-grid">
-            <div className="content-card">
-              <span className="eyebrow">Selected Plan</span>
+        {isPlanLoading ? <p className="history-loading-msg" style={{ marginTop: '40px' }}>Loading selected plan...</p> : null}
+
+        {/* PLAN OUTPUT WORKSPACE INTERFACE */}
+        {selectedPlan?.plan_content ? (
+          <section ref={selectedPlanRef} className="selected-plan-section">
+            <div className="selected-plan-banner">
+              <span className="eyebrow">Selected Workspace View</span>
               <h3>{selectedPlan.goal}</h3>
               <p>
-                Saved on {formatDate(selectedPlan.created_at)} with focus on {selectedPlan.focus}.
+                Saved on {formatDate(selectedPlan.created_at)} with a target emphasis focused around {selectedPlan.focus}.
               </p>
+            </div>
+
+            <NutritionPlanView
+              isApplyingLocalEdit={false}
+              plan={selectedPlan.plan_content}
+              onReplaceMeal={(mealId) =>
+                applySavedPlanLocalEdit((plan) => replaceMealWithAlternative(plan, mealId))
+              }
+              onReset={resetSavedPlanLocalEdits}
+            />
+          </section>
+        ) : null}
+      </article>
+
+      {/* FOOTER */}
+      <footer className="footer">
+        <div className="footer-container">
+          <div className="footer-inner">
+            <div className="footer-logo">
+              <img src="https://www.image2url.com/r2/default/images/1779771082419-77f45caf-4ccd-438f-95c7-0caabce26494.png" alt="DataDiet" className="footer-logo-icon" />
+              <div className="footer-logo-text">DataDiet</div>
+            </div>
+
+            <div className="footer-links">
+              <Link to="/client/contact">Contact us</Link>
             </div>
           </div>
 
-          <NutritionPlanView
-            isApplyingLocalEdit={false}
-            plan={selectedPlan.plan_content}
-            onReplaceMeal={(mealId) =>
-              applySavedPlanLocalEdit((plan) => replaceMealWithAlternative(plan, mealId))
-            }
-            onReset={resetSavedPlanLocalEdits}
-          />
+          <div className="footer-divider"></div>
 
-
-        </section>
-      ) : null}
-    </article>
+          <div className="footer-bottom">
+            <div className="footer-copy">© 2026 DataDiet. All rights reserved.</div>
+            <div className="footer-tagline">Built with care for healthier lives 🌱</div>
+          </div>
+        </div>
+      </footer>
+    </div>
   );
 }
 
