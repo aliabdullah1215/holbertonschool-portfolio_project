@@ -56,6 +56,10 @@ export default function LandingPage() {
           --border-light: #DFF0E5;
         }
 
+        body {
+          background: var(--green-deep);
+        }
+
         .landing-page-wrapper {
           font-family: 'Plus Jakarta Sans', sans-serif;
           background-color: var(--bg-mint);
@@ -109,16 +113,10 @@ export default function LandingPage() {
         }
 
         .nav-logo-icon {
-          width: 32px;
-          height: 32px;
-          background: linear-gradient(135deg, var(--green-mid), var(--green-deep));
-          border-radius: 10px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
+          width: 40px;
+          height: 40px;
+          object-fit: contain;
         }
-
-        .nav-logo-icon i { color: white; font-size: 14px; }
 
         .nav-logo-text {
           font-size: 17px;
@@ -834,16 +832,10 @@ export default function LandingPage() {
         }
 
         .footer-logo-icon {
-          width: 36px;
-          height: 36px;
-          background: rgba(255,255,255,0.15);
-          border-radius: 10px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
+          width: 48px;
+          height: 48px;
+          object-fit: contain;
         }
-
-        .footer-logo-icon i { color: white; font-size: 15px; }
         .footer-logo-text { font-size: 18px; font-weight: 700; color: white; }
 
         .footer-links { display: flex; gap: 24px; }
@@ -922,9 +914,7 @@ export default function LandingPage() {
       <div className="navbar-wrapper">
         <nav className="navbar">
           <a href="#" className="nav-logo">
-            <div className="nav-logo-icon">
-              <i className="fas fa-seedling"></i>
-            </div>
+            <img src="https://www.image2url.com/r2/default/images/1779771082419-77f45caf-4ccd-438f-95c7-0caabce26494.png" alt="Data Diet" className="nav-logo-icon" />
             <span className="nav-logo-text">Data Diet</span>
           </a>
           <div className="nav-links">
@@ -1257,14 +1247,10 @@ export default function LandingPage() {
         <div className="container">
           <div className="footer-inner">
             <div className="footer-logo">
-              <div className="footer-logo-icon">
-                <i className="fas fa-seedling"></i>
-              </div>
+              <img src="https://www.image2url.com/r2/default/images/1779771082419-77f45caf-4ccd-438f-95c7-0caabce26494.png" alt="Data Diet" className="footer-logo-icon" />
               <span className="footer-logo-text">Data Diet</span>
             </div>
             <div className="footer-links">
-              <Link to="/">Home</Link>
-              <Link to="/how">About</Link>
               <Link to="/client/contact">Contact Us</Link>
             </div>
           </div>
