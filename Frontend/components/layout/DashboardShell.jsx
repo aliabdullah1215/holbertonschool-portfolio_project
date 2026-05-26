@@ -42,7 +42,7 @@ function DashboardShell({ title, description, sections, homePath = '/' }) {
       </main>
       <footer className="dashboard-footer">
         <div className="dashboard-footer__brand">
-          <span className="dashboard-footer__logo">D</span>
+          <LogoMark compact to={homePath} />
           <span>© 2026 DataDiet. All rights reserved.</span>
         </div>
 
