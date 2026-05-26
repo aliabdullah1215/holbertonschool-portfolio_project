@@ -2785,3 +2785,26 @@ html {
       0 0 82px rgba(134, 239, 172, 0.75);
   }
 }
+
+.dashboard-layout--topnav .dashboard-layout__workspace:has(.client-page-wrapper) {
+  width: 100% !important;
+  min-height: calc(100svh - 76px);
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.client-page-wrapper {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+.dashboard-layout--topnav .dashboard-layout__workspace:has(.doctor-home-wrapper) {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+.dashboard-layout--topnav .dashboard-layout__workspace:has(.dh-wrapper) {
+  width: 100%;
+  padding: 0;
+}
