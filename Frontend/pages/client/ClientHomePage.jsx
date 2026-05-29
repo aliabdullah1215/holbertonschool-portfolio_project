@@ -43,7 +43,7 @@ export default function ClientHomePage() {
 
         body {
           font-family: 'Plus Jakarta Sans', sans-serif;
-          background: var(--bg-mint);
+          background: var(--green-deep);
         }
 
         .client-page-wrapper {
@@ -53,6 +53,9 @@ export default function ClientHomePage() {
           overflow-x: hidden;
           padding-top: 40px;
           position: relative;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
         }
 
         /* =========================
@@ -63,6 +66,7 @@ export default function ClientHomePage() {
           position: relative;
           overflow: hidden;
           padding: 40px 0 80px;
+          flex: 1;
         }
 
         .hero-blobs {
@@ -385,6 +389,8 @@ export default function ClientHomePage() {
           background: var(--green-deep);
           padding: 50px 0 30px;
           margin-top: 40px;
+          width: 100%;
+          overflow: hidden;
         }
 
         .footer-inner {
@@ -401,17 +407,9 @@ export default function ClientHomePage() {
         }
 
         .footer-logo-icon {
-          width: 38px;
-          height: 38px;
-          background: rgba(255,255,255,0.15);
-          border-radius: 12px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-
-        .footer-logo-icon i {
-          color: white;
+          width: 48px;
+          height: 48px;
+          object-fit: contain;
         }
 
         .footer-logo-text {
@@ -526,7 +524,7 @@ export default function ClientHomePage() {
               </div>
 
               <h1 className="hero-heading">
-                Welcome back to <span>DataDiet.</span>
+                Welcome to <span>DataDiet.</span>
               </h1>
 
               <p className="hero-subtext">
@@ -657,6 +655,29 @@ export default function ClientHomePage() {
           </div>
         </div>
       </section>
+
+      {/* FOOTER */}
+      <footer className="footer">
+        <div className="container">
+          <div className="footer-inner">
+            <div className="footer-logo">
+              <img src="https://www.image2url.com/r2/default/images/1779771082419-77f45caf-4ccd-438f-95c7-0caabce26494.png" alt="DataDiet" className="footer-logo-icon" />
+              <div className="footer-logo-text">DataDiet</div>
+            </div>
+
+            <div className="footer-links">
+              <Link to="/client/contact">Contact us</Link>
+            </div>
+          </div>
+
+          <div className="footer-divider"></div>
+
+          <div className="footer-bottom">
+            <div className="footer-copy">© 2026 DataDiet. All rights reserved.</div>
+            <div className="footer-tagline">Built with care for healthier lives 🌱</div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

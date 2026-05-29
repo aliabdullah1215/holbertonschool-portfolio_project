@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { generateAiPlan } from '../../features/aiPlans/services/aiPlansService';
 import { normalizeAiPlanAnswers } from '../../features/aiPlans/utils/normalizeAnswers';
+
+// eslint-disable-next-line react-refresh/only-export-components
 export const questionnaireSteps = [
   {
     id: 'goal',
@@ -336,17 +338,28 @@ export default function ClientAiPlansPage() {
   const [generatedPlan, setGeneratedPlan] = useState(null);
   const [error, setError] = useState('');
   const currentStep = questionnaireSteps[currentStepIndex];
-
+  const [errors, setErrors] = useState({});
   const getVisibleFields = (step) =>
     step.fields.filter((field) => !field.condition || field.condition(answers));
+
 
   const visibleFields = getVisibleFields(currentStep);
   const safeFieldIndex = Math.min(currentFieldIndex, Math.max(visibleFields.length - 1, 0));
   const currentField = visibleFields[safeFieldIndex];
+  const hasCurrentFieldError = currentField ? !!errors[currentField.id] : false;
 
   const handleInputChange = (fieldId, value) => {
     setAnswers((prev) => ({ ...prev, [fieldId]: value }));
+
+    if (errors[fieldId]) {
+      setErrors((prev) => {
+        const next = { ...prev };
+        delete next[fieldId];
+        return next;
+      });
+    }
   };
+
 
   const handleCheckboxChange = (fieldId, optionValue, isChecked) => {
     setAnswers((prev) => {
@@ -356,11 +369,41 @@ export default function ClientAiPlansPage() {
         : currentList.filter((item) => item !== optionValue);
       return { ...prev, [fieldId]: updatedList };
     });
+
+    if (errors[fieldId]) {
+      setErrors((prev) => {
+        const next = { ...prev };
+        delete next[fieldId];
+        return next;
+      });
+    }
   };
 
   const handleNext = async (e) => {
     e.preventDefault();
     setError('');
+
+    if (currentField) {
+      const value = answers[currentField.id];
+      const isEmpty =
+        value === undefined ||
+        value === null ||
+        value === '' ||
+        (Array.isArray(value) && value.length === 0);
+
+      const isRequired =
+        currentField.type === 'number' ||
+        currentField.type === 'select' ||
+        currentField.type === 'radio' ||
+        currentField.id === 'allergies';
+
+      if (isRequired && isEmpty) {
+        setErrors({ [currentField.id]: true });
+        return;
+      }
+    }
+
+    setErrors({});
 
     if (safeFieldIndex < visibleFields.length - 1) {
       setCurrentFieldIndex((prev) => prev + 1);
@@ -393,6 +436,9 @@ export default function ClientAiPlansPage() {
   };
 
   const handlePrev = () => {
+    setErrors({});
+    setError('');
+
     if (safeFieldIndex > 0) {
       setCurrentFieldIndex((prev) => prev - 1);
       return;
@@ -408,6 +454,7 @@ export default function ClientAiPlansPage() {
   };
 
   return (
+
     <div className="client-page-wrapper">
       <style>{`
         :root {
@@ -421,6 +468,8 @@ export default function ClientAiPlansPage() {
           --text-body: #3D5445;
           --text-secondary: #4A7C59;
           --border-light: #DFF0E5;
+          --error-red: #D32F2F;
+          --error-bg: #FDF2F2;
         }
 
         * {
@@ -431,7 +480,7 @@ export default function ClientAiPlansPage() {
 
         body {
           font-family: 'Plus Jakarta Sans', sans-serif;
-          background: var(--bg-mint);
+          background: #1C5C2E;
         }
 
         .client-page-wrapper {
@@ -509,7 +558,6 @@ export default function ClientAiPlansPage() {
           margin-bottom: 40px;
         }
 
-        /* CARD STYLE CONTAINER */
         .hero-card-wrapper {
           display: flex;
           justify-content: center;
@@ -594,6 +642,12 @@ export default function ClientAiPlansPage() {
           font-weight: 700;
           color: var(--text-dark);
           margin-bottom: 8px;
+          transition: color 0.2s ease;
+        }
+
+        /* Label changes color slightly on field error */
+        .form-group.has-error .form-label {
+          color: var(--error-red);
         }
 
         .form-input, .form-textarea {
@@ -621,7 +675,24 @@ export default function ClientAiPlansPage() {
           box-shadow: 0 0 0 4px rgba(46,139,87,0.08);
         }
 
-        /* GRID FOR SELECTIONS BUTTONS */
+        /* ERROR VISUAL CLASSES */
+        .form-input.error, .form-textarea.error {
+          border-color: var(--error-red) !important;
+          background: var(--error-bg) !important;
+        }
+        
+        .form-input.error:focus, .form-textarea.error:focus {
+          box-shadow: 0 0 0 4px rgba(211, 47, 47, 0.12) !important;
+        }
+
+        .error-message-text {
+          display: block;
+          font-size: 11px;
+          font-weight: 700;
+          color: var(--error-red);
+          margin-top: 6px;
+        }
+
         .button-group-grid {
           display: grid;
           grid-template-columns: 1fr 1fr;
@@ -653,11 +724,16 @@ export default function ClientAiPlansPage() {
           border-color: var(--green-mid);
         }
 
-        /* FORCED PERFECT CIRCULAR RADIO INDICATOR FOR ALL CHOICE SELECTIONS */
+        /* Border red modifications on interactive grid options if an error occurs */
+        .custom-choice-btn.error-choice {
+          border-color: rgba(211, 47, 47, 0.4);
+          background: var(--error-bg);
+        }
+
         .choice-indicator-circle {
           width: 16px;
           height: 16px;
-          border-radius: 50%; /* Pure Circle */
+          border-radius: 50%;
           border: 2px solid var(--green-light);
           display: flex;
           align-items: center;
@@ -672,7 +748,10 @@ export default function ClientAiPlansPage() {
           background: var(--green-mid);
         }
 
-        /* Inner Dot for Checked Circle Effect */
+        .custom-choice-btn.error-choice .choice-indicator-circle {
+          border-color: var(--error-red);
+        }
+
         .choice-indicator-dot {
           width: 6px;
           height: 6px;
@@ -681,7 +760,6 @@ export default function ClientAiPlansPage() {
           display: block;
         }
 
-        /* WIZARD ACTIONS STYLES */
         .wizard-actions-row {
           display: flex;
           gap: 12px;
@@ -733,7 +811,6 @@ export default function ClientAiPlansPage() {
           transform: translateY(-1px);
         }
 
-        /* SUCCESS SCREEN RESPONSE CONFIGS */
         .success-wrapper {
           text-align: center;
           padding: 20px 0 10px;
@@ -787,7 +864,6 @@ export default function ClientAiPlansPage() {
           transform: translateY(-1px);
         }
 
-        /* GLOBAL APPLICATION FOOTER */
         .footer {
           background: var(--green-deep);
           padding: 50px 0 30px;
@@ -808,17 +884,9 @@ export default function ClientAiPlansPage() {
         }
 
         .footer-logo-icon {
-          width: 38px;
-          height: 38px;
-          background: rgba(255,255,255,0.15);
-          border-radius: 12px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-
-        .footer-logo-icon i {
-          color: white;
+          width: 48px;
+          height: 48px;
+          object-fit: contain;
         }
 
         .footer-logo-text {
@@ -887,7 +955,6 @@ export default function ClientAiPlansPage() {
         }
       `}</style>
 
-      {/* GRAPHIC DECORATIONS */}
       <section className="hero">
         <svg
           className="hero-blobs"
@@ -903,7 +970,6 @@ export default function ClientAiPlansPage() {
         <div className="container">
           <div className="hero-inner">
 
-            {/* LEFT CONTAINER HEADER DATA */}
             <div>
               <div className="hero-label">
                 <i className="fas fa-wand-magic-sparkles"></i>
@@ -919,7 +985,6 @@ export default function ClientAiPlansPage() {
               </p>
             </div>
 
-            {/* RIGHT SIDE DATA SEQUENCE LAYOUT */}
             <div className="hero-card-wrapper">
               <div className="dashboard-card">
 
@@ -940,19 +1005,11 @@ export default function ClientAiPlansPage() {
                         {error}
                       </p>
                     )}
-
-                    <div className="progress-bar-container">
-                      <div
-                        className="progress-bar-fill"
-                        style={{ width: `${((currentStepIndex + 1) / questionnaireSteps.length) * 100}%` }}
-                      ></div>
-                    </div>
-
                     <div className="divider"></div>
 
                     <form onSubmit={handleNext}>
                       {currentField && (
-                        <div className="form-group" key={currentField.id}>
+                        <div className={`form-group ${hasCurrentFieldError ? 'has-error' : ''}`} key={currentField.id}>
                           <label className="form-label">{currentField.label}</label>
 
                           {currentField.type === 'select' && (
@@ -962,7 +1019,7 @@ export default function ClientAiPlansPage() {
                                 return (
                                   <div
                                     key={opt.value}
-                                    className={`custom-choice-btn ${isSelected ? 'selected' : ''}`}
+                                    className={`custom-choice-btn ${isSelected ? 'selected' : ''} ${hasCurrentFieldError ? 'error-choice' : ''}`}
                                     onClick={() => handleInputChange(currentField.id, opt.value)}
                                   >
                                     <div className="choice-indicator-circle">
@@ -983,8 +1040,7 @@ export default function ClientAiPlansPage() {
                               placeholder={currentField.placeholder}
                               value={answers[currentField.id] || ''}
                               onChange={(e) => handleInputChange(currentField.id, e.target.value)}
-                              className="form-input"
-                              required={currentField.type === 'number'}
+                              className={`form-input ${hasCurrentFieldError ? 'error' : ''}`}
                             />
                           )}
 
@@ -993,7 +1049,7 @@ export default function ClientAiPlansPage() {
                               placeholder={currentField.placeholder}
                               value={answers[currentField.id] || ''}
                               onChange={(e) => handleInputChange(currentField.id, e.target.value)}
-                              className="form-textarea"
+                              className={`form-textarea ${hasCurrentFieldError ? 'error' : ''}`}
                             />
                           )}
 
@@ -1004,7 +1060,7 @@ export default function ClientAiPlansPage() {
                                 return (
                                   <div
                                     key={opt.value}
-                                    className={`custom-choice-btn ${isSelected ? 'selected' : ''}`}
+                                    className={`custom-choice-btn ${isSelected ? 'selected' : ''} ${hasCurrentFieldError ? 'error-choice' : ''}`}
                                     onClick={() => handleInputChange(currentField.id, opt.value)}
                                   >
                                     <div className="choice-indicator-circle">
@@ -1024,7 +1080,7 @@ export default function ClientAiPlansPage() {
                                 return (
                                   <div
                                     key={opt.value}
-                                    className={`custom-choice-btn ${isChecked ? 'selected' : ''}`}
+                                    className={`custom-choice-btn ${isChecked ? 'selected' : ''} ${hasCurrentFieldError ? 'error-choice' : ''}`}
                                     onClick={() => handleCheckboxChange(currentField.id, opt.value, !isChecked)}
                                   >
                                     <div className="choice-indicator-circle">
@@ -1036,10 +1092,15 @@ export default function ClientAiPlansPage() {
                               })}
                             </div>
                           )}
+
+                          {hasCurrentFieldError && (
+                            <span className="error-message-text">
+                              <i className="fas fa-circle-exclamation"></i> This section is required to customize metrics.
+                            </span>
+                          )}
                         </div>
                       )}
 
-                      {/* BOTTOM ACTION LAYOUT WIZARD ROW */}
                       <div className="wizard-actions-row">
                         {(currentStepIndex > 0 || safeFieldIndex > 0) && (
                           <button type="button" onClick={handlePrev} className="btn-back">
@@ -1066,7 +1127,6 @@ export default function ClientAiPlansPage() {
                     </form>
                   </>
                 ) : (
-                  /* THE FIXED GREEN BOTTOM BUTTON ACTION COMPONENT BLOCK */
                   <div className="success-wrapper">
                     <i className="fas fa-circle-check success-icon"></i>
                     <h3 className="success-title">Plan Successfully Processed!</h3>
@@ -1075,7 +1135,15 @@ export default function ClientAiPlansPage() {
                     </p>
 
                     <div className="card-actions-row">
-                      <button onClick={() => { setPlanGenerated(false); setGeneratedPlan(null); setCurrentStepIndex(0); setCurrentFieldIndex(0); }} className="action-link-btn">
+                      <button
+                        onClick={() => {
+                          setPlanGenerated(false);
+                          setGeneratedPlan(null);
+                          setCurrentStepIndex(0);
+                          setCurrentFieldIndex(0);
+                        }}
+                        className="action-link-btn"
+                      >
                         <i className="fas fa-rotate-left"></i> Retake Form
                       </button>
                       <Link to="/client/plans-history" className="action-link-btn" style={{ background: 'var(--green-mid)', color: 'white' }}>
@@ -1084,10 +1152,8 @@ export default function ClientAiPlansPage() {
                     </div>
                   </div>
                 )}
-
               </div>
             </div>
-
           </div>
         </div>
       </section>
