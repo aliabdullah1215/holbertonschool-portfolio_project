@@ -113,13 +113,12 @@ export default function LandingPage() {
           flex-shrink: 0;
         }
 
-        .nav-logo-icon {
-        
-.nav-logo-icon {
-  width: 40px;
-  height: 40px;
-  object-fit: contain;
-}
+               .nav-logo-icon {
+          width: 40px;
+          height: 40px;
+          object-fit: contain;
+        }
+
         .nav-logo-text {
           font-size: 17px;
           font-weight: 700;
@@ -834,12 +833,11 @@ export default function LandingPage() {
         }
 
         .footer-logo-icon {
+          width: 48px;
+          height: 48px;
+          object-fit: contain;
+        }
 
-        .footer-logo-icon {
-  width: 48px;
-  height: 48px;
-  object-fit: contain;
-}
         .footer-logo-text { font-size: 18px; font-weight: 700; color: white; }
 
         .footer-links { display: flex; gap: 24px; }
@@ -939,7 +937,7 @@ export default function LandingPage() {
       </div >
 
     {/* ─── HERO ─── */ }
-    < section className = "hero" >
+     <section className="hero">
         <svg className="hero-blobs" viewBox="0 0 1728 700" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
           <ellipse cx="180" cy="240" rx="280" ry="220" fill="rgba(46,139,87,0.06)" />
           <ellipse cx="1580" cy="160" rx="200" ry="160" fill="rgba(46,139,87,0.05)" />
@@ -1061,7 +1059,7 @@ export default function LandingPage() {
       </section >
 
     {/* ─── HOW IT WORKS ─── */ }
-    < section className = "section how-wrapper" id = "how" >
+    <section className="section how-wrapper" id="how">
       <div className="container">
         <div className="section-header" style={{ textAlign: 'center' }}>
           <div style={{ display: 'flex', justifyContent: 'center' }}>
