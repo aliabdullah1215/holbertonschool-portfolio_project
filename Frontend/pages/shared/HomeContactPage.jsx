@@ -5,10 +5,6 @@ function DoctorContactPage() {
     <article className="workspace-card workspace-card--section contact-page doctor-contact-page">
       {/* ─── CUSTOM EMBEDDED CSS ─── */}
       <style>{`
-        body {
-          background: #1C5C2E;
-        }
-
         :root {
           --green-deep: #1C5C2E;
           --green-mid: #2E8B57;
@@ -208,7 +204,7 @@ function DoctorContactPage() {
       {/* ─── MAIN HEADER ─── */}
       <div className="contact-page__header">
         <h2>Contact our support team</h2>
-        <p>Let us know how we can support your doctor profile.</p>
+        <p>Our dedicated support team is here to assist you with any inquiries, platform questions, or guidance you may need.</p>
       </div>
 
       {/* ─── CHANNELS GRID ─── */}

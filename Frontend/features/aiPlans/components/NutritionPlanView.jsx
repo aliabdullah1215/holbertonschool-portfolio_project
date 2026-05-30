@@ -115,15 +115,17 @@ function NutritionPlanView({
 
             <div className="plan-summary-actions">
               <button
-                className="ghost-link ghost-link--button"
+                className="plan-action-button plan-action-button--primary"
                 type="button"
                 onClick={() => printPlanAsPdf(plan)}
               >
+                <i className="fas fa-file-arrow-down"></i>
                 Save as PDF
               </button>
 
               {!readOnly ? (
-                <button className="ghost-link ghost-link--button" type="button" onClick={onReset}>
+                <button className="plan-action-button plan-action-button--ghost" type="button" onClick={onReset}>
+                  <i className="fas fa-rotate-left"></i>
                   Reset the plan
                 </button>
               ) : null}
@@ -188,11 +190,12 @@ function NutritionPlanView({
 
                   <div className="meal-actions">
                     <button
-                      className="ghost-link ghost-link--button"
+                      className="plan-action-button plan-action-button--small"
                       type="button"
                       disabled={readOnly || !meal.meal_alternatives?.length}
                       onClick={() => onReplaceMeal(meal.meal_id)}
                     >
+                      <i className="fas fa-repeat"></i>
                       Replace meal
                     </button>
                   </div>

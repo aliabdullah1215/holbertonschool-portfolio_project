@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 export default function LandingPage() {
   const navigate = useNavigate();
@@ -57,6 +57,10 @@ export default function LandingPage() {
           --border-light: #DFF0E5;
         }
 
+        body {
+          background: var(--green-deep);
+        }
+
         .landing-page-wrapper {
           font-family: 'Plus Jakarta Sans', sans-serif;
           background-color: var(--bg-mint);
@@ -110,17 +114,12 @@ export default function LandingPage() {
         }
 
         .nav-logo-icon {
-          width: 32px;
-          height: 32px;
-          background: linear-gradient(135deg, var(--green-mid), var(--green-deep));
-          border-radius: 10px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-
-        .nav-logo-icon i { color: white; font-size: 14px; }
-
+        
+.nav-logo-icon {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
         .nav-logo-text {
           font-size: 17px;
           font-weight: 700;
@@ -835,16 +834,12 @@ export default function LandingPage() {
         }
 
         .footer-logo-icon {
-          width: 36px;
-          height: 36px;
-          background: rgba(255,255,255,0.15);
-          border-radius: 10px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
 
-        .footer-logo-icon i { color: white; font-size: 15px; }
+        .footer-logo-icon {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+}
         .footer-logo-text { font-size: 18px; font-weight: 700; color: white; }
 
         .footer-links { display: flex; gap: 24px; }
@@ -923,11 +918,13 @@ export default function LandingPage() {
       <div className="navbar-wrapper">
         <nav className="navbar">
           <a href="#" className="nav-logo">
-            <div className="nav-logo-icon">
-              <i className="fas fa-seedling"></i>
-            </div>
+            <img
+              src="https://www.image2url.com/r2/default/images/1779771082419-77f45caf-4ccd-438f-95c7-0caabce26494.png"
+              alt="Data Diet"
+              className="nav-logo-icon"
+            />
             <span className="nav-logo-text">Data Diet</span>
-          </a>
+          </a >
           <div className="nav-links">
             <a href="#" className={activeSection === 'home' ? 'active' : ''}>Home</a>
             <a href="#how" className={activeSection === 'how' ? 'active' : ''}>About</a>
@@ -938,11 +935,11 @@ export default function LandingPage() {
             <button className="btn-ghost" onClick={handleSignIn}>Sign In</button>
             <button className="btn-primary" onClick={handleStartClient}>Get Started</button>
           </div>
-        </nav>
-      </div>
+        </nav >
+      </div >
 
-      {/* ─── HERO ─── */}
-      <section className="hero">
+    {/* ─── HERO ─── */ }
+    < section className = "hero" >
         <svg className="hero-blobs" viewBox="0 0 1728 700" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
           <ellipse cx="180" cy="240" rx="280" ry="220" fill="rgba(46,139,87,0.06)" />
           <ellipse cx="1580" cy="160" rx="200" ry="160" fill="rgba(46,139,87,0.05)" />
@@ -1061,220 +1058,228 @@ export default function LandingPage() {
             </div>
           </div>
         </div>
-      </section>
+      </section >
 
-      {/* ─── HOW IT WORKS ─── */}
-      <section className="section how-wrapper" id="how">
-        <div className="container">
-          <div className="section-header" style={{ textAlign: 'center' }}>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
-              <span className="section-label">
-                <i className="fas fa-arrow-right"></i>
-                Simple flow
-              </span>
+    {/* ─── HOW IT WORKS ─── */ }
+    < section className = "section how-wrapper" id = "how" >
+      <div className="container">
+        <div className="section-header" style={{ textAlign: 'center' }}>
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <span className="section-label">
+              <i className="fas fa-arrow-right"></i>
+              Simple flow
+            </span>
+          </div>
+          <h2 className="section-heading" style={{ textAlign: 'center', maxWidth: '520px', margin: '0 auto 16px' }}>How Data Diet works</h2>
+          <p className="section-sub" style={{ margin: '0 auto', textAlign: 'center' }}>From intake to saved plans and medical support, the experience stays guided.</p>
+        </div>
+
+        <div style={{ position: 'relative' }}>
+          <div className="steps-connector"></div>
+          <div className="steps-row">
+            <div className="step-card">
+              <div className="step-number">1</div>
+              <div className="step-title">Choose your role</div>
+              <p className="step-desc">Sign up as a client ready to eat better, or as a nutritionist ready to support others.</p>
             </div>
-            <h2 className="section-heading" style={{ textAlign: 'center', maxWidth: '520px', margin: '0 auto 16px' }}>How Data Diet works</h2>
-            <p className="section-sub" style={{ margin: '0 auto', textAlign: 'center' }}>From intake to saved plans and medical support, the experience stays guided.</p>
+            <div className="step-card">
+              <div className="step-number">2</div>
+              <div className="step-title">Complete your intake</div>
+              <p className="step-desc">Answer a few friendly questions about your goals, lifestyle, and dietary preferences.</p>
+            </div>
+            <div className="step-card">
+              <div className="step-number">3</div>
+              <div className="step-title">Generate your plan</div>
+              <p className="step-desc">AI creates a personalized, calorie-aware meal plan tailored just for you ── instantly.</p>
+            </div>
+            <div className="step-card">
+              <div className="step-number">4</div>
+              <div className="step-title">Adjust with ease</div>
+              <p className="step-desc">Swap meals, change portions, or regenerate a day. Your plan bends to fit your schedule.</p>
+            </div>
+            <div className="step-card">
+              <div className="step-number">5</div>
+              <div className="step-title">Find expert support</div>
+              <p className="step-desc">Browse verified nutritionists and request a review whenever you want a human perspective.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      </section >
+
+    {/* ─── WHY CHOOSE ─── */ }
+    < section id = "features" className = "section section-alt" >
+      <div className="container">
+        <div className="why-layout">
+          <div className="why-left">
+            <span className="section-label">
+              <i className="fas fa-star"></i>
+              Why choose Data Diet?
+            </span>
+            <h2 className="section-heading">AI plans that stay useful after generation.</h2>
+            <p className="section-sub">The platform is designed around practical nutrition, flexible habits, and human support ── so your plan actually gets followed.</p>
+
+            <div className="credential-list">
+              <div className="credential-item">
+                <div className="cred-check"><i className="fas fa-check"></i></div>
+                Personalized to your specific health goals
+              </div>
+              <div className="credential-item">
+                <div className="cred-check"><i className="fas fa-check"></i></div>
+                Editable at any point ── no locked plans
+              </div>
+              <div className="credential-item">
+                <div className="cred-check"><i className="fas fa-check"></i></div>
+                Backed by verified nutrition professionals
+              </div>
+            </div>
           </div>
 
-          <div style={{ position: 'relative' }}>
-            <div className="steps-connector"></div>
-            <div className="steps-row">
-              <div className="step-card">
-                <div className="step-number">1</div>
-                <div className="step-title">Choose your role</div>
-                <p className="step-desc">Sign up as a client ready to eat better, or as a nutritionist ready to support others.</p>
+          <div className="why-right">
+            <div className="why-grid">
+              <div className="feature-card">
+                <div className="feature-icon-wrap">
+                  <i className="fas fa-shield-halved"></i>
+                </div>
+                <div>
+                  <div className="feature-title">Personalized nutrition</div>
+                  <p className="feature-desc">Every plan is generated based on your intake data ── not a one-size-fits-all template.</p>
+                </div>
               </div>
-              <div className="step-card">
-                <div className="step-number">2</div>
-                <div className="step-title">Complete your intake</div>
-                <p className="step-desc">Answer a few friendly questions about your goals, lifestyle, and dietary preferences.</p>
+
+              <div className="feature-card">
+                <div className="feature-icon-wrap">
+                  <i className="fas fa-bookmark"></i>
+                </div>
+                <div>
+                  <div className="feature-title">Clear plan history</div>
+                  <p className="feature-desc">Save and revisit previous meal plans. Track how your nutrition evolves over time.</p>
+                </div>
               </div>
-              <div className="step-card">
-                <div className="step-number">3</div>
-                <div className="step-title">Generate your plan</div>
-                <p className="step-desc">AI creates a personalized, calorie-aware meal plan tailored just for you ── instantly.</p>
+
+              <div className="feature-card">
+                <div className="feature-icon-wrap">
+                  <i className="fas fa-list-check"></i>
+                </div>
+                <div>
+                  <div className="feature-title">Practical meal details</div>
+                  <p className="feature-desc">Each meal shows prep time, cost level, and nutritional tags so you can plan ahead.</p>
+                </div>
               </div>
-              <div className="step-card">
-                <div className="step-number">4</div>
-                <div className="step-title">Adjust with ease</div>
-                <p className="step-desc">Swap meals, change portions, or regenerate a day. Your plan bends to fit your schedule.</p>
+
+              <div className="feature-card">
+                <div className="feature-icon-wrap">
+                  <i className="fas fa-pencil"></i>
+                </div>
+                <div>
+                  <div className="feature-title">Meal edits anytime</div>
+                  <p className="feature-desc">Replace, regenerate, or adjust any meal with a single tap ── it stays flexible.</p>
+                </div>
               </div>
-              <div className="step-card">
-                <div className="step-number">5</div>
-                <div className="step-title">Find expert support</div>
-                <p className="step-desc">Browse verified nutritionists and request a review whenever you want a human perspective.</p>
+
+              <div className="feature-card" style={{ gridColumn: '1 / -1' }}>
+                <div className="feature-icon-wrap">
+                  <i className="fas fa-id-badge"></i>
+                </div>
+                <div>
+                  <div className="feature-title">Doctor verification</div>
+                  <p className="feature-desc">All nutritionists are reviewed before they appear on the platform ── so you always connect with verified, credentialed professionals you can trust.</p>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </section>
+      </div>
+      </section >
 
-      {/* ─── WHY CHOOSE ─── */}
-      <section id="features" className="section section-alt">
-        <div className="container">
-          <div className="why-layout">
-            <div className="why-left">
-              <span className="section-label">
-                <i className="fas fa-star"></i>
-                Why choose Data Diet?
-              </span>
-              <h2 className="section-heading">AI plans that stay useful after generation.</h2>
-              <p className="section-sub">The platform is designed around practical nutrition, flexible habits, and human support ── so your plan actually gets followed.</p>
+    {/* ─── FOR DOCTORS ─── */ }
+    < section id = "for-doctors" className = "for-doctors-section" >
+      <div className="container">
+        <div className="doctors-card">
+          <div className="doctors-blob"></div>
+          <div className="doctors-blob-2"></div>
 
-              <div className="credential-list">
-                <div className="credential-item">
-                  <div className="cred-check"><i className="fas fa-check"></i></div>
-                  Personalized to your specific health goals
-                </div>
-                <div className="credential-item">
-                  <div className="cred-check"><i className="fas fa-check"></i></div>
-                  Editable at any point ── no locked plans
-                </div>
-                <div className="credential-item">
-                  <div className="cred-check"><i className="fas fa-check"></i></div>
-                  Backed by verified nutrition professionals
-                </div>
+          <div className="doctors-left">
+            <span className="section-label" style={{ marginBottom: '20px' }}>
+              <i className="fas fa-stethoscope"></i>
+              For doctors
+            </span>
+            <h2 className="doctors-heading">Apply, get reviewed, and appear to clients after approval.</h2>
+            <p className="doctors-sub">Submit your credentials, specialty, and professional background. Our team reviews every application to ensure clients connect only with qualified nutrition professionals.</p>
+
+            <div className="credential-list" style={{ marginTop: '28px' }}>
+              <div className="credential-item">
+                <div className="cred-check"><i className="fas fa-check"></i></div>
+                Submit credentials and license details
               </div>
-            </div>
-
-            <div className="why-right">
-              <div className="why-grid">
-                <div className="feature-card">
-                  <div className="feature-icon-wrap">
-                    <i className="fas fa-shield-halved"></i>
-                  </div>
-                  <div>
-                    <div className="feature-title">Personalized nutrition</div>
-                    <p className="feature-desc">Every plan is generated based on your intake data ── not a one-size-fits-all template.</p>
-                  </div>
-                </div>
-
-                <div className="feature-card">
-                  <div className="feature-icon-wrap">
-                    <i className="fas fa-bookmark"></i>
-                  </div>
-                  <div>
-                    <div className="feature-title">Clear plan history</div>
-                    <p className="feature-desc">Save and revisit previous meal plans. Track how your nutrition evolves over time.</p>
-                  </div>
-                </div>
-
-                <div className="feature-card">
-                  <div className="feature-icon-wrap">
-                    <i className="fas fa-list-check"></i>
-                  </div>
-                  <div>
-                    <div className="feature-title">Practical meal details</div>
-                    <p className="feature-desc">Each meal shows prep time, cost level, and nutritional tags so you can plan ahead.</p>
-                  </div>
-                </div>
-
-                <div className="feature-card">
-                  <div className="feature-icon-wrap">
-                    <i className="fas fa-pencil"></i>
-                  </div>
-                  <div>
-                    <div className="feature-title">Meal edits anytime</div>
-                    <p className="feature-desc">Replace, regenerate, or adjust any meal with a single tap ── it stays flexible.</p>
-                  </div>
-                </div>
-
-                <div className="feature-card" style={{ gridColumn: '1 / -1' }}>
-                  <div className="feature-icon-wrap">
-                    <i className="fas fa-id-badge"></i>
-                  </div>
-                  <div>
-                    <div className="feature-title">Doctor verification</div>
-                    <p className="feature-desc">All nutritionists are reviewed before they appear on the platform ── so you always connect with verified, credentialed professionals you can trust.</p>
-                  </div>
-                </div>
+              <div className="credential-item">
+                <div className="cred-check"><i className="fas fa-check"></i></div>
+                Get reviewed by our professional team
+              </div>
+              <div className="credential-item">
+                <div className="cred-check"><i className="fas fa-check"></i></div>
+                Appear on client-facing discovery pages
               </div>
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* ─── FOR DOCTORS ─── */}
-      <section id="for-doctors" className="for-doctors-section">
-        <div className="container">
-          <div className="doctors-card">
-            <div className="doctors-blob"></div>
-            <div className="doctors-blob-2"></div>
-
-            <div className="doctors-left">
-              <span className="section-label" style={{ marginBottom: '20px' }}>
-                <i className="fas fa-stethoscope"></i>
-                For doctors
-              </span>
-              <h2 className="doctors-heading">Apply, get reviewed, and appear to clients after approval.</h2>
-              <p className="doctors-sub">Submit your credentials, specialty, and professional background. Our team reviews every application to ensure clients connect only with qualified nutrition professionals.</p>
-
-              <div className="credential-list" style={{ marginTop: '28px' }}>
-                <div className="credential-item">
-                  <div className="cred-check"><i className="fas fa-check"></i></div>
-                  Submit credentials and license details
-                </div>
-                <div className="credential-item">
-                  <div className="cred-check"><i className="fas fa-check"></i></div>
-                  Get reviewed by our professional team
-                </div>
-                <div className="credential-item">
-                  <div className="cred-check"><i className="fas fa-check"></i></div>
-                  Appear on client-facing discovery pages
-                </div>
+          <div className="doctors-right">
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px' }}>
+              <div style={{
+                width: '180px',
+                height: '180px',
+                borderRadius: '50%',
+                background: 'linear-gradient(135deg, rgba(46,139,87,0.15), rgba(28,92,46,0.1))',
+                border: '4px solid rgba(255,255,255,0.8)',
+                boxShadow: '0 8px 32px rgba(28,92,46,0.18)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                overflow: 'hidden'
+              }}>
+                <img src="https://www.image2url.com/r2/default/images/1779593249007-16b19107-c405-4c8a-a9b7-1933c79523c9.png" alt="Doctor" width="180" height="180" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               </div>
-            </div>
-
-            <div className="doctors-right">
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px' }}>
-                <div style={{
-                  width: '180px',
-                  height: '180px',
-                  borderRadius: '50%',
-                  background: 'linear-gradient(135deg, rgba(46,139,87,0.15), rgba(28,92,46,0.1))',
-                  border: '4px solid rgba(255,255,255,0.8)',
-                  boxShadow: '0 8px 32px rgba(28,92,46,0.18)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  overflow: 'hidden'
-                }}>
-                  <img src="https://www.image2url.com/r2/default/images/1779593249007-16b19107-c405-4c8a-a9b7-1933c79523c9.png" alt="Doctor" width="180" height="180" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                </div>
-                <button className="btn-doctors" onClick={handleJoinDoctor}>
-                  <i className="fas fa-user-plus"></i>
-                  Register as Doctor
-                </button>
-                <p style={{ fontSize: '13px', color: 'var(--text-secondary)', textAlign: 'center', maxWidth: '200px', lineHeight: '1.6' }}>Applications are typically reviewed within 2–3 business days.</p>
-              </div>
+              <button className="btn-doctors" onClick={handleJoinDoctor}>
+                <i className="fas fa-user-plus"></i>
+                Register as Doctor
+              </button>
+              <p style={{ fontSize: '13px', color: 'var(--text-secondary)', textAlign: 'center', maxWidth: '200px', lineHeight: '1.6' }}>Applications are typically reviewed within 2–3 business days.</p>
             </div>
           </div>
         </div>
-      </section>
+      </div>
+      </section >
 
-      {/* ─── FOOTER ─── */}
-      <footer className="footer">
-        <div className="container">
-          <div className="footer-inner">
-            <div className="footer-logo">
-              <div className="footer-logo-icon">
-                <i className="fas fa-seedling"></i>
-              </div>
+    {/* ─── FOOTER ─── */ }
+    < footer className = "footer" >
+      <div className="container">
+        <div className="footer-inner">
+          <div className="footer-logo">
+              <img
+                src="https://www.image2url.com/r2/default/images/1779771082419-77f45caf-4ccd-438f-95c7-0caabce26494.png"
+                alt="Data Diet"
+                className="footer-logo-icon"
+              />
               <span className="footer-logo-text">Data Diet</span>
             </div>
             <div className="footer-links">
               <a href="#">Home</a>
               <a href="#how">About</a>
-              <a href="/client/contact">Contact Us</a>
+              <Link to="/client/contact">Contact Us</Link>
             </div>
           </div>
+
           <div className="footer-divider"></div>
+
           <div className="footer-bottom">
             <span className="footer-copy">© 2026 Data Diet. All rights reserved.</span>
-            <span className="footer-tagline">Built with care for healthier lives 🌱</span>          </div>
+            <span className="footer-tagline">
+              Built with care for healthier lives 🌱
+            </span>
+          </div>
         </div>
       </footer>
+
     </div>
   );
 }

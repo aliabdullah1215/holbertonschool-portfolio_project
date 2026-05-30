@@ -21,15 +21,25 @@ class IsClientUser(permissions.BasePermission):
             and request.user.is_authenticated
             and request.user.role == "client"
         )
-
-
 class GenerateAiPlanView(APIView):
     permission_classes = [permissions.IsAuthenticated, IsClientUser]
 
     def post(self, request, *args, **kwargs):
         profile = request.data
-        validation_error = validate_normalized_profile(profile)
 
+        existing_plans_count = SavedNutritionPlan.objects.filter(
+            user=request.user
+        ).count()
+
+        if existing_plans_count >= 5:
+            return Response(
+                {
+                    "detail": "You have reached the maximum limit of 5 nutrition plans."
+                },
+                status=status.HTTP_403_FORBIDDEN,
+            )
+        validation_error = validate_normalized_profile(profile)
+    
         if validation_error:
             return Response({"detail": validation_error}, status=status.HTTP_400_BAD_REQUEST)
 

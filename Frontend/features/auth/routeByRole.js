@@ -1,3 +1,11 @@
 export function routeByRole(role) {
-  return role === 'doctor' ? '/doctor' : '/client';
+  if (role === 'admin') {
+    return '/admin-dashboard';
+  }
+
+  if (role === 'doctor') {
+    return '/doctor';
+  }
+
+  return '/client';
 }
