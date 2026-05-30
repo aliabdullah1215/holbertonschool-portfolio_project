@@ -197,7 +197,7 @@ export default function ClientAboutPage() {
 
         /* STRUCTURAL CONTENT DIVISION CONTAINER */
         .client-about-section {
-          padding: 56px 0;
+          padding: 90px 0 56px;
           border-top: 1px solid var(--border-light);
         }
 
@@ -498,7 +498,7 @@ export default function ClientAboutPage() {
         </section>
 
         {/* FLOW INSTRUCTIONS SEGMENT MODULE */}
-        <section className="client-about-section">
+        <section id="why-datadiet" className="client-about-section">
           <div className="client-about-section__header--centered">
             <span className="eyebrow">Simple flow</span>
             <h2>How Data Diet works</h2>
@@ -531,6 +531,7 @@ export default function ClientAboutPage() {
 
             <div className="footer-links">
               <Link to="/client/contact">Contact us</Link>
+              <Link to="/client/team">Our Team</Link>
             </div>
           </div>
 

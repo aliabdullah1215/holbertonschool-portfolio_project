@@ -318,6 +318,7 @@ export default function DoctorHomePage() {
 
             <div className="footer-links">
               <Link to="/doctor/contact">Contact Us</Link>
+              <Link to="/doctor/team">Our Team</Link>
             </div>
           </div>
 

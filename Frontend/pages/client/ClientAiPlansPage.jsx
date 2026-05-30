@@ -1155,8 +1155,36 @@ export default function ClientAiPlansPage() {
               </div>
             </div>
           </div>
-        </div>
+               </div>
       </section>
+
+      {/* FOOTER */}
+      <footer className="footer">
+        <div className="container">
+          <div className="footer-inner">
+            <div className="footer-logo">
+              <img
+                src="https://www.image2url.com/r2/default/images/1779771082419-77f45caf-4ccd-438f-95c7-0caabce26494.png"
+                alt="DataDiet"
+                className="footer-logo-icon"
+              />
+              <div className="footer-logo-text">DataDiet</div>
+            </div>
+
+            <div className="footer-links">
+              <Link to="/client/contact">Contact us</Link>
+              <Link to="/client/team">Our Team</Link>
+            </div>
+          </div>
+
+          <div className="footer-divider"></div>
+
+          <div className="footer-bottom">
+            <div className="footer-copy">© 2026 DataDiet. All rights reserved.</div>
+            <div className="footer-tagline">Built with care for healthier lives 🌱</div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

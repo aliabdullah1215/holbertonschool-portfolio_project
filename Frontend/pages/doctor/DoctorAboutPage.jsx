@@ -222,7 +222,7 @@ function DoctorAboutPage() {
         }
 
         .doctor-about-page .client-about-section {
-          padding: 56px 0;
+           padding: 90px 0 56px;
           border-top: 1px solid #DFF0E5;
           margin-top: 0;
         }
@@ -482,24 +482,15 @@ function DoctorAboutPage() {
         <span className="eyebrow">
           <i className="fas fa-user-md"></i> Clinical & Specialist Workspace
         </span>
-        
+
         {/* Highlight split color matching */}
         <h1>Build a trusted doctor profile <span className="highlight">clients can rely on.</span></h1>
-        
+
         <p>
           Data Diet helps nutrition specialists present their expertise, complete
           profile approval, and connect with clients who need professional support.
         </p>
 
-        {/* Home page button pair styling addition */}
-        <div className="hero-actions">
-          <Link to="/doctor/signup" className="btn-primary">
-            <i className="fas fa-file-medical"></i> Join Our Medical Team
-          </Link>
-          <Link to="/doctor/features" className="btn-secondary">
-            <i className="fas fa-plus-square"></i> Why DataDiet
-          </Link>
-        </div>
       </section>
 
       <section className="client-about-section">
@@ -551,6 +542,7 @@ function DoctorAboutPage() {
 
             <div className="footer-links">
               <Link to="/doctor/contact">Contact Us</Link>
+              <Link to="/doctor/team">Our Team</Link>
             </div>
           </div>
 

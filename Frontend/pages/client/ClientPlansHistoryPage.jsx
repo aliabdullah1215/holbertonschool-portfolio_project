@@ -962,6 +962,7 @@ export function ClientPlansHistoryPage() {
 
             <div className="footer-links">
               <Link to="/client/contact">Contact us</Link>
+              <Link to="/client/team">Our Team</Link>
             </div>
           </div>
 

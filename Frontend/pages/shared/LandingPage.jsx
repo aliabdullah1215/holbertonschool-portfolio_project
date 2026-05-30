@@ -1252,6 +1252,7 @@ export default function LandingPage() {
             </div>
             <div className="footer-links">
               <Link to="/client/contact">Contact Us</Link>
+              <Link to="/client/team">Our Team</Link>
             </div>
           </div>
 

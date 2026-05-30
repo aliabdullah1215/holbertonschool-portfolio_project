@@ -14,7 +14,7 @@ const teamMembers = [
   {
     name: 'Omar Alanzi',
     role: 'Frontend Developer',
-    linkedin: 'https://www.linkedin.com/in/PUT_OMAR_LINKEDIN_HERE',
+    linkedin: 'https://www.linkedin.com/in/omar-alanzi-6138062b7/',
     github: 'https://github.com/omar-hail',
   },
   {
