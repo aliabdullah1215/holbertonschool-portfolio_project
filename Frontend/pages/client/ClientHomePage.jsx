@@ -51,7 +51,7 @@ export default function ClientHomePage() {
           min-height: 100vh;
           background: var(--bg-mint);
           overflow-x: hidden;
-          padding-top: 40px;
+          padding-top: -150px;
           position: relative;
           display: flex;
           flex-direction: column;
@@ -667,6 +667,7 @@ export default function ClientHomePage() {
 
             <div className="footer-links">
               <Link to="/client/contact">Contact us</Link>
+              <Link to="/client/team">Our Team</Link>
             </div>
           </div>
 

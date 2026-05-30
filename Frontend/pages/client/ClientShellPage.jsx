@@ -23,7 +23,7 @@ const navLinks = [
     icon: 'fa-table-columns',
   },
   {
-    label: 'Medical',
+    label: 'Medical Support',
     path: '/client/medical-support',
     icon: 'fa-user-doctor',
   },

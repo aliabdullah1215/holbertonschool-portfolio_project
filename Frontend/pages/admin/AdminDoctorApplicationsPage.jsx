@@ -10,6 +10,16 @@ function AdminDoctorApplicationsPage() {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [activeApplicationId, setActiveApplicationId] = useState(null);
+  const totalApplications = applications.length;
+  const pendingApplications = applications.filter(
+    (application) => application.status === 'pending'
+  ).length;
+  const approvedApplications = applications.filter(
+    (application) => application.status === 'approved'
+  ).length;
+  const rejectedApplications = applications.filter(
+    (application) => application.status === 'rejected'
+  ).length;
 
   async function loadApplications() {
     setError('');

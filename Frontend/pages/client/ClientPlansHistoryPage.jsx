@@ -248,18 +248,26 @@ export function ClientPlansHistoryPage() {
           width: 100%;
           max-width: 1280px;
           margin: 0 auto;
-          padding: 60px 60px 100px;
+          padding: 36px 60px 100px;
           box-sizing: border-box;
+        }
+
+                .plans-history-overview {
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) minmax(420px, 0.95fr);
+          align-items: start;
+          gap: 56px;
+          margin-bottom: 48px;
         }
 
         /* CENTERED MAIN HEADER MODULE */
         .plans-history-main-header {
-          text-align: center;
-          max-width: 820px;
-          margin: 0 auto 48px auto;
+          text-align: left;
+          max-width: 620px;
+          margin: 0 0 48px 0;
           display: flex;
           flex-direction: column;
-          align-items: center;
+          align-items: flex-start;
         }
 
         .plans-history-main-header .eyebrow {
@@ -297,28 +305,53 @@ export function ClientPlansHistoryPage() {
         /* TWO-COLUMN WORKSPACE BLOCK GRID */
         .plans-history-content {
           display: grid;
-          grid-template-columns: 1.6fr 1fr;
-          gap: 32px;
+          grid-template-columns: 1fr;
+          gap: 24px;
           align-items: start;
           border-top: 1px solid var(--border-light);
-          padding-top: 48px;
+          padding-top: 24px;
+          margin-top: -100px;
         }
 
         /* SECTION ZONE TITLES */
-        .plans-history-box h2 {
-          font-size: 24px;
-          font-weight: 800;
-          letter-spacing: -0.8px;
-          color: var(--green-deep);
-          margin: 0 0 24px 0;
-          text-align: left;
+        .plans-history-box {
+          width: 100%;
+          max-width: none;
+          background: transparent;
+          border: none;
+          box-shadow: none;
+          padding: 0;
+          overflow: visible;
         }
 
-        /* CORE VERTICAL LIST PACKAGING */
         .history-list {
           display: flex;
-          flex-direction: column;
-          gap: 16px;
+          flex-direction: row;
+          gap: 18px;
+          overflow-x: auto;
+          overflow-y: hidden;
+          padding: 8px 4px 20px;
+          scroll-snap-type: x mandatory;
+          scroll-behavior: smooth;
+          scrollbar-width: thin;
+          scrollbar-color: rgba(46,139,87,0.35) transparent;
+        }
+
+        .history-list::-webkit-scrollbar {
+          height: 8px;
+        }
+
+        .history-list::-webkit-scrollbar-track {
+          background: transparent;
+        }
+
+        .history-list::-webkit-scrollbar-thumb {
+          background: rgba(46,139,87,0.28);
+          border-radius: 999px;
+        }
+
+        .history-list::-webkit-scrollbar-thumb:hover {
+          background: rgba(46,139,87,0.45);
         }
 
         /* DECORATIVE CARD DESIGNS */
@@ -334,17 +367,23 @@ export function ClientPlansHistoryPage() {
         }
 
         .history-card {
+          flex: 0 0 340px;
+          width: 340px;
+          min-height: 196px;
           padding: 24px;
           display: flex;
           flex-direction: column;
+          justify-content: space-between;
           gap: 16px;
           text-align: left;
+          scroll-snap-align: start;
+          transform: none;
         }
 
         .history-card:hover {
-          transform: translateY(-5px);
-          box-shadow: 0 20px 35px rgba(28,92,46,0.04), 0 4px 12px rgba(0,0,0,0.02);
-          border-color: rgba(46,139,87,0.2);
+          transform: none;
+          box-shadow: 0 16px 34px rgba(28,92,46,0.05), 0 4px 12px rgba(0,0,0,0.02);
+          border-color: rgba(46,139,87,0.22);
         }
 
         .history-card__top {
@@ -416,21 +455,24 @@ export function ClientPlansHistoryPage() {
           display: flex;
           flex-direction: column;
           gap: 20px;
-          padding-top: 56px;
+          padding-top: 0;
         }
 
         .plan-stats-grid {
           display: grid;
-          grid-template-columns: repeat(2, 1fr);
+          grid-template-columns: repeat(4, 1fr);
           gap: 16px;
         }
 
         .plan-stat-card {
-          padding: 22px 20px;
+          min-height: 118px;
+          padding: 18px 12px;
           display: flex;
           flex-direction: column;
           align-items: center;
+          justify-content: center;
           text-align: center;
+          overflow: visible;
         }
 
         .plan-stat-card:hover {
@@ -682,8 +724,9 @@ export function ClientPlansHistoryPage() {
         }
         @media (max-width: 640px) {
           .plan-stats-grid {
-            grid-template-columns: 1fr;
+            grid-template-columns: repeat(2, 1fr);
           }
+
           .history-card__top {
             flex-direction: column;
             align-items: flex-start;
@@ -694,15 +737,145 @@ export function ClientPlansHistoryPage() {
             text-align: center;
           }
         }
+                  .history-list .history-card,
+        .history-list .history-card:hover,
+        .history-list .history-card:focus,
+        .history-list .history-card:active {
+          flex: 0 0 340px;
+          width: 340px;
+          min-width: 340px;
+          max-width: 340px;
+          min-height: 196px;
+          margin: 0;
+          transform: none;
+        }
+
+        .history-list .history-card:hover {
+          box-shadow: 0 16px 34px rgba(28,92,46,0.05), 0 4px 12px rgba(0,0,0,0.02);
+          border-color: rgba(46,139,87,0.22);
+        }
+        .history-list .history-card {
+          background: #ffffff;
+          border: 2px solid rgba(46, 139, 87, 0.28);
+          box-shadow:
+            0 18px 42px rgba(28, 92, 46, 0.12),
+            0 2px 8px rgba(28, 92, 46, 0.08);
+        }
+
+        .history-list .history-card:hover {
+          border-color: rgba(46, 139, 87, 0.48);
+          box-shadow:
+            0 20px 46px rgba(28, 92, 46, 0.16),
+            0 3px 10px rgba(28, 92, 46, 0.1);
+        }
+                    .history-list .history-card {
+          background: #ffffff;
+          border: 3px solid #2E8B57;
+          box-shadow:
+            0 20px 48px rgba(28, 92, 46, 0.18),
+            0 4px 14px rgba(28, 92, 46, 0.14);
+        }
+
+        .history-list .history-card:hover {
+          border-color: rgba(28, 92, 46, 0.72);
+          box-shadow:
+            0 22px 54px rgba(28, 92, 46, 0.22),
+            0 5px 16px rgba(28, 92, 46, 0.16);
+        }
+
+                .nutrition-plan .plan-action-button {
+          appearance: none;
+          min-height: 46px;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 10px;
+          padding: 0 24px;
+          border: 2px solid transparent;
+          border-radius: 999px;
+          font-family: 'Plus Jakarta Sans', sans-serif;
+          font-size: 14px;
+          font-weight: 800;
+          line-height: 1;
+          cursor: pointer;
+          text-decoration: none;
+          transition:
+            background 180ms ease,
+            border-color 180ms ease,
+            color 180ms ease,
+            box-shadow 180ms ease;
+        }
+
+        .nutrition-plan .plan-action-button--primary,
+        .nutrition-plan .plan-action-button--small {
+          background: linear-gradient(135deg, #16a34a, #087b2b, #055f21);
+          color: #ffffff;
+          box-shadow: 0 16px 34px rgba(8, 123, 43, 0.24);
+        }
+
+        .nutrition-plan .plan-action-button--ghost {
+          background: #ffffff;
+          color: #087b2b;
+          border-color: rgba(8, 123, 43, 0.28);
+          box-shadow: 0 12px 28px rgba(8, 123, 43, 0.1);
+        }
+
+        .nutrition-plan .plan-action-button--small {
+          min-height: 42px;
+          padding: 0 20px;
+          font-size: 13px;
+        }
+
+        .nutrition-plan .plan-action-button:hover:not(:disabled) {
+          border-color: rgba(8, 123, 43, 0.48);
+          box-shadow: 0 20px 44px rgba(8, 123, 43, 0.3);
+        }
+
+        .nutrition-plan .plan-action-button--ghost:hover:not(:disabled) {
+          background: rgba(8, 123, 43, 0.08);
+        }
+
+        .nutrition-plan .plan-action-button:disabled {
+          cursor: not-allowed;
+          opacity: 0.55;
+          box-shadow: none;
+        }
+          
       `}</style>
 
       {/* MAIN LAYOUT CANVAS */}
       <article className="plans-history-page">
         {/* CORE INTRO HEADER SEGMENT */}
-        <section className="plans-history-main-header">
-          <span className="eyebrow">Saved Plan Archives</span>
-          <h1>Your Plan History</h1>
-          <p>Review your historical saved nutrition breakdowns, monitor macro stats profiles, and open targets back inside the real-time adjustments engine.</p>
+        <section className="plans-history-overview">
+          <div className="plans-history-main-header">
+            <span className="eyebrow">Saved Plan Archives</span>
+            <h1>Your Plan History</h1>
+            <p>
+              Review your historical saved nutrition breakdowns, monitor macro stats profiles,
+              and open targets back inside the real-time adjustments engine.
+            </p>
+          </div>
+
+          <aside className="plan-stats-column">
+            <section className="plan-stats-grid" aria-label="Saved plans statistics">
+              {planStats.map((stat) => (
+                <article className="plan-stat-card" key={stat.id}>
+                  <span className="plan-stat-card__icon">
+                    <StatIcon type={stat.icon} />
+                  </span>
+                  <div>
+                    <span className="plan-stat-card__label">{stat.label}</span>
+                    <strong>{stat.value}</strong>
+                  </div>
+                </article>
+              ))}
+            </section>
+
+            <p className="plan-stats-message">
+              <span>Customize your meals and download your personalized plan anytime.</span>
+              <strong>Build healthier habits, one meal at a time.</strong>
+            </p>
+          </aside>
         </section>
 
         {error ? <p className="form-feedback form-feedback--error">{error}</p> : null}
@@ -750,28 +923,6 @@ export function ClientPlansHistoryPage() {
                 ))}
               </div>
             </section>
-
-            {/* RIGHT UTILITIES METRICS GRID */}
-            <aside className="plan-stats-column">
-              <section className="plan-stats-grid" aria-label="Saved plans statistics">
-                {planStats.map((stat) => (
-                  <article className="plan-stat-card" key={stat.id}>
-                    <span className="plan-stat-card__icon">
-                      <StatIcon type={stat.icon} />
-                    </span>
-                    <div>
-                      <span className="plan-stat-card__label">{stat.label}</span>
-                      <strong>{stat.value}</strong>
-                    </div>
-                  </article>
-                ))}
-              </section>
-
-              <p className="plan-stats-message">
-                <span>Customize your meals and download your personalized plan anytime.</span>
-                <strong>Build healthier habits, one meal at a time.</strong>
-              </p>
-            </aside>
           </div>
         ) : null}
 

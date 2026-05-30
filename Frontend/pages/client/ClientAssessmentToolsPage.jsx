@@ -118,7 +118,9 @@ export default function ClientAssessmentToolsPage() {
           width: 100%;
           max-width: 1280px;
           margin: 0 auto;
-          padding: 60px 60px 100px;
+          padding: 0 60px 100px;
+          margin-top: -16px;
+
         }
 
         .assessment-tools-page {
@@ -145,19 +147,23 @@ export default function ClientAssessmentToolsPage() {
 
         .assessment-card {
           background: var(--white);
-          border: 1px solid var(--border-light);
+          border: 3px solid rgba(28, 92, 46, 0.42);
           border-radius: 28px;
           padding: 30px;
-          box-shadow: 0 20px 50px rgba(28,92,46,0.04), 0 4px 12px rgba(0,0,0,0.02);
+          box-shadow:
+            0 22px 52px rgba(28, 92, 46, 0.14),
+            0 4px 14px rgba(28, 92, 46, 0.1);
           display: flex;
           flex-direction: column;
           position: relative;
-          transition: transform 0.25s ease, box-shadow 0.25s ease;
+          transition: box-shadow 0.25s ease, border-color 0.25s ease;
         }
 
         .assessment-card:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 24px 60px rgba(28,92,46,0.06), 0 6px 18px rgba(0,0,0,0.03);
+          border-color: rgba(28, 92, 46, 0.68);
+          box-shadow:
+            0 24px 60px rgba(28, 92, 46, 0.18),
+            0 6px 18px rgba(28, 92, 46, 0.12);
         }
 
         .assessment-card--form {
@@ -239,40 +245,50 @@ export default function ClientAssessmentToolsPage() {
         }
 
         .assessment-result-content {
-          margin-top: auto;
-          padding-top: 30px;
+          margin-top: -10px;
+          padding: 4px 0 18px;
           display: flex;
           flex-direction: column;
           align-items: flex-start;
+          gap: 10px;
+          order: 2;
+          border-bottom: 1px solid var(--border-light);
+          margin-bottom: 18px;
         }
 
-        .assessment-value {
-          font-size: 44px;
-          font-weight: 800;
-          color: var(--green-mid);
-          line-height: 1;
-          margin-bottom: 10px !important;
-          letter-spacing: -1.5px;
+        .assessment-tools-page .assessment-card .assessment-value {
+          font-size: 46px !important;
+          font-weight: 900;
+          color: var(--green-deep);
+          line-height: 0.95;
+          margin: 0 !important;
+          letter-spacing: 0;
         }
 
         .assessment-badge {
           display: inline-flex;
           align-items: center;
-          background: rgba(46,139,87,0.10);
-          color: var(--green-mid);
-          font-size: 11px;
-          font-weight: 800;
-          padding: 6px 14px;
+          background: rgba(46,139,87,0.13);
+          color: var(--green-deep);
+          font-size: 13px;
+          font-weight: 900;
+          padding: 9px 16px;
           border-radius: 999px;
-          margin-bottom: 14px !important;
+          margin: 0 !important;
           text-transform: uppercase;
-          letter-spacing: 0.5px;
+          letter-spacing: 0.2px;
         }
 
         .assessment-card .description-text {
-          font-size: 14px;
-          line-height: 1.6;
-          color: var(--text-body);
+          font-size: 15px;
+          line-height: 1.7;
+          color: #243f2d;
+          font-weight: 500;
+        }
+
+                .assessment-card > p {
+          order: 3;
+          margin-top: 18px;
         }
 
         /* FOOTER BRACKETS */
@@ -385,7 +401,7 @@ export default function ClientAssessmentToolsPage() {
       {/* CORE DISPLAY ELEMENT */}
       <main className="assessment-tools-content">
         <div className="assessment-tools-page">
-          <h2>Assessment Tools</h2>
+        
 
           <div className="assessment-grid">
             {/* INPUT PANEL COMPONENT */}
@@ -464,8 +480,8 @@ export default function ClientAssessmentToolsPage() {
                 <h3>BMI Calculator</h3>
               </div>
               <p className="description-text">
-                {results.bmi 
-                  ? 'Your computed body mass distribution metric based on height-to-weight alignment ratios.' 
+                {results.bmi
+                  ? 'Your computed body mass distribution metric based on height-to-weight alignment ratios.'
                   : 'Enter your weight and height to calculate your body mass index.'
                 }
               </p>
@@ -489,8 +505,8 @@ export default function ClientAssessmentToolsPage() {
                 <h3>Estimated Daily Calories</h3>
               </div>
               <p className="description-text">
-                {results.maintenanceCalories 
-                  ? 'This is a maintenance estimate based on the Mifflin-St Jeor equation and your selected activity level.' 
+                {results.maintenanceCalories
+                  ? 'This is a maintenance estimate based on the Mifflin-St Jeor equation and your selected activity level.'
                   : 'Enter your weight, height, age, gender, and activity level to see an estimate.'
                 }
               </p>
@@ -515,8 +531,8 @@ export default function ClientAssessmentToolsPage() {
                 <h3>Daily Water Target</h3>
               </div>
               <p className="description-text">
-                {results.waterLiters 
-                  ? 'This is a simple hydration estimate based on body weight. Hot weather and exercise may increase your needs.' 
+                {results.waterLiters
+                  ? 'This is a simple hydration estimate based on body weight. Hot weather and exercise may increase your needs.'
                   : 'Enter your weight to estimate a practical daily hydration target.'
                 }
               </p>

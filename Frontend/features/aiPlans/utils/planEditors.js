@@ -15,7 +15,11 @@ function updateMeals(plan, updater) {
 
 export function replaceMealWithAlternative(plan, mealId, alternativeId = null) {
   return updateMeals(plan, (meal) => {
-    if (meal.meal_id !== mealId || !Array.isArray(meal.meal_alternatives) || meal.meal_alternatives.length === 0) {
+    if (
+      meal.meal_id !== mealId ||
+      !Array.isArray(meal.meal_alternatives) ||
+      meal.meal_alternatives.length === 0
+    ) {
       return meal;
     }
 
@@ -27,12 +31,18 @@ export function replaceMealWithAlternative(plan, mealId, alternativeId = null) {
       return meal;
     }
 
+    const currentMealAsAlternative = {
+      ...meal,
+      meal_id: meal.rotation_meal_id || `${meal.meal_id}_original`,
+    };
+
     return {
       ...selectedAlternative,
       meal_id: meal.meal_id,
-      meal_alternatives: meal.meal_alternatives.filter(
-        (alternative) => alternative.meal_id !== selectedAlternative.meal_id
-      ),
+      rotation_meal_id: selectedAlternative.meal_id,
+      meal_alternatives: meal.meal_alternatives
+        .filter((alternative) => alternative.meal_id !== selectedAlternative.meal_id)
+        .concat(currentMealAsAlternative),
     };
   });
 }

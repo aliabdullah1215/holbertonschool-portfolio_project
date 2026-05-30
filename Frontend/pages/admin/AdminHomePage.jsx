@@ -1,27 +1,60 @@
 import { Link } from 'react-router-dom';
 import useAuth from '../../context/useAuth';
 
+const adminCards = [
+  {
+    title: 'Doctor Applications',
+    description: 'Review doctor requests, check certificates, and approve qualified medical profiles.',
+    path: '/admin-dashboard/doctor-applications',
+    icon: 'fa-user-doctor',
+    action: 'Review applications',
+  },
+  {
+    title: 'Platform Users',
+    description: 'Monitor registered accounts, roles, staff permissions, and account activity.',
+    path: '/admin-dashboard/users',
+    icon: 'fa-users',
+    action: 'View users',
+  },
+];
+
 function AdminHomePage() {
   const { user } = useAuth();
 
   return (
-    <section className="client-home-page">
-      <div className="client-home-hero">
-        <h1>Admin Dashboard</h1>
+    <section className="admin-home-page">
+      <div className="admin-home-hero">
+        <span className="admin-home-eyebrow">
+          <i className="fas fa-shield-halved"></i>
+          Admin Workspace
+        </span>
+
+        <h1>Welcome, {user?.username || 'Admin'}</h1>
+
         <p>
-          Welcome {user?.username || 'Admin'}. Review platform activity, doctor
-          applications, and users.
+          Manage DataDiet operations from one clean workspace. Review doctor applications,
+          monitor users, and keep the platform organized.
         </p>
+      </div>
 
-        <div className="client-home-actions">
-          <Link className="client-home-cta" to="/admin-dashboard/doctor-applications">
-            Doctor applications
-          </Link>
+      <div className="admin-home-grid">
+        {adminCards.map((card) => (
+          <Link className="admin-home-card" to={card.path} key={card.path}>
+            <span className="admin-home-card__icon">
+              <i className={`fas ${card.icon}`}></i>
+            </span>
 
-          <Link className="client-home-cta" to="/admin-dashboard/users">
-            View users
+            <div>
+              <h2>{card.title}</h2>
+              <p>{card.description}</p>
+            </div>
+
+            <strong>
+              {card.action}
+              <i className="fas fa-arrow-right"></i>
+            </strong>
           </Link>
-        </div>
+        ))}
       </div>
     </section>
   );
