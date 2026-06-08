@@ -200,21 +200,52 @@ function DoctorShellPage() {
             padding-top: 240px; 
           }
         }
+@media (max-width: 768px) {
+.shell-navbar {
+  max-width: calc(100vw - 16px);
+  padding: 12px;
+  gap: 12px;
+}
 
-        @media (max-width: 768px) {
-          .shell-navbar {
-            max-width: calc(100vw - 20px);
-          }
+.shell-logo-icon {
+  width: 38px;
+  height: 38px;
+}
 
-          .shell-links {
-            width: 100%;
-          }
+.shell-logo-text {
+  font-size: 18px;
+}
 
-          .shell-link {
-            font-size: 14px;
-            padding: 12px 16px;
-          }
-        }
+.shell-links {
+  width: 100%;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 4px;
+}
+
+.shell-links::-webkit-scrollbar {
+  display: none;
+}
+
+.shell-link {
+  flex: 0 0 auto;
+  white-space: nowrap;
+  font-size: 12px;
+  padding: 9px 12px;
+}
+
+.shell-signout {
+  padding: 9px 14px;
+  font-size: 12px;
+}
+  .doctor-shell-content {
+  padding-top: 240px;
+}
+
+}
+
       `}</style>
 
       {/* NAVBAR */}
