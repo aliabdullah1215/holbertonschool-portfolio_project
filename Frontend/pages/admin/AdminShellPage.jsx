@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import useAuth from '../../context/useAuth';
 
@@ -23,7 +24,7 @@ function AdminShellPage() {
   const location = useLocation();
   const navigate = useNavigate();
   const { logout } = useAuth();
-
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const handleSignOut = async () => {
     try {
       await logout();
@@ -165,6 +166,21 @@ function AdminShellPage() {
           padding-top: 110px;
         }
 
+        .shell-menu-toggle {
+  display: none;
+  width: 42px;
+  height: 42px;
+  border: 1px solid var(--border-light);
+  border-radius: 10px;
+  background: white;
+  color: var(--green-deep);
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.shell-menu-signout {
+  display: none;
+}
         @media (max-width: 1200px) {
           .shell-navbar {
             border-radius: 32px;
@@ -176,51 +192,84 @@ function AdminShellPage() {
             padding-top: 205px;
           }
         }
-@media (max-width: 768px) {
-.shell-navbar {
-  max-width: calc(100vw - 16px);
-  padding: 12px;
-  gap: 12px;
+
+        @media (max-width: 768px) {
+  .shell-navbar-wrapper {
+    padding: 8px;
+  }
+
+  .shell-navbar {
+    position: relative;
+    max-width: 100%;
+    padding: 10px 12px;
+    border-radius: 14px;
+    flex-direction: row;
+    gap: 12px;
+  }
+
+  .shell-logo-icon {
+    width: 38px;
+    height: 38px;
+  }
+
+  .shell-logo-text {
+    font-size: 18px;
+  }
+
+  .shell-menu-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+  }
+
+  .shell-links {
+    display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    width: 100%;
+    padding: 10px;
+    border-radius: 14px;
+    background: white;
+    box-shadow: 0 14px 35px rgba(28, 92, 46, 0.16);
+  }
+
+  .shell-links--open {
+    display: grid;
+    gap: 6px;
+  }
+
+  .shell-link {
+    width: 100%;
+    padding: 12px 14px;
+    font-size: 13px;
+  }
+
+  .shell-menu-signout {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #f0caca;
+    border-radius: 10px;
+    background: white;
+    color: #dc3545;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .shell-signout {
+    display: none;
+  }
+
+  .admin-shell-content {
+    padding-top: 78px;
+  }
 }
 
-.shell-logo-icon {
-  width: 38px;
-  height: 38px;
-}
-
-.shell-logo-text {
-  font-size: 18px;
-}
-
-.shell-links {
-  width: 100%;
-  flex-wrap: nowrap;
-  justify-content: flex-start;
-  overflow-x: auto;
-  scrollbar-width: none;
-  padding-bottom: 4px;
-}
-
-.shell-links::-webkit-scrollbar {
-  display: none;
-}
-
-.shell-link {
-  flex: 0 0 auto;
-  white-space: nowrap;
-  font-size: 12px;
-  padding: 9px 12px;
-}
-
-.shell-signout {
-  padding: 9px 14px;
-  font-size: 12px;
-}
-.admin-shell-content {
-  padding-top: 230px;
-}
-
-}
       `}</style>
 
       <div className="shell-navbar-wrapper">
@@ -234,18 +283,37 @@ function AdminShellPage() {
 
             <div className="shell-logo-text">DataDiet</div>
           </Link>
+          <button
+            className="shell-menu-toggle"
+            type="button"
+            aria-label="Toggle navigation menu"
+            aria-expanded={isMenuOpen}
+            onClick={() => setIsMenuOpen((current) => !current)}
+          >
+            <i className={`fas ${isMenuOpen ? 'fa-xmark' : 'fa-bars'}`}></i>
+          </button>
 
-          <div className="shell-links">
+          <div className={`shell-links${isMenuOpen ? ' shell-links--open' : ''}`}>
             {navLinks.map((link) => (
               <Link
                 key={link.path}
                 to={link.path}
+                onClick={() => setIsMenuOpen(false)}
                 className={location.pathname === link.path ? 'shell-link active' : 'shell-link'}
               >
                 <i className={`fas ${link.icon}`}></i>
                 {link.label}
               </Link>
             ))}
+
+            <button
+              className="shell-menu-signout"
+              type="button"
+              onClick={handleSignOut}
+            >
+              <i className="fas fa-arrow-right-from-bracket"></i>
+              Sign Out
+            </button>
           </div>
 
           <button className="shell-signout" type="button" onClick={handleSignOut}>
