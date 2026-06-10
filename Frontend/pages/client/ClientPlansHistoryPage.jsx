@@ -721,6 +721,74 @@ export function ClientPlansHistoryPage() {
             gap: 20px;
             text-align: center;
           }
+            .plans-history-page {
+  width: 100%;
+  max-width: 100%;
+  padding: 28px 16px 60px;
+  overflow: hidden;
+}
+
+.plans-history-overview {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.plans-history-main-header {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+}
+
+.plans-history-main-header h1 {
+  font-size: clamp(32px, 10vw, 44px);
+  line-height: 1.08;
+  letter-spacing: -1px;
+  overflow-wrap: anywhere;
+}
+
+.plans-history-main-header p {
+  width: 100%;
+  max-width: 100%;
+  font-size: 15px;
+  overflow-wrap: anywhere;
+}
+
+.plan-stats-column {
+  width: 100%;
+  max-width: 100%;
+}
+
+.plan-stats-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  width: 100%;
+}
+
+.plan-stat-card {
+  width: 100%;
+  min-width: 0;
+  min-height: 110px;
+  padding: 14px 8px;
+}
+
+.plan-stat-card strong,
+.plan-stat-card__label {
+  overflow-wrap: anywhere;
+}
+
+.plans-history-content {
+  width: 100%;
+  max-width: 100%;
+  margin-top: 0;
+}
+
+.plan-stats-message {
+  width: 100%;
+  max-width: 100%;
+  padding: 16px;
+  overflow-wrap: anywhere;
+}
         }
         @media (max-width: 640px) {
           .plan-stats-grid {
@@ -736,6 +804,28 @@ export function ClientPlansHistoryPage() {
             width: 100%;
             text-align: center;
           }
+            .history-list {
+  width: 100%;
+  max-width: 100%;
+}
+
+.history-list .history-card,
+.history-list .history-card:hover,
+.history-list .history-card:focus,
+.history-list .history-card:active {
+  flex: 0 0 calc(100vw - 48px);
+  width: calc(100vw - 48px);
+  min-width: calc(100vw - 48px);
+  max-width: calc(100vw - 48px);
+}
+
+.plan-stat-card strong {
+  font-size: 14px;
+}
+
+.plan-stat-card__label {
+  font-size: 10px;
+}
         }
                   .history-list .history-card,
         .history-list .history-card:hover,
@@ -840,7 +930,23 @@ export function ClientPlansHistoryPage() {
           opacity: 0.55;
           box-shadow: none;
         }
-          
+        @media (max-width: 640px) {
+          .history-list {
+            width: 100%;
+            max-width: 100%;
+          }
+
+          .history-list .history-card,
+          .history-list .history-card:hover,
+          .history-list .history-card:focus,
+          .history-list .history-card:active {
+            flex: 0 0 calc(100vw - 48px);
+            width: calc(100vw - 48px);
+            min-width: calc(100vw - 48px);
+            max-width: calc(100vw - 48px);
+          }
+        }
+
       `}</style>
 
       {/* MAIN LAYOUT CANVAS */}
