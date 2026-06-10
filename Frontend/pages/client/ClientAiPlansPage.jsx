@@ -952,7 +952,81 @@ export default function ClientAiPlansPage() {
             gap: 18px;
             text-align: center;
           }
+            .hero {
+  padding: 28px 0 60px;
+}
+
+.hero-inner,
+.hero-inner > div,
+.hero-card-wrapper {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.hero-heading {
+  font-size: clamp(34px, 10vw, 48px);
+  line-height: 1.08;
+  letter-spacing: -1px;
+  overflow-wrap: anywhere;
+}
+
+.hero-subtext {
+  width: 100%;
+  max-width: 100%;
+  font-size: 16px;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+
+.dashboard-card {
+  width: 100%;
+  max-width: 100%;
+  padding: 22px;
+}
+
+.card-header {
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.form-group,
+.form-input,
+.form-textarea,
+.button-group-grid,
+.custom-choice-btn {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
         }
+@media (max-width: 480px) {
+  .container {
+    padding: 0 16px;
+  }
+
+  .hero-heading {
+    font-size: 34px;
+  }
+
+  .dashboard-card {
+    padding: 18px;
+    border-radius: 20px;
+  }
+
+  .card-header {
+    align-items: flex-start;
+  }
+
+.wizard-actions-row {
+  flex-direction: column;
+}
+
+.wizard-actions-row button {
+  width: 100%;
+  justify-content: center;
+}
+      }
       `}</style>
 
       <section className="hero">
