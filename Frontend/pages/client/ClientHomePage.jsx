@@ -480,8 +480,53 @@ export default function ClientHomePage() {
           .hero-heading {
             font-size: 48px;
           }
-        }
+        
+.hero {
+  padding: 28px 0 60px;
+}
 
+.hero-inner,
+.hero-inner > div,
+.hero-card-wrapper {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.hero-heading {
+  font-size: clamp(34px, 10vw, 48px);
+  line-height: 1.08;
+  letter-spacing: -1px;
+  overflow-wrap: anywhere;
+}
+
+.hero-subtext {
+  width: 100%;
+  max-width: 100%;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.dashboard-card {
+  width: 100%;
+  max-width: 100%;
+  padding: 22px;
+}
+
+.card-header {
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.macro-label-row {
+  gap: 12px;
+}
+
+.macro-label-row span:last-child {
+  overflow-wrap: anywhere;
+  text-align: right;
+}
+      }
         @media (max-width: 480px) {
           .hero-ctas {
             flex-direction: column;
@@ -494,6 +539,30 @@ export default function ClientHomePage() {
           .hero-heading {
             font-size: 40px;
           }
+            .container {
+  padding: 0 16px;
+}
+
+.hero-heading {
+  font-size: 34px;
+}
+
+.dashboard-card {
+  padding: 18px;
+  border-radius: 20px;
+}
+
+.card-actions-row {
+  flex-direction: column;
+}
+
+.action-link-btn {
+  width: 100%;
+}
+
+.card-badge {
+  white-space: normal;
+}
           .meal-check-list {
             grid-template-columns: 1fr;
           }
@@ -596,7 +665,7 @@ export default function ClientHomePage() {
                 {/* MEAL STATUS CHECKLIST */}
                 <div className="daily-checker-title">Meal Checklist</div>
                 <div className="meal-check-list">
-                  <div 
+                  <div
                     className={`meal-check-item ${completedMeals.breakfast ? 'completed' : ''}`}
                     onClick={() => toggleMeal('breakfast')}
                   >
@@ -606,7 +675,7 @@ export default function ClientHomePage() {
                     <span className="meal-check-label">Breakfast</span>
                   </div>
 
-                  <div 
+                  <div
                     className={`meal-check-item ${completedMeals.lunch ? 'completed' : ''}`}
                     onClick={() => toggleMeal('lunch')}
                   >
@@ -616,7 +685,7 @@ export default function ClientHomePage() {
                     <span className="meal-check-label">Lunch</span>
                   </div>
 
-                  <div 
+                  <div
                     className={`meal-check-item ${completedMeals.dinner ? 'completed' : ''}`}
                     onClick={() => toggleMeal('dinner')}
                   >
@@ -626,7 +695,7 @@ export default function ClientHomePage() {
                     <span className="meal-check-label">Dinner</span>
                   </div>
 
-                  <div 
+                  <div
                     className={`meal-check-item ${completedMeals.snack ? 'completed' : ''}`}
                     onClick={() => toggleMeal('snack')}
                   >
