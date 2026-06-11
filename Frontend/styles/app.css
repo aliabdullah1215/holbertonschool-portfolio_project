@@ -3068,6 +3068,7 @@ html {
 
 .admin-shell-content .admin-table {
   width: 100%;
+  min-width: 100%;
   border-collapse: collapse;
 }
 
@@ -3118,7 +3119,7 @@ html {
 }
 
 .admin-shell-content .admin-table {
-  width: max-content;
+  width: 980px;
   min-width: 980px;
 }
 
