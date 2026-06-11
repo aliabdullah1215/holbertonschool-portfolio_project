@@ -1367,8 +1367,6 @@ export default function LandingPage() {
               <span className="footer-logo-text">Data Diet</span>
             </div>
             <div className="footer-links">
-              <a href="#">Home</a>
-              <a href="#how">About</a>
               <Link to="/client/contact">Contact Us</Link>
             </div>
           </div>

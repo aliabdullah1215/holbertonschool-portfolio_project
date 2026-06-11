@@ -1377,6 +1377,65 @@ select {
   font-weight: 700;
 }
 
+/* Team page tablet layout */
+@media (max-width: 920px) {
+  .client-team-page {
+    min-height: auto;
+    gap: 40px;
+    padding: 48px 0;
+  }
+
+  .client-team-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+  }
+
+  .client-team-card {
+    min-width: 0;
+    padding: 22px;
+  }
+}
+
+/* Team page mobile layout */
+@media (max-width: 600px) {
+  .client-team-page {
+    width: 100%;
+    gap: 32px;
+    padding: 36px 0 48px;
+  }
+
+  .client-team-header h1 {
+    margin-bottom: 14px;
+    font-size: clamp(2.25rem, 11vw, 3rem);
+    line-height: 1.1;
+  }
+
+  .client-team-header p {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .client-team-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .client-team-card {
+    width: 100%;
+    min-height: auto;
+    padding: 22px;
+    border-radius: 14px;
+  }
+
+  .client-team-card h2 {
+    overflow-wrap: anywhere;
+  }
+
+  .client-team-links {
+    flex-wrap: wrap;
+  }
+}
+
 .dashboard-footer {
   min-height: 72px;
   display: flex;
@@ -3048,6 +3107,28 @@ html {
     font-size: 2rem;
   }
 }
+
+.admin-shell-content .admin-table-wrap {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: auto;
+  border-radius: 14px;
+}
+
+.admin-shell-content .admin-table {
+  width: max-content;
+  min-width: 980px;
+}
+
+.admin-shell-content .admin-table th,
+.admin-shell-content .admin-table td {
+  white-space: nowrap;
+  padding: 14px;
+}
+
 .admin-home-page {
   width: min(1180px, calc(100% - 48px));
   min-height: calc(100vh - 110px);
