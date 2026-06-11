@@ -9,9 +9,6 @@ The platform combines nutritional expertise with artificial intelligence to deli
 **Production Website:**
 https://datadiet.app
 
-**Backend API:**
-https://data-diet-backend.onrender.com
-
 ---
 
 ## Project Overview
