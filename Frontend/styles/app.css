@@ -3106,7 +3106,6 @@ html {
   .admin-shell-content .dashboard-section-page__heading h1 {
     font-size: 2rem;
   }
-}
 
 .admin-shell-content .admin-table-wrap {
   width: 100%;
@@ -3128,7 +3127,7 @@ html {
   white-space: nowrap;
   padding: 14px;
 }
-
+}
 .admin-home-page {
   width: min(1180px, calc(100% - 48px));
   min-height: calc(100vh - 110px);
