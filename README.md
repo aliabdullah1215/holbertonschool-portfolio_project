@@ -1,388 +1,405 @@
 # Data Diet
 
-Data Diet is an AI-powered nutrition platform that helps users generate personalized diet plans, track their nutrition journey, and connect with approved nutrition specialists through a structured web experience rather than a generic chatbot conversation.
+Data Diet is a full-stack nutrition planning platform that generates personalized meal plans using structured client information and the Groq API. It also provides role-specific workflows for clients, nutrition specialists, and administrators.
 
-The project is built as a full-stack web application with:
+The application is deployed at [datadiet.app](https://datadiet.app).
 
-- A `React + Vite` frontend
-- A `Django REST Framework` backend
-- `JWT` authentication
-- `PostgreSQL` database support
-- AI nutrition plan generation powered by the `Groq API`
+## Project Overview
 
-## Overview
+Nutrition advice is often generic, difficult to organize, or disconnected from professional support. Data Diet addresses this by collecting structured information about a client's body measurements, goals, activity, health conditions, food preferences, budget, and routine before generating a personalized nutrition plan.
 
-Many people struggle to find trustworthy and personalized nutrition guidance. Most advice online is too general, while professional consultations can be expensive or difficult to access.
+The platform serves three user groups:
 
-Data Diet addresses this by offering a platform where users can:
+- **Clients** generate, review, and revisit personalized nutrition plans.
+- **Doctors and nutrition specialists** submit professional applications and certificates.
+- **Administrators** manage users and approve or reject doctor applications.
 
-- Enter their body data, goals, activity level, health conditions, and food preferences
-- Generate personalized AI nutrition plans
-- Review a structured plan with calories, macros, meals, alternatives, and shopping lists
-- Save previous plans and revisit them later
-- Access approved nutrition specialists through the platform
-- Use separate role-based flows for clients and doctors
+Generated plans include calorie and macro targets, meals, alternatives, shopping lists, and plan tags. Approved specialists are displayed to clients through the medical support directory.
 
-This makes Data Diet more than a chatbot. It is a guided nutrition product with structured input, validated workflows, saved history, and specialist access.
+## Key Features
 
-## Features
+### Authentication and Authorization
+
+- Client and doctor account registration.
+- JWT-based authentication using access and refresh tokens.
+- Automatic access-token refresh through Axios interceptors.
+- Role-based frontend routes for clients, doctors, and administrators.
+- Protected backend endpoints with Django REST Framework permissions.
 
 ### Client Features
 
-- User registration and login
-- Secure JWT-based authentication
-- Personalized nutrition questionnaire
-- AI-generated diet plan based on user profile
-- Structured nutrition plan output
-- Daily calorie and macro summary
-- Meal-by-meal plan breakdown
-- Ingredient substitutions
-- Meal alternatives
-- Shopping list generation
-- Plan history and saved plans
-- Medical support section for approved doctors
+- Multi-step nutrition questionnaire covering:
+  - Goals and preferred pace
+  - Body measurements
+  - Activity and exercise
+  - Allergies, medical conditions, and dietary restrictions
+  - Food preferences
+  - Budget, cooking ability, and schedule
+  - Output and variety preferences
+- AI-generated nutrition plans through the Groq API.
+- Generated-plan validation before plans are returned to clients.
+- Saved nutrition-plan history and detailed plan review.
+- Maximum of five saved nutrition plans per client.
+- Meal replacement using generated alternatives.
+- Local plan adjustments and reset functionality.
+- Printable nutrition-plan view for saving as PDF.
+- Shopping lists, nutrition summaries, macros, and plan tags.
+- Approved nutrition-specialist directory.
+- BMI, estimated maintenance calories, and daily water-target calculators.
+- Interactive client dashboard meal checklist.
 
 ### Doctor Features
 
-- Register with doctor role
-- Access dedicated doctor dashboard
-- Submit doctor application
-- Upload certificate/documentation
-- Await admin approval
-- Appear in approved doctors listing once accepted
+- Dedicated doctor dashboard and routes.
+- Professional application form.
+- Certificate upload with Cloudinary-backed storage.
+- Application-status review.
+- Certificate file access after submission.
+- Prevention of duplicate doctor applications.
+- Server-side validation for age, phone number, and certificate size.
 
-### Platform Features
+### Administrator Features
 
-- Role-based route protection
-- Client and doctor dashboards
-- Backend profile validation before AI generation
-- Plan persistence using JSON-based storage
-- Support for future expansion into tracking, assessments, and ongoing guidance
+- Dedicated administrator dashboard.
+- Registered-user overview with roles and account status.
+- Doctor-application review.
+- Certificate review.
+- Approve or reject pending doctor applications.
+- Automatic creation of a verified doctor profile after approval.
+- Django administration interface for doctor applications and saved plans.
 
-## Why This Project
+## System Architecture
 
-Unlike general AI chat tools, Data Diet is designed around a specific use case: nutrition planning.
-
-Instead of asking users to write a perfect prompt, the system collects structured health and lifestyle information, validates it, and converts it into a usable nutrition plan. The output is stored, organized, and tied to the user account, making it practical for repeated use.
-
-## Tech Stack
+```text
+React + Vite Frontend
+        |
+        | HTTPS / JSON / JWT
+        v
+Django REST Framework API
+        |
+        +-- PostgreSQL
+        +-- Groq API
+        +-- Cloudinary
+```
 
 ### Frontend
 
+The frontend is a React single-page application built with Vite. React Router manages public and role-protected routes. Authentication state is managed through React Context, while Axios handles API communication and JWT refresh behavior.
+
+Frontend source files are organized inside `Frontend/`, while frontend tooling configuration and `package.json` are located at the repository root.
+
+### Backend
+
+The backend is a Django REST Framework application organized into two main Django apps:
+
+- `users`: authentication, user roles, doctor applications, and administration.
+- `ai_plans`: AI plan generation, validation, persistence, and retrieval.
+
+The backend validates normalized questionnaire data before requesting a nutrition plan from Groq. Generated responses must match the required JSON structure before they are saved.
+
+### Database
+
+PostgreSQL is configured through `DATABASE_URL`.
+
+The primary persisted entities are:
+
+- Custom users with client or doctor roles
+- Doctor applications
+- Verified doctor profiles
+- Saved nutrition plans
+- Client profile snapshots and generated plan JSON
+
+### External Services
+
+- **Groq API:** Generates structured nutrition plans.
+- **Cloudinary:** Stores uploaded doctor certificates.
+- **Render:** Hosts the production frontend, backend, and PostgreSQL database.
+
+## Technology Stack
+
+### Frontend
+
+- JavaScript
 - React 19
-- Vite
+- Vite 8
 - React Router
 - Axios
-- Context API
+- React Context API
+- CSS
+- Tailwind CSS and PostCSS tooling
+- ESLint
 
 ### Backend
 
 - Python
-- Django
+- Django 6
 - Django REST Framework
 - SimpleJWT
 - django-cors-headers
+- django-cloudinary-storage
+- dj-database-url
+- Gunicorn
+- WhiteNoise
 
-### Database
+### Data and Services
 
 - PostgreSQL
-
-### AI Integration
-
 - Groq API
+- Cloudinary
+- Render
 
 ## Project Structure
 
 ```text
-Data-Diet/
-├── backend/
+holbertonschool-portfolio_project/
+├── Backend/
 │   ├── ai_plans/
+│   │   ├── services/             # Groq client, prompts, and plan validation
+│   │   ├── models.py             # Saved nutrition plans
+│   │   ├── serializers.py
+│   │   ├── urls.py
+│   │   └── views.py
 │   ├── core/
+│   │   ├── settings.py           # Django, database, CORS, storage, and JWT settings
+│   │   └── urls.py               # Root API routing
 │   ├── users/
-│   ├── media/
-│   └── manage.py
-├── frontend/
-│   ├── src/
-│   │   ├── api/
-│   │   ├── app/
-│   │   ├── assets/
-│   │   ├── components/
-│   │   ├── context/
-│   │   ├── features/
-│   │   ├── pages/
-│   │   ├── routes/
-│   │   └── styles/
-│   └── package.json
-├── README.md
-├── Idea Development Documentation.md
-├── Technical Documentation.md
-└── Project Charter Development.md
+│   │   ├── models.py             # Users, doctor applications, and profiles
+│   │   ├── permissions.py
+│   │   ├── serializers.py
+│   │   ├── urls.py
+│   │   └── views.py
+│   ├── manage.py
+│   ├── requirements.txt
+│   └── .env.example
+├── Frontend/
+│   ├── api/                      # Axios API client
+│   ├── app/                      # Application root
+│   ├── components/               # Shared components and layouts
+│   ├── context/                  # Authentication context
+│   ├── features/                 # Authentication, admin, and AI plan logic
+│   ├── pages/                    # Client, doctor, admin, auth, and shared pages
+│   ├── routes/                   # Application and protected routes
+│   ├── styles/                   # Shared application styles
+│   └── main.jsx
+├── docs/                         # Sprint, retrospective, and testing documentation
+├── package.json                  # Frontend dependencies and scripts
+├── vite.config.js
+└── README.md
 ```
 
-## Main User Roles
-
-### 1. Client
-
-A client can:
-
-- Create an account
-- Log in securely
-- Fill out the nutrition questionnaire
-- Generate a personalized AI nutrition plan
-- View saved plans
-- Access medical support resources
-
-### 2. Doctor
-
-A doctor can:
-
-- Register with the doctor role
-- Log in to a dedicated dashboard
-- Submit an application with professional documentation
-- Wait for approval from the administration
-- Become visible in the approved doctors directory
-
-## Nutrition Plan Workflow
-
-The AI plan generation flow is designed to be structured and practical.
-
-### Input Collected
-
-The system gathers user information across multiple sections such as:
-
-- Goal
-- Body data
-- Activity level
-- Health conditions
-- Allergies
-- Dietary restrictions
-- Food preferences
-- Budget sensitivity
-- Meal behavior
-- Output preferences
-
-### AI Output Includes
-
-- Daily calorie target
-- Daily macros
-- Plan goal summary
-- Multi-day meal plan
-- Meal tags
-- Preparation time
-- Cost estimation
-- Ingredient substitutions
-- Meal alternatives
-- Shopping list
-- Fallback notes when needed
-
-## API Overview
-
-Base URL:
-
-```text
-http://localhost:8000/api/
-```
-
-### Authentication
-
-- `POST /api/token/`
-- `POST /api/token/refresh/`
-
-### Users
-
-- `POST /api/users/register/`
-- `POST /api/users/login/`
-- `GET /api/users/me/`
-
-### Doctor Applications
-
-- `GET /api/users/doctor-application/`
-- `POST /api/users/doctor-application/`
-
-### Doctors Directory
-
-- `GET /api/users/approved-doctors/`
-
-### AI Plans
-
-- `POST /api/ai-plans/generate/`
-- `GET /api/ai-plans/`
-- `GET /api/ai-plans/<id>/`
-
-## Getting Started
+## Installation and Local Setup
 
 ### Prerequisites
 
-Make sure you have the following installed:
-
-- Python 3.x
 - Node.js and npm
+- Python
 - PostgreSQL
-- Git
+- Groq API credentials
+- Cloudinary account and credentials
 
-## Backend Setup
+### Clone the Repository
 
-1. Move into the backend directory:
-
-```powershell
-cd backend
+```bash
+git clone https://github.com/aliabdullah1215/holbertonschool-portfolio_project.git
+cd holbertonschool-portfolio_project
 ```
 
-2. Create a virtual environment:
+### Backend Setup
 
-```powershell
+```bash
+cd Backend
 python -m venv venv
 ```
 
-3. Activate the virtual environment:
+Activate the virtual environment:
 
-```powershell
+```bash
+# Windows PowerShell
 .\venv\Scripts\Activate.ps1
 ```
 
-4. Install dependencies:
-
-```powershell
-pip install django djangorestframework djangorestframework-simplejwt django-cors-headers psycopg2-binary requests
+```bash
+# Linux or macOS
+source venv/bin/activate
 ```
 
-5. Create a `.env` file based on `.env.example` and add your Groq configuration:
+Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+Create `Backend/.env` and configure the required environment variables:
 
 ```env
-GROQ_API_KEY=your_groq_api_key_here
+SECRET_KEY=replace_with_a_secure_secret
+DEBUG=True
+ALLOWED_HOSTS=localhost,127.0.0.1
+
+DATABASE_URL=postgresql://username:password@localhost:5432/data_diet
+
+GROQ_API_KEY=your_groq_api_key
 GROQ_MODEL=llama-3.3-70b-versatile
+
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_cloudinary_api_key
+CLOUDINARY_API_SECRET=your_cloudinary_api_secret
 ```
 
-6. Configure PostgreSQL in `backend/core/settings.py`
+Apply migrations:
 
-Update the database settings with your local credentials.
-
-7. Run migrations:
-
-```powershell
+```bash
 python manage.py migrate
 ```
 
-8. Start the backend server:
+Optionally create an administrator:
 
-```powershell
-python manage.py runserver
+```bash
+python manage.py createsuperuser
 ```
 
-Backend runs on:
+### Frontend Setup
 
-```text
-http://localhost:8000/
-```
+From the repository root:
 
-## Frontend Setup
-
-1. Open a second terminal
-2. Move into the frontend directory:
-
-```powershell
-cd frontend
-```
-
-3. Install dependencies:
-
-```powershell
+```bash
 npm install
 ```
 
-4. Start the development server:
+Create a frontend environment file such as `.env.local`:
 
-```powershell
+```env
+VITE_API_BASE_URL=http://localhost:8000/api/
+```
+
+## Running the Application
+
+Start the backend from `Backend/`:
+
+```bash
+python manage.py runserver
+```
+
+Start the frontend from the repository root:
+
+```bash
 npm run dev
 ```
 
-Frontend usually runs on:
+Local services will normally be available at:
 
-```text
-http://localhost:5173/
+- Frontend: `http://localhost:5173`
+- Backend: `http://localhost:8000`
+- Django admin: `http://localhost:8000/admin/`
+
+Useful frontend commands:
+
+```bash
+npm run build
+npm run lint
+npm run preview
 ```
 
-## Environment Variables
+## API Overview
 
-Example backend environment configuration:
+All application API endpoints are prefixed with `/api/`.
 
-```env
-GROQ_API_KEY=your_groq_api_key_here
-GROQ_MODEL=llama-3.3-70b-versatile
+### Authentication and Users
+
+| Method | Endpoint | Description | Access |
+|---|---|---|---|
+| `POST` | `/api/users/register/` | Register a client or doctor account | Public |
+| `POST` | `/api/users/login/` | Authenticate and return JWT tokens | Public |
+| `GET` | `/api/users/me/` | Return the authenticated user | Authenticated |
+| `POST` | `/api/token/` | Obtain JWT tokens using SimpleJWT | Public |
+| `POST` | `/api/token/refresh/` | Refresh an access token | Public |
+| `GET` | `/api/users/approved-doctors/` | List approved doctors | Public |
+
+### Doctor Applications
+
+| Method | Endpoint | Description | Access |
+|---|---|---|---|
+| `GET` | `/api/users/doctor-application/` | Retrieve the current user's application | Authenticated |
+| `POST` | `/api/users/doctor-application/` | Submit a doctor application | Doctor |
+| `GET` | `/api/users/admin/doctor-applications/` | List doctor applications | Admin |
+| `POST` | `/api/users/doctor-applications/<id>/approve/` | Approve an application | Admin |
+| `POST` | `/api/users/doctor-applications/<id>/reject/` | Reject an application | Admin |
+| `GET` | `/api/users/admin/users/` | List platform users | Admin |
+
+### AI Nutrition Plans
+
+| Method | Endpoint | Description | Access |
+|---|---|---|---|
+| `POST` | `/api/ai-plans/generate/` | Generate and save a nutrition plan | Client |
+| `GET` | `/api/ai-plans/` | List the client's saved plans | Client |
+| `GET` | `/api/ai-plans/<id>/` | Retrieve a saved plan and profile snapshot | Client |
+
+Saved-plan queries are filtered by the authenticated user to prevent access to another client's plans.
+
+## Deployment
+
+The production application uses Render-oriented configuration:
+
+- The React frontend is built using `npm run build`.
+- The generated static site is served from the Vite `dist` directory.
+- The Django backend runs through Gunicorn.
+- PostgreSQL is configured through `DATABASE_URL`.
+- Static backend files are served using WhiteNoise.
+- Uploaded certificate media is stored through Cloudinary.
+- Production frontend origins are included in Django's CORS configuration.
+- The frontend connects to the deployed API through `VITE_API_BASE_URL`.
+
+Typical backend deployment commands are:
+
+```bash
+pip install -r requirements.txt
+python manage.py migrate
+gunicorn core.wsgi:application
 ```
 
-## Authentication and Authorization
+No infrastructure-as-code or `render.yaml` file is currently included, so Render services and environment variables must be configured through the Render dashboard.
 
-Data Diet uses JWT authentication for protected API access.
+For a static frontend deployment using client-side routing, configure the hosting service to rewrite unmatched routes to `/index.html`.
 
-The platform supports two main roles:
+## Testing
 
-- `client`
-- `doctor`
+The repository documents manual browser, API, integration, database, and deployment testing in `docs/Testing_Evidence_and_Results.md`.
 
-Protected routes are separated by role:
+The current backend test file is a placeholder, and no complete automated test suite is included.
 
-- Client routes under `/client`
-- Doctor routes under `/doctor`
+Available verification commands include:
 
-This ensures each user only accesses the features intended for their role.
-
-## Current Scope
-
-This repository currently covers the MVP foundation for Data Diet, including:
-
-- Authentication
-- Role-based dashboards
-- Doctor applications
-- Approved doctor listing
-- AI-powered nutrition plan generation
-- Plan persistence and retrieval
-
-Some pages and sections are still scaffolded for future development, so the project should be considered an in-progress MVP.
-
-## Limitations
-
-Current known limitations include:
-
-- No dedicated backend `requirements.txt` yet
-- Database configuration still needs cleanup for full environment-based setup
-- Some pages are placeholders for future features
-- The project is currently configured for development use
-- The AI guidance should be treated as support, not a medical replacement
+```bash
+npm run lint
+npm run build
+python manage.py test
+```
 
 ## Future Improvements
 
-Possible next steps for the project include:
+- Add automated backend, frontend, integration, and end-to-end tests.
+- Add OpenAPI documentation for the REST API.
+- Expand `.env.example` to include every required backend variable.
+- Add version-controlled Render or container deployment configuration.
+- Add pagination, search, and filtering to administrator tables.
+- Add API operations for archiving or deleting saved plans.
+- Persist client-side plan edits and meal tracking to the backend.
+- Improve accessibility and continue responsive-layout testing.
+- Add multilingual nutrition-plan generation.
+- Move browser authentication tokens to a more secure cookie-based strategy.
+- Add production monitoring, structured logging, and deployment smoke tests.
 
-- Weekly follow-up and progress tracking
-- Smarter plan adaptation based on user results
-- Arabic and multilingual support
-- More localized meal plans for regional diets
-- Admin review dashboard for doctor applications
-- Better analytics and nutritional indicators
-- Notifications and reminders
-- Automated tests
-- Production deployment pipeline
-- Mobile-friendly expansion or dedicated mobile app
+## Safety Notice
 
-## Safety Note
+Generated nutrition plans are intended to support general nutrition planning and should not replace medical diagnosis or advice from a licensed healthcare professional. Users with medical conditions should consult a qualified specialist.
 
-Data Diet is intended to support healthier decision-making and improve access to nutrition guidance. It should not be treated as a replacement for licensed medical diagnosis or urgent clinical care. Users with medical conditions should be encouraged to consult qualified professionals.
+## Team and Contributors
 
-## Team
+Repository history and project documentation identify the following contributors:
 
-- Ali Summan — Project Manager
-- Omar Al-Anazi — Frontend Developer
-- Mohammed Basulaiman — Full-Stack Developer
-- Hussam Al-Mutairi — Backend Developer
+- **Ali Summan** - Project Manager
+- **Omar Al-Anazi** - Frontend Developer
+- **Mohammed Basulaiman** - Full-Stack Developer
+- **Hussam Al-Mutairi** - Backend Developer
 
-## Documentation
-
-Additional project documentation included in the repository:
-
-- `Idea Development Documentation.md`
-- `Project Charter Development.md`
-- `Technical Documentation.md`
-## License
-
-This project currently does not define a formal license. Add one before public distribution if needed.
+Git history also includes contributions under the aliases `AliSumman`, `Ali Summan`, `omar-hail`, `Mohammed Basuliman`, `M_2005`, `oDoDyK`, and `Hussam`.
