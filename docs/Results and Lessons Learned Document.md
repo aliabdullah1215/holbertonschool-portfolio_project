@@ -12,7 +12,6 @@ The completed MVP includes all planned core functionalities within the project s
 * User profile and health data collection.
 * AI-powered personalized diet plan generation.
 * Nutritional indicator calculations, including BMI and calorie-related metrics.
-* Dedicated dashboards for both clients and nutritionists.
 * Nutritionist application and approval workflow.
 * Administrative dashboard for reviewing and managing applications.
 * Medical Support section that enables users to access nutrition specialists and consultation information.
